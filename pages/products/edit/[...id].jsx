@@ -5,25 +5,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductForm from "@/components/ProductForm";
 
-export default function EditProduct() {
+export default function EditProductPage() {
   const [productData, setProductData] = useState(null);
   const router = useRouter();
   const { id } = router.query;
-  if (!id) {
-    return;
-  }
 
   useEffect(() => {
+    if (!id) {
+      return;
+    }
     axios.get("/api/products?id=" + id).then((response) => {
       setProductData(response.data);
     });
   }, [id]);
+
   return (
     <Layout>
-      <h1>Edytuj produkt</h1>
-      {productData && (
-        <ProductForm {...productData} />
-      )}
+      <h1>Edytuj produkt {productData?.name}</h1>
+      {productData && <ProductForm {...productData} />}
     </Layout>
   );
 }
