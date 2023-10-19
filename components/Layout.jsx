@@ -26,7 +26,7 @@ export default function Layout({ children }) {
   return (
     <div className="bg-indigo-600 min-h-screen flex">
       <Sidebar />
-      <div className="bg-white flex-grow">{children}</div>
+      <div className="bg-white p-2 flex-grow">{children}</div>
     </div>
   );
 }
