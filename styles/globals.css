@@ -22,5 +22,21 @@ label > span {
 }
 
 .btn-primary {
-    @apply bg-neutral-900 text-white px-6 py-2 rounded-lg;
+    @apply bg-neutral-900 text-white px-6 py-2 rounded-lg my-2;
+}
+
+table.primary-table {
+    @apply w-full;
+}
+
+table.primary-table thead tr td {
+    @apply bg-neutral-300;
+}
+
+table.primary-table tr td {
+    @apply border border-neutral-900 p-1;
+}
+
+table.primary-table a {
+    @apply bg-neutral-900 text-white px-2 py-1 rounded-lg inline-flex gap-1;
 }
