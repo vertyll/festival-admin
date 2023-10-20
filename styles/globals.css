@@ -44,3 +44,7 @@ table.primary-table tr td {
 table.primary-table a {
     @apply bg-neutral-900 text-white px-2 py-1 rounded-lg inline-flex gap-1 m-1;
 }
+
+img {
+    max-height: 100%;
+}
