@@ -63,7 +63,7 @@ export default function ProductForm({
           onChange={(e) => setName(e.target.value)}
         ></input>
       </label>
-      <label for="upload">
+      <label htmlFor="upload">
         <span>Zdjęcia</span>
       </label>
       <div className="mb-2 flex flex-wrap gap-2">
