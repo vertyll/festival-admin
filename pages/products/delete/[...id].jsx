@@ -2,8 +2,8 @@ import Layout from "@/components/templates/Layout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import ButtonDanger from "@/components/atoms/ButtonDanger";
-import ButtonPrimary from "@/components/atoms/ButtonPrimary";
+import ButtonDanger from "@/components/atoms/button/ButtonDanger";
+import ButtonPrimary from "@/components/atoms/button/ButtonPrimary";
 
 export default function DeleteProductPage() {
   const [productData, setProductData] = useState(null);
