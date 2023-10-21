@@ -87,7 +87,7 @@ function CategoriesPage({ swal }) {
           value={parentCategory}
           onChange={(e) => setParentCategory(e.target.value)}
         >
-          <option value="dasdasd">Brak nadrzędnej kategori</option>
+          <option value="">Brak nadrzędnej kategori</option>
           {categories.map((category) => (
             <option key={category._id} value={category._id}>
               {category.name}
