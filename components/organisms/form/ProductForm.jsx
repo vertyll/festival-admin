@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Spinner from "@/components/atoms/spinner/Spinner";
 import { ReactSortable } from "react-sortablejs";
 import ButtonPrimary from "../../atoms/button/ButtonPrimary";
@@ -18,16 +18,23 @@ export default function ProductForm({
   price: currentPrice,
 }) {
   const [name, setName] = useState(currentName || "");
+  const [category, setCategory] = useState("");
   const [images, setImages] = useState(currentImages || []);
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
   const [goToProducts, setGoToProducts] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
   const router = useRouter();
+  useEffect(() => {
+    axios.get("/api/categories").then((result) => {
+      setCategories(result.data);
+    });
+  }, []);
 
   async function saveProduct(e) {
     e.preventDefault();
-    const data = { name, images, description, price };
+    const data = { name, category, images, description, price };
     if (_id) {
       await axios.put("/api/products", { ...data, _id });
     } else {
@@ -67,7 +74,20 @@ export default function ProductForm({
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <Label htmlFor="upload"><span>Zdjęcia</span></Label>
+      <Label>
+        <span>Kategoria</span>
+      </Label>
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="">Bez kategori</option>
+        {categories.map((category) => (
+          <option key={category._id} value={category._id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+      <Label htmlFor="upload">
+        <span>Zdjęcia</span>
+      </Label>
       <div className="mb-2 flex flex-wrap gap-2">
         <ReactSortable
           list={images}
