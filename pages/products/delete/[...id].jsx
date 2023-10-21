@@ -1,7 +1,9 @@
-import Layout from "@/components/Layout";
+import Layout from "@/components/templates/Layout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ButtonDanger from "@/components/atoms/ButtonDanger";
+import ButtonPrimary from "@/components/atoms/ButtonPrimary";
 
 export default function DeleteProductPage() {
   const [productData, setProductData] = useState(null);
@@ -32,12 +34,8 @@ export default function DeleteProductPage() {
         Czy na pewno chcesz usunąć &nbsp;{productData?.name} ?
       </h1>
       <div className="flex gap-2 justify-center">
-        <button onClick={deleteProduct} className="btn-danger">
-          Tak
-        </button>
-        <button onClick={goBack} className="btn-primary">
-          Nie
-        </button>
+        <ButtonDanger onClick={deleteProduct}>Tak</ButtonDanger>
+        <ButtonPrimary onClick={goBack}>Nie</ButtonPrimary>
       </div>
     </Layout>
   );

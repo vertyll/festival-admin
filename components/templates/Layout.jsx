@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useSession, signIn, signOut } from "next-auth/react";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/organisms/sidebar/Sidebar";
+import ButtonLogin from "../atoms/button/ButtonLogin";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,12 +12,9 @@ export default function Layout({ children }) {
     return (
       <div className="bg-indigo-600 w-screen h-screen flex items-center">
         <div className="text-center w-full">
-          <button
-            className="bg-white p-5 rounded-3xl px-4"
-            onClick={() => signIn("google")}
-          >
+          <ButtonLogin onClick={() => signIn("google")}>
             Zaloguj się za pomocą <b>Google</b>
-          </button>
+          </ButtonLogin>
         </div>
       </div>
     );

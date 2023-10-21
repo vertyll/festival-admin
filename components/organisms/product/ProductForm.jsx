@@ -1,8 +1,13 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Spinner from "@/components/Spinner";
+import Spinner from "@/components/atoms/spinner/Spinner";
 import { ReactSortable } from "react-sortablejs";
+import ButtonPrimary from "../../atoms/button/ButtonPrimary";
+import Label from "../../atoms/label/Label";
+import Input from "../../atoms/input/Input";
+import FieldInput from "../../molecules/field/FieldInput";
+import FieldTextarea from "../../molecules/field/FieldTextarea";
 
 export default function ProductForm({
   _id,
@@ -54,18 +59,14 @@ export default function ProductForm({
 
   return (
     <form onSubmit={saveProduct}>
-      <label>
-        <span>Nazwa</span>
-        <input
-          type="text"
-          placeholder="nazwa produktu"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        ></input>
-      </label>
-      <label htmlFor="upload">
-        <span>Zdjęcia</span>
-      </label>
+      <FieldInput
+        labelText={<span>Nazwa</span>}
+        type="text"
+        placeholder="nazwa produktu"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Label htmlFor="upload"><span>Zdjęcia</span></Label>
       <div className="mb-2 flex flex-wrap gap-2">
         <ReactSortable
           list={images}
@@ -88,7 +89,7 @@ export default function ProductForm({
             <Spinner />
           </div>
         )}
-        <label className="w-32 h-32 cursor-pointer text-center flex flex-col items-center justify-center rounded-lg bg-neutral-300">
+        <Label className="w-32 h-32 cursor-pointer text-center flex flex-col items-center justify-center rounded-lg bg-neutral-300">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -104,33 +105,27 @@ export default function ProductForm({
             />
           </svg>
           <div>Prześlij</div>
-          <input
+          <Input
             type="file"
             onChange={uploadImages}
             className="hidden"
             id="upload"
-          ></input>
-        </label>
+          />
+        </Label>
       </div>
-      <label>
-        <span>Opis</span>
-        <textarea
-          placeholder="opis produktu"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        ></textarea>
-      </label>
-      <label>
-        Cena
-        <input
-          placeholder="cena produktu"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        ></input>
-      </label>
-      <button type="submit" className="btn-primary">
-        Zapisz
-      </button>
+      <FieldTextarea
+        labelText={<span>Opis</span>}
+        placeholder="opis produktu"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <FieldInput
+        labelText={<span>Cena</span>}
+        placeholder="cena produktu"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+      <ButtonPrimary>Zapisz</ButtonPrimary>
     </form>
   );
 }

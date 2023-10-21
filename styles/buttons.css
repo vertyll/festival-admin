@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn-primary {
+  @apply bg-neutral-900 text-white px-6 py-2 rounded-lg my-2;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white px-6 py-2 rounded-lg my-2;
+}
+
+.btn-login {
+  @apply bg-white p-5 rounded-3xl px-4;
+}

@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import ProductForm from "@/components/ProductForm";
+import Layout from "@/components/templates/Layout";
+import ProductForm from "@/components/organisms/product/ProductForm";
 
 export default function EditProductPage() {
   const [productData, setProductData] = useState(null);

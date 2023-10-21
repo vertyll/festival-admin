@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import Layout from "@/components/Layout";
+import Layout from "@/components/templates/Layout";
 import { useSession } from "next-auth/react";
 
 export default function HomePage() {

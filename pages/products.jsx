@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import Layout from "@/components/Layout";
+import Layout from "@/components/templates/Layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
