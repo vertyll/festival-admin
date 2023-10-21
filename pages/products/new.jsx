@@ -1,5 +1,5 @@
 import Layout from "@/components/templates/Layout";
-import ProductForm from "@/components/organisms/product/ProductForm";
+import ProductForm from "@/components/organisms/form/ProductForm";
 
 export default function NewProductPage() {
   return (
