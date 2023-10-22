@@ -6,6 +6,7 @@ import ButtonDanger from "@/components/atoms/ButtonDanger";
 import { withSwal } from "react-sweetalert2";
 import Label from "@/components/atoms/Label";
 import Input from "@/components/atoms/Input";
+import FieldInput from "@/components/molecules/FieldInput";
 
 function CategoriesPage({ swal }) {
   const [name, setName] = useState("");
@@ -105,7 +106,7 @@ function CategoriesPage({ swal }) {
       properties[index].values = newValues;
       return properties;
     });
-  } 
+  }
 
   function removeProperty(indexToRemove) {
     setProperties((prev) => {
@@ -123,16 +124,21 @@ function CategoriesPage({ swal }) {
             ? `Edytuj kategorię ${editedCategory.name}`
             : "Utwórz kategorię"}
         </Label>
-        <div className="flex gap-1">
-          <input
+        <div>
+          <FieldInput
+            labelText={<span>Nazwa</span>}
             type="text"
             placeholder={"Nazwa kategori"}
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
+          <Label htmlFor="parentCategory">
+            <span>Kategoria nadrzędna</span>
+          </Label>
           <select
             onChange={(e) => setParentCategory(e.target.value)}
             value={parentCategory}
+            id="parentCategory"
           >
             <option value="">Brak nadrzędnej kategori</option>
             {categories.length > 0 &&
@@ -144,12 +150,16 @@ function CategoriesPage({ swal }) {
           </select>
         </div>
         <div className="mb-2">
-          <ButtonPrimary onClick={addProperty} type="button" className="bg-neutral-900">
+          <ButtonPrimary
+            onClick={addProperty}
+            type="button"
+            className="bg-neutral-900"
+          >
             Dodaj właściowść
           </ButtonPrimary>
           {properties.length > 0 &&
             properties.map((property, index) => (
-              <div key={property.name} className="flex gap-2 mb-2">
+              <div key={property._id} className="flex gap-2 mb-2">
                 <Input
                   type="text"
                   className="mt-2"
@@ -168,7 +178,7 @@ function CategoriesPage({ swal }) {
                   value={property.values}
                   placeholder="wartości, np. żółty, fioletowy, wartości po ,"
                 />
-                <ButtonDanger onClick={() => removeProperty(index)}>
+                <ButtonDanger onClick={() => removeProperty(index)} className="mt-2.5">
                   Usuń
                 </ButtonDanger>
               </div>

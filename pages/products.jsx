@@ -57,7 +57,7 @@ function ProductsPage({ swal }) {
         <thead>
           <tr>
             <td>Nazwa produktu</td>
-            <td></td>
+            <td>Akcje</td>
           </tr>
         </thead>
         <tbody>

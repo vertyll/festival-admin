@@ -45,6 +45,7 @@ export default function ProductForm({
     }
     setGoToProducts(true);
   }
+
   if (goToProducts) {
     router.push("/products");
   }
@@ -117,7 +118,7 @@ export default function ProductForm({
             <div>
               <select
                 value={properties[p.name]}
-                onChange={(e) => setProductProp(p.name, e.target.value)}
+                onChange={(e) => setProp(p.name, e.target.value)}
               >
                 {p.values.map((v) => (
                   <option key={v} value={v}>

@@ -12,7 +12,7 @@ export default async function handle(req, res) {
   }
 
   if (method === "POST") {
-    const { name, parentCategory, properties } = req.body;
+    const { name, parentCategory, properties, } = req.body;
     const newCategory = await Category.create({
       name,
       parent: parentCategory || undefined,
