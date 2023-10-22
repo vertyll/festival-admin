@@ -2,23 +2,26 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import Spinner from "@/components/atoms/spinner/Spinner";
+import Spinner from "@/components/atoms/Spinner";
 import { ReactSortable } from "react-sortablejs";
-import ButtonPrimary from "../../atoms/button/ButtonPrimary";
-import Label from "../../atoms/label/Label";
-import Input from "../../atoms/input/Input";
-import FieldInput from "../../molecules/field/FieldInput";
-import FieldTextarea from "../../molecules/field/FieldTextarea";
+import ButtonPrimary from "../atoms/ButtonPrimary";
+import Label from "../atoms/Label";
+import Input from "../atoms/Input";
+import FieldInput from "../molecules/FieldInput";
+import FieldTextarea from "../molecules/FieldTextarea";
 
 export default function ProductForm({
   _id,
   name: currentName,
+  category: currentCategory,
+  properties: currentProperties,
   images: currentImages,
   description: currentDescription,
   price: currentPrice,
 }) {
   const [name, setName] = useState(currentName || "");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(currentCategory || "");
+  const [properties, setProperties] = useState(currentProperties || {});
   const [images, setImages] = useState(currentImages || []);
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
@@ -34,7 +37,7 @@ export default function ProductForm({
 
   async function saveProduct(e) {
     e.preventDefault();
-    const data = { name, category, images, description, price };
+    const data = { name, category, properties, images, description, price };
     if (_id) {
       await axios.put("/api/products", { ...data, _id });
     } else {
@@ -61,8 +64,30 @@ export default function ProductForm({
       setIsUploading(false);
     }
   }
+
   function updateImagesSequence(images) {
     setImages(images);
+  }
+
+  function setProp(propName, value) {
+    setProperties((prev) => {
+      const newProps = { ...prev };
+      newProps[propName] = value;
+      return newProps;
+    });
+  }
+
+  const propToFill = [];
+  if (categories.length > 0 && category) {
+    let catInfo = categories.find(({ _id }) => _id === category);
+    propToFill.push(...catInfo.properties);
+    while (catInfo?.parent?._id) {
+      const parentCat = categories.find(
+        ({ _id }) => _id === catInfo?.parent?._id
+      );
+      propToFill.push(...parentCat.properties);
+      catInfo = parentCat;
+    }
   }
 
   return (
@@ -85,6 +110,24 @@ export default function ProductForm({
           </option>
         ))}
       </select>
+      {propToFill.length > 0 &&
+        propToFill.map((p) => (
+          <div key={p.name} className="">
+            <label>{p.name[0].toUpperCase() + p.name.substring(1)}</label>
+            <div>
+              <select
+                value={properties[p.name]}
+                onChange={(e) => setProductProp(p.name, e.target.value)}
+              >
+                {p.values.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        ))}
       <Label htmlFor="upload">
         <span>Zdjęcia</span>
       </Label>

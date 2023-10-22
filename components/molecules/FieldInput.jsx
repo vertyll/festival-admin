@@ -1,6 +1,6 @@
 import React from "react";
-import Label from "../../atoms/label/Label";
-import Input from "../../atoms/input/Input";
+import Label from "../atoms/Label";
+import Input from "../atoms/Input";
 
 export default function FieldInput({ labelText, ...props }) {
   return (

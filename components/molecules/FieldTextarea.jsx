@@ -1,6 +1,6 @@
 import React from "react";
-import Label from "../../atoms/label/Label";
-import Textarea from "../../atoms/textarea/Textarea";
+import Label from "../atoms/Label";
+import Textarea from "../atoms/Textarea";
 
 export default function FieldTextarea({ labelText, ...props }) {
   return (

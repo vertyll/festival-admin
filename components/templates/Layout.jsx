@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import { Inter } from "next/font/google";
 import { useSession, signIn, signOut } from "next-auth/react";
-import Sidebar from "@/components/organisms/sidebar/Sidebar";
-import ButtonLogin from "../atoms/button/ButtonLogin";
+import Sidebar from "@/components/organisms/Sidebar";
+import ButtonLogin from "../atoms/ButtonLogin";
+import Topbar from "../organisms/Topbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +25,10 @@ export default function Layout({ children }) {
   return (
     <div className="bg-indigo-600 min-h-screen flex">
       <Sidebar />
-      <div className="bg-white p-2 flex-grow">{children}</div>
+      <div className="bg-white flex-grow">
+        <Topbar />
+        <div className="bg-white p-2 flex-grow">{children}</div>
+      </div>
     </div>
   );
 }

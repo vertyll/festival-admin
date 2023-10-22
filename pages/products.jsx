@@ -36,7 +36,7 @@ function ProductsPage({ swal }) {
           fetchProducts();
           swal.fire(
             "Usunięto!",
-            `Kategoria ${product.name} została usunięta`,
+            `Produkt ${product.name} został usunięty`,
             "success"
           );
         }
@@ -47,7 +47,7 @@ function ProductsPage({ swal }) {
     <Layout>
       <div className="my-3">
         <Link
-          className="bg-green-600 rounded-lg text-white py-2 px-6"
+          className="btn-primary"
           href={"/products/new"}
         >
           Dodaj nowy produkt

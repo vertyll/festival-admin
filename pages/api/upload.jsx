@@ -19,12 +19,10 @@ export default async function handle(req, res) {
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
     },
   });
-  console.log("length:", files.file.length);
   const links = [];
   for (const file of files.file) {
     const fileExtension = file.originalFilename.split(".").pop();
     const newFilename = Date.now() + "." + fileExtension;
-    console.log({ fileExtension, file });
     await client.send(
       new PutObjectCommand({
         Bucket: bucketName,

@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
-import "@/styles/spiner.css";
-import "@/styles/buttons.css";
+
 import { SessionProvider } from "next-auth/react";
 
 export default function App({
