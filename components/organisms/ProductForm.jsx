@@ -9,6 +9,7 @@ import Label from "../atoms/Label";
 import Input from "../atoms/Input";
 import FieldInput from "../molecules/FieldInput";
 import FieldTextarea from "../molecules/FieldTextarea";
+import ButtonDanger from "../atoms/ButtonDanger";
 
 export default function ProductForm({
   _id,
@@ -47,6 +48,10 @@ export default function ProductForm({
   }
 
   if (goToProducts) {
+    router.push("/products");
+  }
+
+  function cancel() {
     router.push("/products");
   }
 
@@ -190,7 +195,10 @@ export default function ProductForm({
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       />
-      <ButtonPrimary>Zapisz</ButtonPrimary>
+      <div className="flex gap-1">
+        <ButtonPrimary>Zapisz</ButtonPrimary>
+        <ButtonDanger onClick={() => cancel()}>Anuluj</ButtonDanger>
+      </div>
     </form>
   );
 }
