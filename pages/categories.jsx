@@ -149,7 +149,7 @@ function CategoriesPage({ swal }) {
         </div>
         <div className="mb-2">
           <ButtonPrimary onClick={addProperty} type="button" className="bg-neutral-900">
-            Dodaj nową właściowść
+            Dodaj właściowść
           </ButtonPrimary>
           {properties.length > 0 &&
             properties.map((property, index) => (
@@ -170,7 +170,7 @@ function CategoriesPage({ swal }) {
                     handlePropertyValuesChange(index, property, e.target.value)
                   }
                   value={property.values}
-                  placeholder="wartości, np. zółty, fioletowy, wartości po ,"
+                  placeholder="wartości, np. żółty, fioletowy, wartości po ,"
                 />
                 <ButtonDanger onClick={() => removeProperty(index)}>
                   Usuń
