@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ButtonPrimary from "@/components/atoms/ButtonPrimary";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
-import Spinner from "@/components/atoms/Spinner";
 import { withSwal } from "react-sweetalert2";
 import Label from "@/components/atoms/Label";
 import Input from "@/components/atoms/Input";
@@ -14,7 +13,6 @@ function CategoriesPage({ swal }) {
   const [parentCategory, setParentCategory] = useState("");
   const [properties, setProperties] = useState([]);
   const [editedCategory, setEditedCategory] = useState(null);
-  const [isUpdating, setIsUpdating] = useState(false);
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -36,11 +34,9 @@ function CategoriesPage({ swal }) {
       })),
     };
     if (editedCategory) {
-      setIsUpdating(true);
       data._id = editedCategory._id;
       await axios.put("/api/categories", data);
       setEditedCategory(null);
-      setIsUpdating(false);
       fetchCategories();
     } else {
       await axios.post("/api/categories", data);
