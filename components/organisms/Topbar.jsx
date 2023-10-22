@@ -1,10 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Topbar() {
   const { data: session } = useSession();
   const [showMenu, setShowMenu] = useState(false); // Stan lokalny dla kontroli wyświetlania menu
+  const router = useRouter();
+
+  async function logout() {
+    await router.push('/')
+    await signOut();
+  }
 
   if (!session) return;
   return (
@@ -44,7 +51,7 @@ export default function Topbar() {
           <div className="flex cursor-pointer absolute right-0 py-2 w-48 bg-white rounded-md shadow-xl z-10">
             <a
               className="flex gap-2 items-center p-2 w-full text-sm capitalize rounded-lg text-gray-700 hover:bg-indigo-300 hover:text-white"
-              onClick={() => signOut()}
+              onClick={logout}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
