@@ -1,8 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "@/styles/spiner.css";
-@import "@/styles/buttons.css";
 
 input,
 textarea,
@@ -42,4 +40,42 @@ table.primary-table a {
 
 img {
   max-height: 100%;
+}
+
+button[type="button"].btn-primary {
+  @apply bg-neutral-900 text-white px-5 py-1 rounded-lg my-1.5;
+}
+
+.btn-primary {
+  @apply bg-neutral-900 text-white px-5 py-1 rounded-lg my-1.5;
+}
+
+button[type="button"].btn-danger {
+  @apply bg-red-600 text-white px-5 py-1 rounded-lg my-1.5;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white px-5 py-1 rounded-lg my-1.5;
+}
+
+.btn-login {
+  @apply bg-white p-5 rounded-3xl px-4;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1); /* Szary kolor dla obrzeża */
+  border-left-color: #007bff; /* Niebieski kolor dla sektora spinnera */
+  border-radius: 50%; /* Sprawia, że kształt jest okrągły */
+  width: 50px; /* Szerokość spinnera */
+  height: 50px; /* Wysokość spinnera */
+  animation: spin 1s linear infinite; /* Animacja kręcenia */
 }
