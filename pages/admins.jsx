@@ -6,6 +6,7 @@ import axios from "axios";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
 import { withSwal } from "react-sweetalert2";
 import Label from "@/components/atoms/Label";
+import { normalDate } from "@/lib/date";
 
 function AdminsPage({ swal }) {
   const [email, setEmail] = useState("");
@@ -24,14 +25,21 @@ function AdminsPage({ swal }) {
   async function saveAdmin(e) {
     e.preventDefault();
     const data = { email };
-
     if (editedAdmin) {
       data._id = editedAdmin._id;
       await axios.put("/api/admins", data);
       setEditedAdmin(null);
-      fetchAdmins();
     } else {
-      await axios.post("/api/admins", data);
+      try {
+        await axios.post("/api/admins", data);
+      } catch (error) {
+        console.log(error);
+        swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: error.response.data.message,
+        });
+      }
     }
     setEmail("");
     fetchAdmins();
@@ -103,6 +111,7 @@ function AdminsPage({ swal }) {
             <tr>
               <td>Adres email</td>
               <td>Data utworzenia</td>
+              <td>Data modyfikacji</td>
               <td>Akcje</td>
             </tr>
           </thead>
@@ -111,7 +120,8 @@ function AdminsPage({ swal }) {
               admins.map((admin) => (
                 <tr key={admin._id}>
                   <td>{admin.email}</td>
-                  <td>{admin.createdAt}</td>
+                  <td>{admin.createdAt && normalDate(admin.createdAt)}</td>
+                  <td>{admin.updatedAt && normalDate(admin.updatedAt)}</td>
                   <td>
                     <ButtonPrimary
                       onClick={() => editAdmin(admin)}

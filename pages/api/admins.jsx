@@ -13,10 +13,15 @@ export default async function handle(req, res) {
 
   if (method === "POST") {
     const { email } = req.body;
-    const newAdmin = await Admin.create({
-      email,
-    });
-    res.json(newAdmin);
+
+    if (await Admin.findOne({ email })) {
+      res.status(400).json({ message: `${email} już instnieje` });
+    } else {
+      const newAdmin = await Admin.create({
+        email,
+      });
+      res.json(newAdmin);
+    }
   }
 
   if (method === "PUT") {
