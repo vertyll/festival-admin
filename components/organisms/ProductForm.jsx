@@ -197,7 +197,7 @@ export default function ProductForm({
       />
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
-        <ButtonDanger onClick={() => cancel()}>Anuluj</ButtonDanger>
+        <ButtonDanger onClick={() => cancel()} type="button">Anuluj</ButtonDanger>
       </div>
     </form>
   );

@@ -153,7 +153,6 @@ function CategoriesPage({ swal }) {
           <ButtonPrimary
             onClick={addProperty}
             type="button"
-            className="bg-neutral-900"
           >
             Dodaj właściowść
           </ButtonPrimary>
@@ -178,7 +177,7 @@ function CategoriesPage({ swal }) {
                   value={property.values}
                   placeholder="wartości, np. żółty, fioletowy, wartości po ,"
                 />
-                <ButtonDanger onClick={() => removeProperty(index)} className="mt-2.5">
+                <ButtonDanger onClick={() => removeProperty(index)} className="mt-2" type="button">
                   Usuń
                 </ButtonDanger>
               </div>

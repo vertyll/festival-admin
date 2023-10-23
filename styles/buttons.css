@@ -2,8 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+button[type="button"].btn-primary {
+  @apply bg-neutral-900 text-white px-5 py-1 rounded-lg my-1.5;
+}
+
 .btn-primary {
   @apply bg-neutral-900 text-white px-5 py-1 rounded-lg my-1.5;
+}
+
+button[type="button"].btn-danger {
+  @apply bg-red-600 text-white px-5 py-1 rounded-lg my-1.5;
 }
 
 .btn-danger {
