@@ -109,10 +109,10 @@ function AdminsPage({ swal }) {
         <table className="primary-table mt-5">
           <thead>
             <tr>
-              <td>Adres email</td>
-              <td>Data utworzenia</td>
-              <td>Data modyfikacji</td>
-              <td>Akcje</td>
+              <th>Adres email</th>
+              <th>Data utworzenia</th>
+              <th>Data modyfikacji</th>
+              <th>Akcje</th>
             </tr>
           </thead>
           <tbody>

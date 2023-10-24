@@ -56,8 +56,8 @@ function ProductsPage({ swal }) {
       <table className="primary-table mt-5">
         <thead>
           <tr>
-            <td>Nazwa produktu</td>
-            <td>Akcje</td>
+            <th>Nazwa produktu</th>
+            <th>Akcje</th>
           </tr>
         </thead>
         <tbody>

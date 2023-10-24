@@ -203,9 +203,9 @@ function CategoriesPage({ swal }) {
         <table className="primary-table mt-5">
           <thead>
             <tr>
-              <td>Nazwa kategori</td>
-              <td>Kategoria nadrzędna</td>
-              <td>Akcje</td>
+              <th>Nazwa kategori</th>
+              <th>Kategoria nadrzędna</th>
+              <th>Akcje</th>
             </tr>
           </thead>
           <tbody>
