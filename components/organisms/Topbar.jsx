@@ -9,7 +9,7 @@ export default function Topbar() {
   const router = useRouter();
 
   async function logout() {
-    await router.push('/')
+    await router.push("/");
     await signOut();
   }
 

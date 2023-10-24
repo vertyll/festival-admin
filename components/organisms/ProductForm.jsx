@@ -110,11 +110,12 @@ export default function ProductForm({
       </Label>
       <select value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="">Bez kategori</option>
-        {categories.length > 0 && categories.map((category) => (
-          <option key={category._id} value={category._id}>
-            {category.name}
-          </option>
-        ))}
+        {categories.length > 0 &&
+          categories.map((category) => (
+            <option key={category._id} value={category._id}>
+              {category.name}
+            </option>
+          ))}
       </select>
       {propToFill.length > 0 &&
         propToFill.map((p) => (
@@ -197,7 +198,9 @@ export default function ProductForm({
       />
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
-        <ButtonDanger onClick={() => cancel()} type="button">Anuluj</ButtonDanger>
+        <ButtonDanger onClick={() => cancel()} type="button">
+          Anuluj
+        </ButtonDanger>
       </div>
     </form>
   );

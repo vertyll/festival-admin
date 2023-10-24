@@ -46,10 +46,7 @@ function ProductsPage({ swal }) {
   return (
     <Layout>
       <div className="my-3">
-        <Link
-          className="btn-primary"
-          href={"/products/new"}
-        >
+        <Link className="btn-primary" href={"/products/new"}>
           Dodaj nowy produkt
         </Link>
       </div>

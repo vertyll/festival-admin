@@ -115,9 +115,7 @@ export default function Sidebar() {
           </Link>
           <Link
             href={"/admins"}
-            className={
-              pathname.includes("/admins") ? activeLink : inactiveLink
-            }
+            className={pathname.includes("/admins") ? activeLink : inactiveLink}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
