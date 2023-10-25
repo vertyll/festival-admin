@@ -40,8 +40,9 @@ export default function OrdersPage() {
                 <td>
                   {order.line_items.map((l) => (
                     <>
-                      {l.price_data?.product_data.name} x{l.quantity}
-                      {l.price_data?.product_data.description}
+                      <b>Produkt:</b> {l.price_data?.product_data.name} x{l.quantity}
+                      <br />
+                      <b>Opis produktu:</b> {l.price_data?.product_data.description}
                       <br />
                     </>
                   ))}
