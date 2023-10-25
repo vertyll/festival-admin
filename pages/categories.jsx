@@ -5,14 +5,12 @@ import ButtonPrimary from "@/components/atoms/ButtonPrimary";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
 import { withSwal } from "react-sweetalert2";
 import Label from "@/components/atoms/Label";
-import Input from "@/components/atoms/Input";
 import FieldInput from "@/components/molecules/FieldInput";
 
 function CategoriesPage({ swal }) {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [parentCategory, setParentCategory] = useState("");
-  const [properties, setProperties] = useState([]);
   const [editedCategory, setEditedCategory] = useState(null);
   useEffect(() => {
     fetchCategories();
@@ -26,14 +24,7 @@ function CategoriesPage({ swal }) {
 
   async function saveCategory(e) {
     e.preventDefault();
-    const data = {
-      name,
-      parentCategory,
-      properties: properties.map((p) => ({
-        name: p.name,
-        values: p.values.split(","),
-      })),
-    };
+    const data = { name, parentCategory };
     if (editedCategory) {
       data._id = editedCategory._id;
       await axios.put("/api/categories", data);
@@ -44,7 +35,6 @@ function CategoriesPage({ swal }) {
     }
     setName("");
     setParentCategory("");
-    setProperties([]);
     fetchCategories();
   }
 
@@ -52,12 +42,6 @@ function CategoriesPage({ swal }) {
     setEditedCategory(category);
     setName(category.name);
     setParentCategory(category.parentCategory?._id);
-    setProperties(
-      category.properties.map(({ name, values }) => ({
-        name,
-        values: values.join(","),
-      }))
-    );
   }
 
   function deleteCategory(category) {
@@ -84,36 +68,6 @@ function CategoriesPage({ swal }) {
           );
         }
       });
-  }
-
-  function addProperty() {
-    setProperties((prev) => {
-      return [...prev, { name: "", values: "" }];
-    });
-  }
-
-  function handlePropertyNameChange(index, property, newName) {
-    setProperties((prev) => {
-      const properties = [...prev];
-      properties[index].name = newName;
-      return properties;
-    });
-  }
-
-  function handlePropertyValuesChange(index, property, newValues) {
-    setProperties((prev) => {
-      const properties = [...prev];
-      properties[index].values = newValues;
-      return properties;
-    });
-  }
-
-  function removeProperty(indexToRemove) {
-    setProperties((prev) => {
-      return [...prev].filter((p, pIndex) => {
-        return pIndex !== indexToRemove;
-      });
-    });
   }
 
   return (
@@ -149,41 +103,6 @@ function CategoriesPage({ swal }) {
               ))}
           </select>
         </div>
-        <div className="mb-2">
-          <ButtonPrimary onClick={addProperty} type="button">
-            Dodaj właściowść
-          </ButtonPrimary>
-          {properties.length > 0 &&
-            properties.map((property, index) => (
-              <div key={property._id} className="flex gap-2 mb-2">
-                <Input
-                  type="text"
-                  className="mt-2"
-                  onChange={(e) =>
-                    handlePropertyNameChange(index, property, e.target.value)
-                  }
-                  value={property.name}
-                  placeholder="nazwa właściwości"
-                />
-                <Input
-                  type="text"
-                  className="mt-2"
-                  onChange={(e) =>
-                    handlePropertyValuesChange(index, property, e.target.value)
-                  }
-                  value={property.values}
-                  placeholder="wartości, np. żółty, fioletowy, wartości po ,"
-                />
-                <ButtonDanger
-                  onClick={() => removeProperty(index)}
-                  className="mt-2"
-                  type="button"
-                >
-                  Usuń
-                </ButtonDanger>
-              </div>
-            ))}
-        </div>
         <div className="flex gap-1">
           {editedCategory && (
             <ButtonDanger
@@ -191,7 +110,6 @@ function CategoriesPage({ swal }) {
                 setEditedCategory(null);
                 setName("");
                 setParentCategory("");
-                setProperties([]);
               }}
             >
               Anuluj

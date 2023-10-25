@@ -22,13 +22,14 @@ export default function ProductForm({
 }) {
   const [name, setName] = useState(currentName || "");
   const [category, setCategory] = useState(currentCategory || "");
-  const [properties, setProperties] = useState(currentProperties || {});
+  const [properties, setProperties] = useState(currentProperties || []);
   const [images, setImages] = useState(currentImages || []);
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
   const [goToProducts, setGoToProducts] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
+
   const router = useRouter();
   useEffect(() => {
     axios.get("/api/categories").then((result) => {
@@ -38,7 +39,18 @@ export default function ProductForm({
 
   async function saveProduct(e) {
     e.preventDefault();
-    const data = { name, category, properties, images, description, price };
+    const data = {
+      name,
+      category,
+      properties,
+      images,
+      description,
+      price,
+      properties: properties.map((p) => ({
+        name: p.name,
+        values: p.values,
+      })),
+    };
     if (_id) {
       await axios.put("/api/products", { ...data, _id });
     } else {
@@ -75,25 +87,34 @@ export default function ProductForm({
     setImages(images);
   }
 
-  function setProp(propName, value) {
+  function addProperty() {
     setProperties((prev) => {
-      const newProps = { ...prev };
-      newProps[propName] = value;
-      return newProps;
+      return [...prev, { name: "", values: "" }];
     });
   }
 
-  const propToFill = [];
-  if (categories.length > 0 && category) {
-    let catInfo = categories.find(({ _id }) => _id === category);
-    propToFill.push(...catInfo.properties);
-    while (catInfo?.parent?._id) {
-      const parentCat = categories.find(
-        ({ _id }) => _id === catInfo?.parent?._id
-      );
-      propToFill.push(...parentCat.properties);
-      catInfo = parentCat;
-    }
+  function handlePropertyNameChange(index, property, newName) {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].name = newName;
+      return properties;
+    });
+  }
+
+  function handlePropertyValuesChange(index, property, newValues) {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].values = newValues;
+      return properties;
+    });
+  }
+
+  function removeProperty(indexToRemove) {
+    setProperties((prev) => {
+      return [...prev].filter((p, pIndex) => {
+        return pIndex !== indexToRemove;
+      });
+    });
   }
 
   return (
@@ -117,24 +138,44 @@ export default function ProductForm({
             </option>
           ))}
       </select>
-      {propToFill.length > 0 &&
-        propToFill.map((p) => (
-          <div key={p.name} className="">
-            <label>{p.name[0].toUpperCase() + p.name.substring(1)}</label>
-            <div>
-              <select
-                value={properties[p.name]}
-                onChange={(e) => setProp(p.name, e.target.value)}
+      <div className="mb-2">
+        <Label>
+          <span>Właściwości</span>
+        </Label>
+        <ButtonPrimary onClick={addProperty} type="button">
+          Dodaj właściowść
+        </ButtonPrimary>
+        {properties.length > 0 &&
+          properties.map((property, index) => (
+            <div key={property._id} className="flex gap-2 mb-2">
+              <Input
+                type="text"
+                className="mt-2"
+                onChange={(e) =>
+                  handlePropertyNameChange(index, property, e.target.value)
+                }
+                value={property.name}
+                placeholder="nazwa właściwości"
+              />
+              <Input
+                type="text"
+                className="mt-2"
+                onChange={(e) =>
+                  handlePropertyValuesChange(index, property, e.target.value)
+                }
+                value={property.values}
+                placeholder="wartości, np. żółty, fioletowy, wartości po ,"
+              />
+              <ButtonDanger
+                onClick={() => removeProperty(index)}
+                className="mt-2"
+                type="button"
               >
-                {p.values.map((v) => (
-                  <option key={v} value={v}>
-                    {v}
-                  </option>
-                ))}
-              </select>
+                Usuń
+              </ButtonDanger>
             </div>
-          </div>
-        ))}
+          ))}
+      </div>
       <Label htmlFor="upload">
         <span>Zdjęcia</span>
       </Label>
