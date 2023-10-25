@@ -41,6 +41,7 @@ export default function OrdersPage() {
                   {order.line_items.map((l) => (
                     <>
                       {l.price_data?.product_data.name} x{l.quantity}
+                      {l.price_data?.product_data.description}
                       <br />
                     </>
                   ))}
