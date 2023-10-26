@@ -10,7 +10,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Head>
-        <title>Sunset - panel administracyjny</title>
+        <title>Sunset Festival - administracja</title>
       </Head>
       <Component {...pageProps} />
     </SessionProvider>
