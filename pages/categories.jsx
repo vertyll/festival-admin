@@ -45,7 +45,7 @@ function CategoriesPage({ swal }) {
   function editCategory(category) {
     setEditedCategory(category);
     setName(category.name);
-    setParentCategory(category.parentCategory?._id);
+    setParentCategory(category.parent?._id);
   }
 
   function deleteCategory(category) {
