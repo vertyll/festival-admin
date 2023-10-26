@@ -32,6 +32,7 @@ export default function ProductForm({
   const [categoriesIsLoading, setCategoriesIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [validationErrors, setValidationErrors] = useState({});
+  const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
 
   const router = useRouter();
   useEffect(() => {
@@ -130,6 +131,12 @@ export default function ProductForm({
     });
   }
 
+  function handleRemoveImage(imageIndex) {
+    setImages((prevImages) =>
+      prevImages.filter((img, index) => index !== imageIndex)
+    );
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <FieldInput
@@ -206,13 +213,27 @@ export default function ProductForm({
           className="flex flex-wrap gap-2"
         >
           {!!images?.length &&
-            images.map((link) => (
-              <div key={link} className="shadow-md rounded-md h-32">
+            images.map((link, index) => (
+              <div
+                key={`${link}_${index}`} // zmiana tutaj, aby klucz był unikalny nawet gdy obrazek zostanie dodany ponownie
+                className="relative shadow-md rounded-md h-32 bg-neutral-100"
+                onMouseEnter={() => setHoveredImageIndex(index)}
+                onMouseLeave={() => setHoveredImageIndex(null)}
+              >
                 <img
                   src={link}
                   alt="zdjęcie produktu"
-                  className="rounded-md"
+                  className="rounded-md object-cover h-full w-full"
                 ></img>
+                {hoveredImageIndex === index && (
+                  <button
+                    onClick={() => handleRemoveImage(index)}
+                    className="absolute inset-0 w-full h-full flex items-center justify-center rounded-md bg-black bg-opacity-40 text-white uppercase transition duration-300"
+                    style={{ transition: "all 0.3s ease" }}
+                  >
+                    <b>Usuń</b>
+                  </button>
+                )}
               </div>
             ))}
         </ReactSortable>
