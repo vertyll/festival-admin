@@ -17,9 +17,10 @@ export default async function handle(req, res) {
 
   if (method === "POST") {
     const { name, category, properties, images, description, price } = req.body;
+    const isValidCategory = category && category.trim() !== "";
     const newProduct = await Product.create({
       name,
-      category,
+      category: isValidCategory ? category : null,
       properties,
       images,
       description,
