@@ -32,9 +32,17 @@ export default async function handle(req, res) {
   if (method === "PUT") {
     const { name, category, properties, images, description, price, _id } =
       req.body;
+    const isValidCategory = category && category.trim() !== "";
     await Product.updateOne(
       { _id },
-      { name, category, properties, images, description, price }
+      {
+        name,
+        category: isValidCategory ? category : null,
+        properties,
+        images,
+        description,
+        price,
+      }
     );
     res.json(true);
   }

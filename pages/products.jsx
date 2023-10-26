@@ -10,6 +10,7 @@ import Spinner from "@/components/atoms/Spinner";
 function ProductsPage({ swal }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -50,6 +51,7 @@ function ProductsPage({ swal }) {
 
   return (
     <Layout>
+      <h1>Produkty</h1>
       <div className="my-3">
         <Link className="btn-primary" href={"/products/new"}>
           Dodaj nowy produkt

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Spinner from "@/components/atoms/Spinner";
 import { ReactSortable } from "react-sortablejs";
 import ButtonPrimary from "../atoms/ButtonPrimary";
@@ -10,6 +10,7 @@ import Input from "../atoms/Input";
 import FieldInput from "../molecules/FieldInput";
 import FieldTextarea from "../molecules/FieldTextarea";
 import ButtonDanger from "../atoms/ButtonDanger";
+import { validateFormValues } from "@/lib/validation/validation";
 
 export default function ProductForm({
   _id,
@@ -30,6 +31,7 @@ export default function ProductForm({
   const [isUploading, setIsUploading] = useState(false);
   const [categoriesIsLoading, setCategoriesIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [validationErrors, setValidationErrors] = useState({});
 
   const router = useRouter();
   useEffect(() => {
@@ -42,6 +44,14 @@ export default function ProductForm({
 
   async function saveProduct(e) {
     e.preventDefault();
+
+    const errors = validateFormValues({ name, price }, ["name", "price"]);
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     const data = {
       name,
       category,
@@ -129,6 +139,9 @@ export default function ProductForm({
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
+      {validationErrors["name"] && (
+        <div className="error-message">{validationErrors["name"]}</div>
+      )}
       <Label>
         <span>Kategoria</span>
       </Label>
@@ -154,7 +167,7 @@ export default function ProductForm({
         </ButtonPrimary>
         {properties.length > 0 &&
           properties.map((property, index) => (
-            <div key={property._id} className="flex gap-2 mb-2">
+            <div key={property._id} className="gap-2 mb-2">
               <Input
                 type="text"
                 className="mt-2"
@@ -194,11 +207,11 @@ export default function ProductForm({
         >
           {!!images?.length &&
             images.map((link) => (
-              <div key={link} className="h-32">
+              <div key={link} className="shadow-md rounded-md h-32">
                 <img
                   src={link}
                   alt="zdjęcie produktu"
-                  className="rounded-lg"
+                  className="rounded-md"
                 ></img>
               </div>
             ))}
@@ -208,7 +221,7 @@ export default function ProductForm({
             <Spinner />
           </div>
         )}
-        <Label className="w-32 h-32 cursor-pointer text-center flex flex-col items-center justify-center rounded-lg bg-neutral-300">
+        <Label className="shadow-md w-32 h-32 cursor-pointer text-center flex flex-col items-center justify-center rounded-md bg-neutral-100 border-2 border-neutral-300 hover:bg-neutral-300">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -244,6 +257,9 @@ export default function ProductForm({
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       />
+      {validationErrors["price"] && (
+        <div className="error-message">{validationErrors["price"]}</div>
+      )}
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
         <ButtonDanger onClick={() => cancel()} type="button">

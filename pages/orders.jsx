@@ -7,6 +7,7 @@ import Spinner from "@/components/atoms/Spinner";
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     setIsLoading(true);
     axios.get("/api/orders").then((response) => {
@@ -16,6 +17,7 @@ export default function OrdersPage() {
   }, []);
   return (
     <Layout>
+      <h1>Zamówienia</h1>
       <table className="primary-table mt-5">
         <thead>
           <tr>

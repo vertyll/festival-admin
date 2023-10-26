@@ -4,10 +4,12 @@ import { withSwal } from "react-sweetalert2";
 import Layout from "@/components/templates/Layout";
 import Spinner from "@/components/atoms/Spinner";
 import FieldInput from "@/components/molecules/FieldInput";
+import { validateFormValues } from "@/lib/validation/validation";
 
 function SettingsPage({ swal }) {
   const [isLoading, setIsLoading] = useState(false);
   const [shippingPrice, setShippingPrice] = useState("");
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
     setIsLoading(true);
@@ -23,6 +25,13 @@ function SettingsPage({ swal }) {
   }
 
   async function saveSettings() {
+    const errors = validateFormValues({ shippingPrice }, ["shippingPrice"]);
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     setIsLoading(true);
     await axios.put("/api/settings", {
       name: "shippingPrice",
@@ -48,6 +57,11 @@ function SettingsPage({ swal }) {
             value={shippingPrice}
             onChange={(e) => setShippingPrice(e.target.value)}
           />
+          {validationErrors["shippingPrice"] && (
+            <div className="error-message">
+              {validationErrors["shippingPrice"]}
+            </div>
+          )}
           <div>
             <button onClick={saveSettings} className="btn-primary">
               Zapisz

@@ -5,11 +5,11 @@
 input,
 textarea,
 select {
-  @apply mt-1 block w-full px-3 py-2 h-max bg-white border border-slate-300
-    rounded-md text-sm shadow-sm placeholder-slate-400
+  @apply mt-1 block w-full px-3 py-2 h-max bg-white border border-neutral-300
+    rounded-md text-sm shadow-sm placeholder-neutral-400
     focus:outline-none focus:border-neutral-900 focus:ring-1
-    focus:ring-neutral-900 disabled:bg-slate-50 disabled:text-slate-500
-    disabled:border-slate-200 disabled:shadow-none
+    focus:ring-neutral-900 disabled:bg-neutral-50 disabled:text-neutral-500
+    disabled:border-neutral-200 disabled:shadow-none
     invalid:border-pink-500 invalid:text-pink-600
     focus:invalid:border-pink-500 focus:invalid:ring-pink-500;
 }
@@ -27,15 +27,19 @@ table.primary-table {
 }
 
 table.primary-table thead tr th {
-  @apply text-sm border-b border-slate-300;
+  @apply text-sm border-b border-neutral-300;
 }
 
 table.primary-table tr td {
-  @apply p-1 text-sm text-center border-b border-slate-300;
+  @apply p-1 text-sm text-center border-b border-neutral-300;
+}
+
+table.primary-table tr {
+  @apply hover:bg-gray-200 transition duration-150;
 }
 
 table.primary-table a {
-  @apply bg-neutral-900 text-white px-2 py-1 rounded-lg inline-flex gap-1 m-1;
+  @apply border border-indigo-400 bg-indigo-300 text-indigo-600 px-2 py-1 rounded-md inline-flex gap-1 m-1 hover:brightness-90 transition duration-300 shadow-md;
 }
 
 img {
@@ -43,23 +47,23 @@ img {
 }
 
 button[type="button"].btn-primary {
-  @apply bg-neutral-900 text-white px-5 py-1 rounded-lg my-1.5;
+  @apply bg-indigo-300 text-indigo-600 px-5 py-1 rounded-md my-1.5 border border-indigo-400 hover:brightness-90 transition duration-300 shadow-md;
 }
 
 .btn-primary {
-  @apply bg-neutral-900 text-white px-5 py-1 rounded-lg my-1.5;
+  @apply bg-indigo-300 text-indigo-600 px-5 py-1 rounded-md my-1.5 border border-indigo-400 hover:brightness-90 transition duration-300 shadow-md;
 }
 
 button[type="button"].btn-danger {
-  @apply bg-red-600 text-white px-5 py-1 rounded-lg my-1.5;
+  @apply bg-red-300 text-red-600 px-5 py-1 rounded-md my-1.5 border border-red-400 hover:brightness-90 transition duration-300 shadow-md;
 }
 
 .btn-danger {
-  @apply bg-red-600 text-white px-5 py-1 rounded-lg my-1.5;
+  @apply bg-red-300 text-red-600 px-5 py-1 rounded-md my-1.5 border border-red-400 hover:brightness-90 transition duration-300 shadow-md;
 }
 
 .btn-login {
-  @apply bg-white p-5 rounded-3xl px-4;
+  @apply bg-white p-5 rounded-md px-4 hover:brightness-75 transition duration-300 shadow-md;
 }
 
 @keyframes spin {
@@ -80,22 +84,25 @@ button[type="button"].btn-danger {
   animation: spin 1s linear infinite; /* Animacja kręcenia */
 }
 
-
-.title-title{
+.title-title {
   @apply block text-lg font-medium text-neutral-800;
 }
-.tiles-grid{
-  @apply grid grid-cols-1 sm:grid-cols-3 gap-4;
+.tiles-grid {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-5;
 }
-.tile{
-  @apply bg-white shadow-md p-2 text-indigo-600 text-center;
+.tile {
+  @apply bg-white shadow-md p-2 text-indigo-600 text-center border-2 border-neutral-100 rounded-md transition duration-300 hover:brightness-90;
 }
-.tile-header{
-  @apply uppercase text-gray-500 font-bold text-xs text-center m-0;
+.tile-header {
+  @apply uppercase text-neutral-500 font-bold text-xs text-center m-0;
 }
-.tile-number{
+.tile-number {
   @apply text-3xl text-center mt-1 font-bold;
 }
-.tile-desc{
-  @apply text-xs text-gray-400;
+.tile-desc {
+  @apply text-xs text-neutral-400;
+}
+
+.error-message {
+  @apply text-red-600 bg-red-300 mt-2 mb-2 w-max py-0.5 px-3 rounded-md;
 }

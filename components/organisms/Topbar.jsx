@@ -26,13 +26,13 @@ export default function Topbar({ show }) {
         onMouseEnter={() => setShowMenu(true)}
         onMouseLeave={() => setShowMenu(false)}
       >
-        <div className="flex items-center bg-gray-300 cursor-pointer text-black gap-2 p-2 rounded-lg">
+        <div className="flex items-center text-white cursor-pointer gap-2 p-2 rounded-md uppercase text-sm">
           <img
             src={session?.user?.image}
             alt="zdjęcie użytkownika"
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full border-2 "
           />
-          <span className="py-1 px-2">{session?.user?.name}</span>
+          <span className="py-1 px-2"><b>{session?.user?.name}</b></span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -51,7 +51,7 @@ export default function Topbar({ show }) {
         {showMenu && (
           <div className="flex cursor-pointer absolute right-0 py-2 w-48 bg-white rounded-md shadow-xl z-10">
             <a
-              className="flex gap-2 items-center p-2 w-full text-sm capitalize rounded-lg text-gray-700 hover:bg-indigo-300 hover:text-white"
+              className="flex gap-2 items-center p-2 w-full text-sm capitalize rounded-md text-gray-700 hover:bg-indigo-300 hover:text-white transition duration-300"
               onClick={logout}
             >
               <svg

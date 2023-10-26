@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import Logo from "../atoms/Logo";
 
 export default function Sidebar({ show }) {
-  const inactiveLink = "flex gap-2 p-2 rounded-lg hover:bg-indigo-700";
-  const activeLink = inactiveLink + " bg-indigo-700 text-white rounded-lg p-2";
+  const inactiveLink = "flex gap-2 p-2 rounded-md hover:bg-indigo-700 transition duration-300";
+  const activeLink = inactiveLink + " bg-indigo-700 text-white rounded-md p-2";
   const router = useRouter();
   const { pathname } = router;
 

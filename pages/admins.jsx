@@ -8,12 +8,15 @@ import { withSwal } from "react-sweetalert2";
 import Label from "@/components/atoms/Label";
 import { normalDate } from "@/lib/date";
 import Spinner from "@/components/atoms/Spinner";
+import { validateFormValues } from "@/lib/validation/validation";
 
 function AdminsPage({ swal }) {
   const [email, setEmail] = useState("");
   const [admins, setAdmins] = useState([]);
   const [editedAdmin, setEditedAdmin] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+
   useEffect(() => {
     fetchAdmins();
   }, []);
@@ -28,6 +31,14 @@ function AdminsPage({ swal }) {
 
   async function saveAdmin(e) {
     e.preventDefault();
+
+    const errors = validateFormValues({ email }, ["email"]);
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     const data = { email };
     if (editedAdmin) {
       data._id = editedAdmin._id;
@@ -82,6 +93,7 @@ function AdminsPage({ swal }) {
 
   return (
     <Layout>
+      <h1>Administratorzy</h1>
       <form onSubmit={saveAdmin}>
         <Label>
           {editedAdmin
@@ -95,6 +107,9 @@ function AdminsPage({ swal }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        {validationErrors["email"] && (
+          <div className="error-message">{validationErrors["email"]}</div>
+        )}
         <div className="flex gap-1">
           {editedAdmin && (
             <ButtonDanger

@@ -7,6 +7,7 @@ import { withSwal } from "react-sweetalert2";
 import Label from "@/components/atoms/Label";
 import FieldInput from "@/components/molecules/FieldInput";
 import Spinner from "@/components/atoms/Spinner";
+import { validateFormValues } from "@/lib/validation/validation";
 
 function CategoriesPage({ swal }) {
   const [name, setName] = useState("");
@@ -14,6 +15,8 @@ function CategoriesPage({ swal }) {
   const [parentCategory, setParentCategory] = useState("");
   const [editedCategory, setEditedCategory] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -28,6 +31,17 @@ function CategoriesPage({ swal }) {
 
   async function saveCategory(e) {
     e.preventDefault();
+
+    // W swoim komponencie Kategorii
+    const errors = validateFormValues({ name }, ["name"]); // waliduje tylko nazwę
+
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      console.log("Błędy walidacji:", errors);
+      return;
+    }
+
     const data = { name, parentCategory };
     if (editedCategory) {
       data._id = editedCategory._id;
@@ -76,6 +90,7 @@ function CategoriesPage({ swal }) {
 
   return (
     <Layout>
+      <h1>Kategorie</h1>
       <form onSubmit={saveCategory}>
         <Label>
           {editedCategory
@@ -90,6 +105,9 @@ function CategoriesPage({ swal }) {
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
+          {validationErrors["name"] && (
+            <div className="error-message">{validationErrors["name"]}</div>
+          )}
           <Label htmlFor="parentCategory">
             <span>Kategoria nadrzędna</span>
           </Label>

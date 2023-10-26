@@ -48,6 +48,7 @@ export default function HomeStats() {
 
   return (
     <Layout>
+      <h1>Panel</h1>
       <div>
         <h2 className="title-title">Zamówienia</h2>
         <div className="tiles-grid">
