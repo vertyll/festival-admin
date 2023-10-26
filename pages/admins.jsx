@@ -7,18 +7,22 @@ import ButtonDanger from "@/components/atoms/ButtonDanger";
 import { withSwal } from "react-sweetalert2";
 import Label from "@/components/atoms/Label";
 import { normalDate } from "@/lib/date";
+import Spinner from "@/components/atoms/Spinner";
 
 function AdminsPage({ swal }) {
   const [email, setEmail] = useState("");
   const [admins, setAdmins] = useState([]);
   const [editedAdmin, setEditedAdmin] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     fetchAdmins();
   }, []);
 
   function fetchAdmins() {
+    setIsLoading(true);
     axios.get("/api/admins").then((response) => {
       setAdmins(response.data);
+      setIsLoading(false);
     });
   }
 
@@ -111,17 +115,22 @@ function AdminsPage({ swal }) {
             <tr>
               <th>Adres email</th>
               <th>Data utworzenia</th>
-              <th>Data modyfikacji</th>
               <th>Akcje</th>
             </tr>
           </thead>
           <tbody>
+            {isLoading && (
+              <tr>
+                <td colSpan={3}>
+                  <Spinner />
+                </td>
+              </tr>
+            )}
             {admins.length > 0 &&
               admins.map((admin) => (
                 <tr key={admin._id}>
                   <td>{admin.email}</td>
                   <td>{admin.createdAt && normalDate(admin.createdAt)}</td>
-                  <td>{admin.updatedAt && normalDate(admin.updatedAt)}</td>
                   <td>
                     <ButtonPrimary
                       onClick={() => editAdmin(admin)}

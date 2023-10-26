@@ -28,12 +28,15 @@ export default function ProductForm({
   const [price, setPrice] = useState(currentPrice || "");
   const [goToProducts, setGoToProducts] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [categoriesIsLoading, setCategoriesIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
 
   const router = useRouter();
   useEffect(() => {
+    setCategoriesIsLoading(true);
     axios.get("/api/categories").then((result) => {
       setCategories(result.data);
+      setCategoriesIsLoading(false);
     });
   }, []);
 
@@ -129,15 +132,19 @@ export default function ProductForm({
       <Label>
         <span>Kategoria</span>
       </Label>
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        <option value="">Bez kategori</option>
-        {categories.length > 0 &&
-          categories.map((category) => (
-            <option key={category._id} value={category._id}>
-              {category.name}
-            </option>
-          ))}
-      </select>
+      {categoriesIsLoading ? (
+        <Spinner />
+      ) : (
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="">Bez kategori</option>
+          {categories.length > 0 &&
+            categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+        </select>
+      )}
       <div className="mb-2">
         <Label>
           <span>Właściwości</span>

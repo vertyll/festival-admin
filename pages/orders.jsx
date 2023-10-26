@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "@/components/templates/Layout";
 import { normalDate } from "@/lib/date";
+import Spinner from "@/components/atoms/Spinner";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
+    setIsLoading(true);
     axios.get("/api/orders").then((response) => {
       setOrders(response.data);
+      setIsLoading(false);
     });
   }, []);
   return (
@@ -16,12 +20,19 @@ export default function OrdersPage() {
         <thead>
           <tr>
             <th>Data</th>
-            <th>Status (opłacono)</th>
+            <th>Opłacono</th>
             <th>Dane</th>
             <th>Produkty</th>
           </tr>
         </thead>
         <tbody>
+          {isLoading && (
+            <tr>
+              <td colSpan={4}>
+                <Spinner />
+              </td>
+            </tr>
+          )}
           {orders.length > 0 &&
             orders.map((order) => (
               <tr key={order._id}>
@@ -40,9 +51,11 @@ export default function OrdersPage() {
                 <td>
                   {order.line_items.map((l) => (
                     <>
-                      <b>Produkt:</b> {l.price_data?.product_data.name} x{l.quantity}
+                      <b>Produkt:</b> {l.price_data?.product_data.name} x
+                      {l.quantity}
                       <br />
-                      <b>Opis produktu:</b> {l.price_data?.product_data.description}
+                      <b>Opis produktu:</b>{" "}
+                      {l.price_data?.product_data.description}
                       <br />
                     </>
                   ))}

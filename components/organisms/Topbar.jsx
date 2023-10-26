@@ -3,7 +3,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function Topbar() {
+export default function Topbar({ show }) {
   const { data: session } = useSession();
   const [showMenu, setShowMenu] = useState(false); // Stan lokalny dla kontroli wyświetlania menu
   const router = useRouter();
@@ -15,11 +15,12 @@ export default function Topbar() {
 
   if (!session) return;
   return (
-    <div className="text-black flex justify-between p-2 bg-indigo-300">
-      <div className="flex items-center bg-gray-300 text-black gap-2 p-2 rounded-lg">
-        <h2>Panel adminitracyjny</h2>
-      </div>
-
+    <div
+      className={
+        (show ? "left-0 hidden" : "-left-full") +
+        " text-black flex justify-end p-2 bg-indigo-300"
+      }
+    >
       <div
         className="relative"
         onMouseEnter={() => setShowMenu(true)}

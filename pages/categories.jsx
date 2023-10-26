@@ -6,19 +6,23 @@ import ButtonDanger from "@/components/atoms/ButtonDanger";
 import { withSwal } from "react-sweetalert2";
 import Label from "@/components/atoms/Label";
 import FieldInput from "@/components/molecules/FieldInput";
+import Spinner from "@/components/atoms/Spinner";
 
 function CategoriesPage({ swal }) {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [parentCategory, setParentCategory] = useState("");
   const [editedCategory, setEditedCategory] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     fetchCategories();
   }, []);
 
   function fetchCategories() {
+    setIsLoading(true);
     axios.get("/api/categories").then((response) => {
       setCategories(response.data);
+      setIsLoading(false);
     });
   }
 
@@ -128,6 +132,13 @@ function CategoriesPage({ swal }) {
             </tr>
           </thead>
           <tbody>
+            {isLoading && (
+              <tr>
+                <td colSpan={3}>
+                  <Spinner />
+                </td>
+              </tr>
+            )}
             {categories.length > 0 &&
               categories.map((category) => (
                 <tr key={category._id}>
