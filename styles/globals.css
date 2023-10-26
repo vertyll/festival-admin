@@ -84,20 +84,6 @@ button[type="button"].btn-danger {
   animation: spin 1s linear infinite; /* Animacja kręcenia */
 }
 
-.delete-image-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.5); /* Ciemne tło z przezroczystością */
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  visibility: hidden; /* Początkowo ukryty */
-  border-radius: 5px;
-}
-
 .image-container:hover .delete-image-button {
   visibility: visible; /* Pojawia się, gdy użytkownik najedzie na zdjęcie */
 }
