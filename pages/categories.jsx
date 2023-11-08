@@ -32,8 +32,7 @@ function CategoriesPage({ swal }) {
   async function saveCategory(e) {
     e.preventDefault();
 
-    // W swoim komponencie Kategorii
-    const errors = validateFormValues({ name }, ["name"]); // waliduje tylko nazwę
+    const errors = validateFormValues({ name }, ["name"]);
 
     setValidationErrors(errors);
 

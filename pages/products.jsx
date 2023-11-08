@@ -10,7 +10,7 @@ import Spinner from "@/components/atoms/Spinner";
 function ProductsPage({ swal }) {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -89,4 +89,4 @@ function ProductsPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }, ref) => <ProductsPage swal={swal} />);
+export default withSwal(({ swal }) => <ProductsPage swal={swal} />);
