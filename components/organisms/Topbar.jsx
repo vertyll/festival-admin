@@ -18,7 +18,7 @@ export default function Topbar({ show }) {
     <div
       className={
         (show ? "left-0" : "-left-full") +
-        " text-black flex justify-end p-2 bg-indigo-300"
+        " text-black md:flex justify-end p-2 bg-indigo-300 hidden"
       }
     >
       <div
@@ -29,7 +29,7 @@ export default function Topbar({ show }) {
         <div className="flex items-center text-white cursor-pointer gap-2 p-2 rounded-md uppercase text-sm">
           <img
             src={session?.user?.image}
-            alt="zdjęcie użytkownika"
+            alt=""
             className="w-10 h-10 rounded-full border-2 "
           />
           <span className="py-1 px-2">

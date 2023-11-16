@@ -48,7 +48,7 @@ export default function Layout({ children }) {
       <div className="flex">
         <Sidebar show={showNav} />
         <div className="bg-white flex-grow">
-          <Topbar show={showNav} />
+          <Topbar />
           <div className="bg-white p-2 flex-grow min-h-screen">{children}</div>
         </div>
       </div>
