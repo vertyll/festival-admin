@@ -23,7 +23,7 @@ export default function Sidebar({ show }) {
       }
     >
       <div>
-        <div className="mb-10 mr-20 p-2">
+        <div className="mb-10 p-2">
           <Logo />
         </div>
         <nav className="flex flex-col gap-2">
