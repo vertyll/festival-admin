@@ -17,7 +17,7 @@ export default function Topbar({ show }) {
   return (
     <div
       className={
-        (show ? "left-0 hidden" : "-left-full") +
+        (show ? "left-0" : "-left-full") +
         " text-black flex justify-end p-2 bg-indigo-300"
       }
     >
@@ -32,7 +32,9 @@ export default function Topbar({ show }) {
             alt="zdjęcie użytkownika"
             className="w-10 h-10 rounded-full border-2 "
           />
-          <span className="py-1 px-2"><b>{session?.user?.name}</b></span>
+          <span className="py-1 px-2">
+            <b>{session?.user?.name}</b>
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
