@@ -15,7 +15,7 @@ export default function Layout({ children }) {
       <div className="bg-indigo-600 w-screen h-screen flex items-center">
         <div className="text-center w-full">
           <ButtonLogin onClick={() => signIn("google")}>
-            Zaloguj się za pomocą <b>Google</b>
+            Logowanie <b>Google</b>
           </ButtonLogin>
         </div>
       </div>
