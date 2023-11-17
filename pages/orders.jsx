@@ -21,7 +21,7 @@ export default function OrdersPage() {
       <div className="overflow-x-auto">
         <table className="primary-table min-w-full mt-5">
           <thead>
-            <tr className="text-left">
+            <tr className="text-center">
               <th className="px-4 py-2">Data</th>
               <th className="px-4 py-2">Opłacono</th>
               <th className="px-4 py-2">Dane</th>
