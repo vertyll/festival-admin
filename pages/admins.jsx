@@ -6,9 +6,9 @@ import axios from "axios";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
 import { withSwal } from "react-sweetalert2";
 import Label from "@/components/atoms/Label";
-import { normalDate } from "@/lib/date";
 import Spinner from "@/components/atoms/Spinner";
 import { validateFormValues } from "@/lib/validation/validation";
+import { normalDate } from "@/utils/date";
 
 function AdminsPage({ swal }) {
   const [email, setEmail] = useState("");

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "@/components/templates/Layout";
-import { normalDate } from "@/lib/date";
 import Spinner from "@/components/atoms/Spinner";
+import { normalDate } from "@/utils/date";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
