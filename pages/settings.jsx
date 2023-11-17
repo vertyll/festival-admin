@@ -4,7 +4,7 @@ import { withSwal } from "react-sweetalert2";
 import Layout from "@/components/templates/Layout";
 import Spinner from "@/components/atoms/Spinner";
 import FieldInput from "@/components/molecules/FieldInput";
-import { validateFormValues } from "@/lib/validation/validation";
+import { validateFormValues } from "@/utils/validation/validation";
 
 function SettingsPage({ swal }) {
   const [isLoading, setIsLoading] = useState(false);

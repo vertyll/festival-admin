@@ -10,7 +10,7 @@ import Input from "../atoms/Input";
 import FieldInput from "../molecules/FieldInput";
 import FieldTextarea from "../molecules/FieldTextarea";
 import ButtonDanger from "../atoms/ButtonDanger";
-import { validateFormValues } from "@/lib/validation/validation";
+import { validateFormValues } from "@/utils/validation/validation";
 
 export default function ProductForm({
   _id,
