@@ -16,7 +16,7 @@ export const validatePrice = (price) => {
   }
 
   if (price <= 0) {
-    return "Cena musi być dodatnią liczbą.";
+    return "Cena musi być liczbą dodatnią";
   }
 
   return null;
