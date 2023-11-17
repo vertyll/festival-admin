@@ -122,14 +122,13 @@ button[type="button"].btn-danger {
   }
 
   .primary-table thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
+    text-align: center;
   }
 
   .primary-table tr {
-    border: 1px solid rgb(66, 0, 190);
+    border: 1px solid rgb(86, 16, 214);
     margin-bottom: 10px;
+    border-radius: 0.375rem;
   }
 
   .primary-table td {
