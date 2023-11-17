@@ -132,7 +132,6 @@ button[type="button"].btn-danger {
   }
 
   .primary-table td {
-    position: relative;
     padding-left: 50%;
     white-space: normal;
     text-align: left;

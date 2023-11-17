@@ -26,6 +26,8 @@ export default function Sidebar({ show }) {
         <div className="mb-10 p-2">
           <Logo />
         </div>
+        <div className="w-64"></div>{" "}
+        {/*sztuczyny div, który będzie rozciągał Sidebar na większą szerokość*/}
         <nav className="flex flex-col gap-2">
           <Link
             href={"/"}
