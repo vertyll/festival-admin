@@ -1,9 +1,17 @@
+const MAX_NAME_LENGTH = 50;
+const NAME_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export const validateName = (name) => {
-  if (!name.trim()) {
+  const trimmedName = name.trim();
+
+  if (!trimmedName) {
     return "Proszę wpisać nazwę.";
-  } else if (name.trim().length > 50) {
+  }
+  if (trimmedName.length > MAX_NAME_LENGTH) {
     return "Nazwa nie może przekraczać 50 znaków.";
-  } else if (/[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/.test(name)) {
+  }
+  if (NAME_PATTERN.test(trimmedName)) {
     return "Nazwa może zawierać tylko litery, cyfry, spacje i myślniki.";
   }
 
@@ -11,11 +19,7 @@ export const validateName = (name) => {
 };
 
 export const validatePrice = (price) => {
-  if (price == null || isNaN(price)) {
-    return "Proszę wpisać cenę produktu.";
-  }
-
-  if (price <= 0) {
+  if (price == null || isNaN(price) || price <= 0) {
     return "Cena musi być liczbą dodatnią";
   }
 
@@ -23,13 +27,12 @@ export const validatePrice = (price) => {
 };
 
 export const validateEmail = (email) => {
-  if (!email.trim()) {
+  const trimmedEmail = email.trim();
+
+  if (!trimmedEmail) {
     return "Proszę wpisać adres email.";
   }
-
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!emailPattern.test(email)) {
+  if (!EMAIL_PATTERN.test(trimmedEmail)) {
     return "Nieprawidłowy format adresu email.";
   }
 
