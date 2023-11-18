@@ -17,26 +17,27 @@ export default async function handle(req, res) {
 
   if (method === "POST") {
     const { name, images, description, scene, concertDate } = req.body;
+    const isValidScene = scene && scene.trim() !== "";
     const newArtist = await Artist.create({
       name,
       images,
       description,
-      scene,
+      scene: isValidScene ? scene : null,
       concertDate,
     });
     res.json(newArtist);
   }
 
   if (method === "PUT") {
-    const { name, images, description, scene, concertDate, _id } =
-      req.body;
+    const { name, images, description, scene, concertDate, _id } = req.body;
+    const isValidScene = scene && scene.trim() !== "";
     await Artist.updateOne(
       { _id },
       {
         name,
         images,
         description,
-        scene,
+        scene: isValidScene ? scene : null,
         concertDate,
       }
     );

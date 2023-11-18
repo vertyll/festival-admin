@@ -24,13 +24,22 @@ export default function ArtistForm({
   const [images, setImages] = useState(currentImages || []);
   const [description, setDescription] = useState(currentDescription || "");
   const [scene, setScene] = useState(currentScene || "");
+  const [scenes, setScenes] = useState([]);
   const [concertDate, setConcertDate] = useState(currentConcertDate || "");
   const [goToArtists, setGoToArtists] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [scenesIsLoading, setScenesIsLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
 
   const router = useRouter();
+  useEffect(() => {
+    setScenesIsLoading(true);
+    axios.get("/api/scenes").then((result) => {
+      setScenes(result.data);
+      setScenesIsLoading(false);
+    });
+  }, []);
 
   async function saveArtist(e) {
     e.preventDefault();
@@ -122,7 +131,7 @@ export default function ArtistForm({
               >
                 <img
                   src={link}
-                  alt="zdjęcie produktu"
+                  alt="zdjęcie artysty"
                   className="rounded-md object-cover h-full w-full"
                 ></img>
                 {hoveredImageIndex === index && (
@@ -172,12 +181,22 @@ export default function ArtistForm({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <FieldInput
-        labelText={<span>Scena</span>}
-        placeholder="scena"
-        value={scene}
-        onChange={(e) => setScene(e.target.value)}
-      />
+      <Label>
+        <span>Scena</span>
+      </Label>
+      {scenesIsLoading ? (
+        <Spinner />
+      ) : (
+        <select value={scene} onChange={(e) => setScene(e.target.value)}>
+          <option value="">Bez sceny</option>
+          {scenes.length > 0 &&
+            scenes.map((scene) => (
+              <option key={scene._id} value={scene._id}>
+                {scene.name}
+              </option>
+            ))}
+        </select>
+      )}
       <FieldInput
         labelText={<span>Data koncertu</span>}
         placeholder="scena"
