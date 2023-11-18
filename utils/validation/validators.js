@@ -1,6 +1,8 @@
 const MAX_NAME_LENGTH = 50;
 const NAME_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MAX_PROPERTIES_LENGTH = 50;
+const PROPERTIES_PATTERN = /[^[a-zA-Z0-9ąćęłńóśżź,]+$]/;
 
 export const validateName = (name) => {
   const trimmedName = name.trim();
@@ -35,6 +37,11 @@ export const validateEmail = (email) => {
   if (!EMAIL_PATTERN.test(trimmedEmail)) {
     return "Nieprawidłowy format adresu email.";
   }
+
+  return null;
+};
+
+export const validateProperties = (properties) => {
 
   return null;
 };

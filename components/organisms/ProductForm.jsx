@@ -33,6 +33,8 @@ export default function ProductForm({
   const [categories, setCategories] = useState([]);
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
+  const [attributes, setAttributes] = useState([]);
+  const [attributesIsLoading, setAttributesIsLoading] = useState(false);
 
   const router = useRouter();
   useEffect(() => {
@@ -42,11 +44,25 @@ export default function ProductForm({
       setCategoriesIsLoading(false);
     });
   }, []);
+  useEffect(() => {
+    setAttributesIsLoading(true);
+    axios.get("/api/attributes").then((result) => {
+      setAttributes(result.data);
+      setAttributesIsLoading(false);
+    });
+  }, []);
 
   async function saveProduct(e) {
     e.preventDefault();
 
-    const errors = validateFormValues({ name, price }, ["name", "price"]);
+    // Wyodrębnianie wartości z properties do oddzielnej tablicy
+    const propertiesValues = properties.map((p) => p.values);
+
+    const errors = validateFormValues(
+      { name, price, properties: propertiesValues },
+      ["name", "price", "properties"]
+    );
+
     setValidationErrors(errors);
 
     if (Object.keys(errors).length > 0) {
@@ -61,6 +77,7 @@ export default function ProductForm({
       description,
       price,
       properties: properties.map((p) => ({
+        attributeId: p.attributeId, // Przekazuje ID atrybutu
         name: p.name,
         values: p.values,
       })),
@@ -102,17 +119,31 @@ export default function ProductForm({
   }
 
   function addProperty() {
-    setProperties((prev) => {
-      return [...prev, { name: "", values: "" }];
-    });
+    const defaultAttribute = attributes[0] || { _id: "", name: "" };
+    setProperties((prev) => [
+      ...prev,
+      {
+        attributeId: defaultAttribute._id,
+        name: defaultAttribute.name,
+        values: "",
+      },
+    ]);
   }
 
-  function handlePropertyNameChange(index, property, newName) {
-    setProperties((prev) => {
-      const properties = [...prev];
-      properties[index].name = newName;
-      return properties;
-    });
+  function handlePropertyChange(index, selectedAttributeId) {
+    const selectedAttribute =
+      attributes.find((a) => a._id === selectedAttributeId) || {};
+    setProperties((prev) =>
+      prev.map((property, idx) =>
+        idx === index
+          ? {
+              ...property,
+              attributeId: selectedAttribute._id,
+              name: selectedAttribute.name,
+            }
+          : property
+      )
+    );
   }
 
   function handlePropertyValuesChange(index, property, newValues) {
@@ -174,16 +205,21 @@ export default function ProductForm({
         </ButtonPrimary>
         {properties.length > 0 &&
           properties.map((property, index) => (
-            <div key={property._id} className="gap-2 mb-2">
-              <Input
-                type="text"
-                className="mt-2"
-                onChange={(e) =>
-                  handlePropertyNameChange(index, property, e.target.value)
-                }
-                value={property.name}
-                placeholder="nazwa właściwości"
-              />
+            <div key={index} className="gap-2 mb-2">
+              {categoriesIsLoading ? (
+                <Spinner />
+              ) : (
+                <select
+                  value={property.attributeId}
+                  onChange={(e) => handlePropertyChange(index, e.target.value)}
+                >
+                  {attributes.map((attribute) => (
+                    <option key={attribute._id} value={attribute._id}>
+                      {attribute.name}
+                    </option>
+                  ))}
+                </select>
+              )}
               <Input
                 type="text"
                 className="mt-2"
@@ -193,6 +229,11 @@ export default function ProductForm({
                 value={property.values}
                 placeholder="wartości, np. żółty, fioletowy, wartości po ,"
               />
+              {validationErrors["properties"] && (
+                <div className="error-message">
+                  {validationErrors["properties"]}
+                </div>
+              )}
               <ButtonDanger
                 onClick={() => removeProperty(index)}
                 className="mt-2"
