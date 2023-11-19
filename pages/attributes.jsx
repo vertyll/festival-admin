@@ -11,8 +11,12 @@ import { validateFormValues } from "@/utils/validation/validation";
 
 function AttributesPage({ swal }) {
   const [name, setName] = useState("");
+  const [attributeValue, setAttributeValue] = useState("");
+  const [attributeValues, setAttributeValues] = useState([]);
   const [attributes, setAttributes] = useState([]);
   const [editedAttribute, setEditedAttribute] = useState(null);
+  const [editingAttributeValueIndex, setEditingAttributeValueIndex] =
+    useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -32,30 +36,37 @@ function AttributesPage({ swal }) {
     e.preventDefault();
 
     const errors = validateFormValues({ name }, ["name"]);
-
     setValidationErrors(errors);
 
     if (Object.keys(errors).length > 0) {
-      console.log("Błędy walidacji:", errors);
       return;
     }
 
-    const data = { name };
+    const data = { name, values: attributeValues };
+
     if (editedAttribute) {
       data._id = editedAttribute._id;
       await axios.put("/api/attributes", data);
-      setEditedAttribute(null);
-      fetchAttributes();
     } else {
       await axios.post("/api/attributes", data);
     }
-    setName("");
+    resetForm();
     fetchAttributes();
   }
 
+  function resetForm() {
+    setName("");
+    setAttributeValue("");
+    setAttributeValues([]);
+    setEditedAttribute(null);
+    setEditingAttributeValueIndex(null);
+  }
+
   function editAttribute(attribute) {
-    setEditedAttribute(attribute);
     setName(attribute.name);
+    setEditedAttribute(attribute);
+    setAttributeValues(attribute.values || []);
+    setEditingAttributeValueIndex(null);
   }
 
   function deleteAttribute(attribute) {
@@ -72,16 +83,36 @@ function AttributesPage({ swal }) {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          const { _id } = attribute;
-          await axios.delete("/api/attributes?_id=" + _id);
+          await axios.delete(`/api/attributes?_id=${attribute._id}`);
           fetchAttributes();
           swal.fire(
             "Usunięto!",
-            `Atrybut ${attribute.name} został usunięty`,
+            `Atrybut ${attribute.name} został usunięty.`,
             "success"
           );
         }
       });
+  }
+
+  function addOrUpdateAttributeValue() {
+    const updatedValues = [...attributeValues];
+    if (editingAttributeValueIndex !== null) {
+      updatedValues[editingAttributeValueIndex] = attributeValue;
+    } else {
+      updatedValues.push(attributeValue);
+    }
+    setAttributeValues(updatedValues);
+    setAttributeValue("");
+    setEditingAttributeValueIndex(null);
+  }
+
+  function editAttributeValue(index) {
+    setAttributeValue(attributeValues[index]);
+    setEditingAttributeValueIndex(index);
+  }
+
+  function deleteAttributeValue(index) {
+    setAttributeValues(attributeValues.filter((_, i) => i !== index));
   }
 
   return (
@@ -89,35 +120,73 @@ function AttributesPage({ swal }) {
       <h1>Atrybuty</h1>
       <form onSubmit={saveAttribute}>
         <Label>
-          {editedAttribute ? `Edytuj atrybut ${editedAttribute.name}` : "Utwórz atrybut"}
+          {editedAttribute
+            ? `Edytuj atrybut ${editedAttribute.name}`
+            : "Utwórz atrybut"}
         </Label>
-        <div>
-          <FieldInput
-            labelText={<span>Nazwa</span>}
-            type="text"
-            placeholder={"Nazwa atrybutu"}
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-          />
-          {validationErrors["name"] && (
-            <div className="error-message">{validationErrors["name"]}</div>
-          )}
-        </div>
-        <div className="flex gap-1">
-          {editedAttribute && (
-            <ButtonDanger
-              onClick={() => {
-                setEditedAttribute(null);
-                setName("");
-              }}
-            >
-              Anuluj
-            </ButtonDanger>
-          )}
-          <ButtonPrimary>Zapisz</ButtonPrimary>
+        <FieldInput
+          labelText={<span>Nazwa</span>}
+          type="text"
+          placeholder="Nazwa atrybutu"
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+        />
+        {validationErrors["name"] && (
+          <div className="error-message">{validationErrors["name"]}</div>
+        )}
+        <FieldInput
+          labelText={<span>Wartość atrybutu</span>}
+          type="text"
+          placeholder="Wprowadź wartość atrybutu"
+          onChange={(e) => setAttributeValue(e.target.value)}
+          value={attributeValue}
+        />
+        <ButtonPrimary onClick={addOrUpdateAttributeValue} type="button">
+          {editingAttributeValueIndex !== null
+            ? "Aktualizuj wartość"
+            : "Dodaj wartość"}
+        </ButtonPrimary>
+
+        <table className="primary-table mt-3">
+          <thead>
+            <tr>
+              <th>Wartość</th>
+              <th>Akcje</th>
+            </tr>
+          </thead>
+          <tbody>
+            {attributeValues.map((value, index) => (
+              <tr key={index}>
+                <td>{value}</td>
+                <td>
+                  <ButtonPrimary
+                    onClick={() => editAttributeValue(index)}
+                    className="mr-2"
+                    type="button"
+                  >
+                    Edytuj
+                  </ButtonPrimary>
+                  <ButtonDanger
+                    onClick={() => deleteAttributeValue(index)}
+                    type="button"
+                  >
+                    Usuń
+                  </ButtonDanger>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="flex gap-1 mt-3">
+          <ButtonDanger onClick={resetForm} type="button">Anuluj</ButtonDanger>
+          <ButtonPrimary type="submit">Zapisz</ButtonPrimary>
         </div>
       </form>
-      {!editedAttribute && (
+
+      {isLoading ? (
+        <Spinner />
+      ) : (
         <table className="primary-table mt-5">
           <thead>
             <tr>
@@ -126,30 +195,22 @@ function AttributesPage({ swal }) {
             </tr>
           </thead>
           <tbody>
-            {isLoading && (
-              <tr>
-                <td colSpan={3}>
-                  <Spinner />
+            {attributes.map((attribute) => (
+              <tr key={attribute._id}>
+                <td>{attribute.name}</td>
+                <td>
+                  <ButtonPrimary
+                    onClick={() => editAttribute(attribute)}
+                    className="mr-2"
+                  >
+                    Edytuj
+                  </ButtonPrimary>
+                  <ButtonDanger onClick={() => deleteAttribute(attribute)}>
+                    Usuń
+                  </ButtonDanger>
                 </td>
               </tr>
-            )}
-            {attributes.length > 0 &&
-              attributes.map((attribute) => (
-                <tr key={attribute._id}>
-                  <td>{attribute.name}</td>
-                  <td>
-                    <ButtonPrimary
-                      onClick={() => editAttribute(attribute)}
-                      className="mr-2"
-                    >
-                      Edytuj
-                    </ButtonPrimary>
-                    <ButtonDanger onClick={() => deleteAttribute(attribute)}>
-                      Usuń
-                    </ButtonDanger>
-                  </td>
-                </tr>
-              ))}
+            ))}
           </tbody>
         </table>
       )}

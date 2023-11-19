@@ -12,16 +12,17 @@ export default async function handle(req, res) {
   }
 
   if (method === "POST") {
-    const { name } = req.body;
+    const { name, values } = req.body;
     const newAttribute = await Attribute.create({
       name,
+      values,
     });
     res.json(newAttribute);
   }
 
   if (method === "PUT") {
-    const { name, _id } = req.body;
-    const newAttribute = await Attribute.updateOne({ _id }, { name });
+    const { name, values, _id } = req.body;
+    const newAttribute = await Attribute.updateOne({ _id }, { name, values });
     res.json(newAttribute);
   }
 
