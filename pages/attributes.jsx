@@ -95,7 +95,6 @@ function AttributesPage({ swal }) {
   }
 
   function addOrUpdateAttributeValue() {
-
     const errors = validateFormValues({ attributeValue }, ["attributeValue"]);
     setValidationErrors(errors);
 
@@ -150,7 +149,9 @@ function AttributesPage({ swal }) {
           value={attributeValue}
         />
         {validationErrors["attributeValue"] && (
-          <div className="error-message">{validationErrors["attributeValue"]}</div>
+          <div className="error-message">
+            {validationErrors["attributeValue"]}
+          </div>
         )}
         <ButtonPrimary onClick={addOrUpdateAttributeValue} type="button">
           {editingAttributeValueIndex !== null
@@ -158,39 +159,43 @@ function AttributesPage({ swal }) {
             : "Dodaj wartość"}
         </ButtonPrimary>
 
-        <table className="primary-table mt-3">
-          <thead>
-            <tr>
-              <th>Wartość</th>
-              <th>Akcje</th>
-            </tr>
-          </thead>
-          <tbody>
-            {attributeValues.map((value, index) => (
-              <tr key={index}>
-                <td>{value}</td>
-                <td>
-                  <ButtonPrimary
-                    onClick={() => editAttributeValue(index)}
-                    className="mr-2"
-                    type="button"
-                  >
-                    Edytuj
-                  </ButtonPrimary>
-                  <ButtonDanger
-                    onClick={() => deleteAttributeValue(index)}
-                    type="button"
-                  >
-                    Usuń
-                  </ButtonDanger>
-                </td>
+        {attributeValues.length > 0 && (
+          <table className="primary-table mt-3">
+            <thead>
+              <tr>
+                <th>Wartość</th>
+                <th>Akcje</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {attributeValues.map((value, index) => (
+                <tr key={index}>
+                  <td>{value}</td>
+                  <td>
+                    <ButtonPrimary
+                      onClick={() => editAttributeValue(index)}
+                      className="mr-2"
+                      type="button"
+                    >
+                      Edytuj
+                    </ButtonPrimary>
+                    <ButtonDanger
+                      onClick={() => deleteAttributeValue(index)}
+                      type="button"
+                    >
+                      Usuń
+                    </ButtonDanger>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
 
         <div className="flex gap-1 mt-3">
-          <ButtonDanger onClick={resetForm} type="button">Anuluj</ButtonDanger>
+          <ButtonDanger onClick={resetForm} type="button">
+            Anuluj
+          </ButtonDanger>
           <ButtonPrimary type="submit">Zapisz</ButtonPrimary>
         </div>
       </form>
