@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function Topbar({ show }) {
   const { data: session } = useSession();
-  const [showMenu, setShowMenu] = useState(false); // Stan lokalny dla kontroli wyświetlania menu
+  const [showMenu, setShowMenu] = useState(false);
   const router = useRouter();
 
   async function logout() {
