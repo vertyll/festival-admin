@@ -168,6 +168,21 @@ export default function ProductForm({
     );
   }
 
+  function addValueToProperty(index, valueToAdd) {
+    setProperties((prev) => {
+      const newProperties = [...prev];
+      const currentValues = newProperties[index].values;
+      if (currentValues) {
+        newProperties[index].values = currentValues.includes(valueToAdd)
+          ? currentValues
+          : currentValues + "," + valueToAdd;
+      } else {
+        newProperties[index].values = valueToAdd;
+      }
+      return newProperties;
+    });
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <FieldInput
@@ -206,20 +221,37 @@ export default function ProductForm({
         {properties.length > 0 &&
           properties.map((property, index) => (
             <div key={index} className="gap-2 mb-2">
-              {categoriesIsLoading ? (
-                <Spinner />
-              ) : (
-                <select
-                  value={property.attributeId}
-                  onChange={(e) => handlePropertyChange(index, e.target.value)}
-                >
-                  {attributes.map((attribute) => (
-                    <option key={attribute._id} value={attribute._id}>
-                      {attribute.name}
-                    </option>
-                  ))}
-                </select>
-              )}
+              {/* Wybór atrybutu */}
+              <select
+                value={property.attributeId}
+                onChange={(e) => handlePropertyChange(index, e.target.value)}
+              >
+                {attributes.map((attribute) => (
+                  <option key={attribute._id} value={attribute._id}>
+                    {attribute.name}
+                  </option>
+                ))}
+              </select>
+              {/* Wyświetlanie i dodawanie wartości atrybutu */}
+              <div>
+                {attributes.find((attr) => attr._id === property.attributeId)
+                  ?.values?.length > 0 ? (
+                  attributes
+                    .find((attr) => attr._id === property.attributeId)
+                    .values.map((value) => (
+                      <button
+                        key={value}
+                        onClick={() => addValueToProperty(index, value)}
+                        style={{ marginRight: "10px" }}
+                        type="button"
+                      >
+                        {value}
+                      </button>
+                    ))
+                ) : (
+                  <div>Brak wartości dla atrybutu</div>
+                )}
+              </div>
               <Input
                 type="text"
                 className="mt-2"
