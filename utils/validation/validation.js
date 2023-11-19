@@ -3,6 +3,7 @@ import {
   validatePrice,
   validateEmail,
   validateProperties,
+  validateAttributeValue,
 } from "./validators";
 
 export const validateFormValues = (values, fieldsToValidate = []) => {
@@ -12,6 +13,7 @@ export const validateFormValues = (values, fieldsToValidate = []) => {
     shippingPrice: validatePrice,
     email: validateEmail,
     properties: validateProperties,
+    attributeValue: validateAttributeValue,
   };
 
   return fieldsToValidate.reduce((errors, field) => {

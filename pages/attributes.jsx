@@ -95,6 +95,14 @@ function AttributesPage({ swal }) {
   }
 
   function addOrUpdateAttributeValue() {
+
+    const errors = validateFormValues({ attributeValue }, ["attributeValue"]);
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     const updatedValues = [...attributeValues];
     if (editingAttributeValueIndex !== null) {
       updatedValues[editingAttributeValueIndex] = attributeValue;
@@ -141,6 +149,9 @@ function AttributesPage({ swal }) {
           onChange={(e) => setAttributeValue(e.target.value)}
           value={attributeValue}
         />
+        {validationErrors["attributeValue"] && (
+          <div className="error-message">{validationErrors["attributeValue"]}</div>
+        )}
         <ButtonPrimary onClick={addOrUpdateAttributeValue} type="button">
           {editingAttributeValueIndex !== null
             ? "Aktualizuj wartość"

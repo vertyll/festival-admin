@@ -3,6 +3,8 @@ const NAME_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_PROPERTIES_LENGTH = 50;
 const PROPERTIES_PATTERN = /[^[a-zA-Z0-9ąćęłńóśżź,]+$]/;
+const MAX_ATTRIBUTE_VALUE_LENGTH = 25;
+const ATTRIBUTE_VALUE_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
 
 export const validateName = (name) => {
   const trimmedName = name.trim();
@@ -45,3 +47,19 @@ export const validateProperties = (properties) => {
 
   return null;
 };
+
+export const validateAttributeValue = (attributeValue) => {
+  const trimmedAttributeValue = attributeValue.trim();
+
+  if (!trimmedAttributeValue) {
+    return "Proszę wpisać wartości atrybutów.";
+  }
+  if (trimmedAttributeValue.length > MAX_ATTRIBUTE_VALUE_LENGTH) {
+    return "Wartość atrybutu nie może przekraczać 25 znaków.";
+  }
+  if (ATTRIBUTE_VALUE_PATTERN.test(trimmedAttributeValue)) {
+    return "Wartość atrybytu może zawierać tylko litery, cyfry, spacje i myślniki.";
+  }
+
+  return null;
+}
