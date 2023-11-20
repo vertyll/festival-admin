@@ -31,7 +31,7 @@ export default function NewsForm({
   async function saveNews(e) {
     e.preventDefault();
 
-    const errors = validateFormValues({ name }, ["name"]);
+    const errors = validateFormValues({ name, description }, ["name", "description"]);
     setValidationErrors(errors);
 
     if (Object.keys(errors).length > 0) {
@@ -166,6 +166,9 @@ export default function NewsForm({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
+      {validationErrors["description"] && (
+        <div className="error-message">{validationErrors["description"]}</div>
+      )}
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
         <ButtonDanger onClick={() => cancel()} type="button">
