@@ -86,11 +86,9 @@ export const validatePropertiesAvailability = (properties) => {
         if (
           availabilityValue == null ||
           isNaN(availabilityValue) ||
-          Number(availabilityValue) <= MIN_AVAILABILITY_VALUE
+          Number(availabilityValue) < MIN_AVAILABILITY_VALUE
         ) {
-          return `Właściwość ${
-            i + 1
-          }, wartość '${value}': Stan magazynowy musi być liczbą większą od ${MIN_AVAILABILITY_VALUE}.`;
+          return `Wartość '${value}': stan magazynowy musi być liczbą większą od ${MIN_AVAILABILITY_VALUE}.`;
         }
       }
     }

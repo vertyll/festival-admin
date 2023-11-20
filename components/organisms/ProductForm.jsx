@@ -58,7 +58,10 @@ export default function ProductForm({
         name,
         price,
         availability: productAvailability,
-        properties: properties.availability[value],
+        properties: properties.map((property) => ({
+          ...property,
+          availability: property.availability, // Dodaj availability dla właściwości
+        })),
       },
       ["name", "price", "availability", "properties"]
     );
@@ -308,6 +311,9 @@ export default function ProductForm({
               </ButtonDanger>
             </div>
           ))}
+        {validationErrors["properties"] && (
+          <div className="error-message">{validationErrors["properties"]}</div>
+        )}
       </div>
       <Label htmlFor="upload">
         <span>Zdjęcia</span>
@@ -402,11 +408,6 @@ export default function ProductForm({
           {validationErrors["availability"] && (
             <div className="error-message">
               {validationErrors["availability"]}
-            </div>
-          )}
-          {validationErrors["properties"] && (
-            <div className="error-message">
-              {validationErrors["properties"]}
             </div>
           )}
         </div>
