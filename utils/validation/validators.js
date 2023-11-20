@@ -48,23 +48,35 @@ export const validatePropertiesValues = (propertiesValues) => {
     return "Właściwości powinny być w formacie tablicy.";
   }
 
-  const errors = propertiesValues.map((values) => {
+  const errors = propertiesValues.flatMap((values, index) => {
     const trimmedValues = values.trim();
+    let errorMessages = [];
+
     if (!trimmedValues) {
-      return "Proszę wpisać wartości właściwości.";
+      errorMessages.push(
+        `Właściwość ${index + 1}: Proszę wpisać wartości właściwości.`
+      );
     }
     if (trimmedValues.length > MAX_PROPERTY_VALUE_LENGTH) {
-      return `Wartości właściwości nie mogą przekraczać ${MAX_PROPERTY_VALUE_LENGTH} znaków.`;
+      errorMessages.push(
+        `Właściwość ${
+          index + 1
+        }: Wartości właściwości nie mogą przekraczać ${MAX_PROPERTY_VALUE_LENGTH} znaków.`
+      );
     }
     if (PROPERTY_VALUE_PATTERN.test(trimmedValues)) {
-      return "Wartości właściwości mogą zawierać tylko litery, cyfry, spacje, przecinki i myślniki.";
+      errorMessages.push(
+        `Właściwość ${
+          index + 1
+        }: Wartości właściwości mogą zawierać tylko litery, cyfry, spacje, przecinki i myślniki.`
+      );
     }
-    return null;
+    return errorMessages;
   });
 
   // Filter out any null errors and return a combined error string or null
-  const filteredErrors = errors.filter((error) => error !== null);
-  return filteredErrors.length > 0 ? filteredErrors.join(", ") : null;
+  const combinedErrors = errors.filter((error) => error.length > 0);
+  return combinedErrors.length > 0 ? combinedErrors.join(", ") : null;
 };
 
 export const validateAttributeValue = (attributeValue) => {

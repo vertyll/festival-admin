@@ -259,9 +259,6 @@ export default function ProductForm({
                 value={property.values}
                 placeholder="wartości, np. żółty, fioletowy, wartości po ,"
               />
-              {validationErrors["propertiesValues"] && (
-                <div className="error-message">{validationErrors["propertiesValues"]}</div>
-              )}
               <ButtonDanger
                 onClick={() => removeProperty(index)}
                 className="mt-2"
@@ -271,6 +268,11 @@ export default function ProductForm({
               </ButtonDanger>
             </div>
           ))}
+        {validationErrors["propertiesValues"] && (
+          <div className="error-message">
+            {validationErrors["propertiesValues"]}
+          </div>
+        )}
       </div>
       <Label htmlFor="upload">
         <span>Zdjęcia</span>
