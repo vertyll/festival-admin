@@ -3,8 +3,8 @@ import mongoose, { model, Schema, models } from "mongoose";
 const NewsSchema = new Schema(
   {
     name: { type: String, required: true },
-    images: { type: [String], required: false },
-    description: String,
+    images: { type: [String] },
+    description: { type: String, required: true },
   },
   {
     timestamps: true,

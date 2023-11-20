@@ -10,4 +10,5 @@ const AttributeSchema = new Schema(
   }
 );
 
-export const Attribute = models?.Attribute || model("Attribute", AttributeSchema);
+export const Attribute =
+  models?.Attribute || model("Attribute", AttributeSchema);
