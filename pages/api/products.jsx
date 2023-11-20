@@ -16,7 +16,8 @@ export default async function handle(req, res) {
   }
 
   if (method === "POST") {
-    const { name, category, properties, images, description, price } = req.body;
+    const { name, category, properties, images, description, price, availability } =
+      req.body;
     const isValidCategory = category && category.trim() !== "";
     const newProduct = await Product.create({
       name,
@@ -25,25 +26,37 @@ export default async function handle(req, res) {
       images,
       description,
       price,
+      availability,
     });
     res.json(newProduct);
   }
 
   if (method === "PUT") {
-    const { name, category, properties, images, description, price, _id } =
+    const { name, category, properties, images, description, price, availability, _id } =
       req.body;
     const isValidCategory = category && category.trim() !== "";
-    await Product.updateOne(
-      { _id },
-      {
-        name,
-        category: isValidCategory ? category : null,
-        properties,
-        images,
-        description,
-        price,
-      }
-    );
+
+    const hasProperties = properties && properties.length > 0;
+
+    let updateData = {
+      name,
+      category: isValidCategory ? category : null,
+      properties,
+      images,
+      description,
+      price,
+    };
+
+    let updateOptions = {};
+
+    if (!hasProperties) {
+      updateData.availability = availability;
+    } else {
+      // Używanie $unset, aby usunąć pole availability
+      updateOptions.$unset = { availability: 1 };
+    }
+
+    await Product.updateOne({ _id }, { $set: updateData, ...updateOptions });
     res.json(true);
   }
 

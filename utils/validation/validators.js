@@ -1,10 +1,9 @@
 const MAX_NAME_LENGTH = 50;
 const NAME_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_PROPERTY_VALUE_LENGTH = 100;
-const PROPERTY_VALUE_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ ,.-]/;
 const MAX_ATTRIBUTE_VALUE_LENGTH = 25;
 const ATTRIBUTE_VALUE_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
+const MIN_AVAILABILITY_VALUE = 1;
 
 export const validateName = (name) => {
   const trimmedName = name.trim();
@@ -43,42 +42,6 @@ export const validateEmail = (email) => {
   return null;
 };
 
-export const validatePropertiesValues = (propertiesValues) => {
-  if (!Array.isArray(propertiesValues)) {
-    return "Właściwości powinny być w formacie tablicy.";
-  }
-
-  const errors = propertiesValues.flatMap((values, index) => {
-    const trimmedValues = values.trim();
-    let errorMessages = [];
-
-    if (!trimmedValues) {
-      errorMessages.push(
-        `Właściwość ${index + 1}: Proszę wpisać wartości właściwości.`
-      );
-    }
-    if (trimmedValues.length > MAX_PROPERTY_VALUE_LENGTH) {
-      errorMessages.push(
-        `Właściwość ${
-          index + 1
-        }: Wartości właściwości nie mogą przekraczać ${MAX_PROPERTY_VALUE_LENGTH} znaków.`
-      );
-    }
-    if (PROPERTY_VALUE_PATTERN.test(trimmedValues)) {
-      errorMessages.push(
-        `Właściwość ${
-          index + 1
-        }: Wartości właściwości mogą zawierać tylko litery, cyfry, spacje, przecinki i myślniki.`
-      );
-    }
-    return errorMessages;
-  });
-
-  // Filter out any null errors and return a combined error string or null
-  const combinedErrors = errors.filter((error) => error.length > 0);
-  return combinedErrors.length > 0 ? combinedErrors.join(", ") : null;
-};
-
 export const validateAttributeValue = (attributeValue) => {
   const trimmedAttributeValue = attributeValue.trim();
 
@@ -102,5 +65,35 @@ export const validateDescription = (description) => {
     return "Proszę wpisać opis.";
   }
 
+  return null;
+};
+
+export const validateAvailability = (availability) => {
+  if (availability == null || isNaN(availability) || availability <= 0) {
+    return "Stan magazynowy musi być liczbą dodatnią";
+  }
+
+  return null;
+};
+
+export const validatePropertiesAvailability = (properties) => {
+  for (let i = 0; i < properties.length; i++) {
+    const property = properties[i];
+    if (property.availability) {
+      for (const [value, availabilityValue] of Object.entries(
+        property.availability
+      )) {
+        if (
+          availabilityValue == null ||
+          isNaN(availabilityValue) ||
+          Number(availabilityValue) <= MIN_AVAILABILITY_VALUE
+        ) {
+          return `Właściwość ${
+            i + 1
+          }, wartość '${value}': Stan magazynowy musi być liczbą większą od ${MIN_AVAILABILITY_VALUE}.`;
+        }
+      }
+    }
+  }
   return null;
 };

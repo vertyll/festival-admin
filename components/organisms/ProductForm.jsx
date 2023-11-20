@@ -34,6 +34,7 @@ export default function ProductForm({
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
   const [attributes, setAttributes] = useState([]);
+  const [productAvailability, setProductAvailability] = useState("");
 
   const router = useRouter();
   useEffect(() => {
@@ -52,14 +53,15 @@ export default function ProductForm({
   async function saveProduct(e) {
     e.preventDefault();
 
-    // Wyodrębnianie wartości z properties do oddzielnej tablicy
-    const propertiesValues = properties.map((p) => p.values);
-
-    const errors = validateFormValues({ name, price, propertiesValues }, [
-      "name",
-      "price",
-      "propertiesValues",
-    ]);
+    const errors = validateFormValues(
+      {
+        name,
+        price,
+        availability: productAvailability,
+        properties: properties.availability[value],
+      },
+      ["name", "price", "availability", "properties"]
+    );
 
     setValidationErrors(errors);
 
@@ -67,19 +69,21 @@ export default function ProductForm({
       return;
     }
 
-    const data = {
+    let data = {
       name,
       category,
       properties,
       images,
       description,
       price,
-      properties: properties.map((p) => ({
-        attributeId: p.attributeId, // Przekazuje ID atrybutu
-        name: p.name,
-        values: p.values,
-      })),
     };
+
+    if (hasProperties) {
+      delete data.availability;
+    } else {
+      data = { ...data, availability: productAvailability };
+    }
+
     if (_id) {
       await axios.put("/api/products", { ...data, _id });
     } else {
@@ -123,7 +127,8 @@ export default function ProductForm({
       {
         attributeId: defaultAttribute._id,
         name: defaultAttribute.name,
-        values: "",
+        values: [],
+        availability: {},
       },
     ]);
   }
@@ -144,14 +149,6 @@ export default function ProductForm({
     );
   }
 
-  function handlePropertyValuesChange(index, property, newValues) {
-    setProperties((prev) => {
-      const properties = [...prev];
-      properties[index].values = newValues;
-      return properties;
-    });
-  }
-
   function removeProperty(indexToRemove) {
     setProperties((prev) => {
       return [...prev].filter((p, pIndex) => {
@@ -168,18 +165,48 @@ export default function ProductForm({
 
   function addValueToProperty(index, valueToAdd) {
     setProperties((prev) => {
-      const newProperties = [...prev];
-      const currentValues = newProperties[index].values;
-      if (currentValues) {
-        newProperties[index].values = currentValues.includes(valueToAdd)
-          ? currentValues
-          : currentValues + "," + valueToAdd;
-      } else {
-        newProperties[index].values = valueToAdd;
+      const updatedProperties = [...prev];
+      const property = updatedProperties[index];
+
+      if (!property.values.includes(valueToAdd)) {
+        property.values.push(valueToAdd);
+        // Dodanie miejsca na availability dla nowej wartości
+        property.availability[valueToAdd] = "";
       }
-      return newProperties;
+
+      return updatedProperties;
     });
   }
+
+  function updateAvailabilityForValue(propertyIndex, value, newAvailability) {
+    setProperties((prev) => {
+      const updatedProperties = [...prev];
+      const property = updatedProperties[propertyIndex];
+
+      property.availability[value] = newAvailability;
+
+      return updatedProperties;
+    });
+  }
+
+  function removeValueFromProperty(propertyIndex, value) {
+    setProperties((prev) => {
+      const updatedProperties = [...prev];
+      const property = updatedProperties[propertyIndex];
+
+      // Usunięcie wartości z tablicy
+      property.values = property.values.filter((v) => v !== value);
+
+      // Usunięcie powiązanego availability
+      delete property.availability[value];
+
+      return updatedProperties;
+    });
+  }
+
+  const hasProperties = properties.some(
+    (property) => property.values.length > 0
+  );
 
   return (
     <form onSubmit={saveProduct}>
@@ -216,10 +243,10 @@ export default function ProductForm({
         <ButtonPrimary onClick={addProperty} type="button">
           Dodaj właściowść
         </ButtonPrimary>
+
         {properties.length > 0 &&
           properties.map((property, index) => (
             <div key={index} className="gap-2 mb-2">
-              {/* Wybór atrybutu */}
               <select
                 value={property.attributeId}
                 onChange={(e) => handlePropertyChange(index, e.target.value)}
@@ -230,35 +257,48 @@ export default function ProductForm({
                   </option>
                 ))}
               </select>
-              {/* Wyświetlanie i dodawanie wartości atrybutu */}
+
               <div>
-                {attributes.find((attr) => attr._id === property.attributeId)
-                  ?.values?.length > 0 ? (
-                  attributes
-                    .find((attr) => attr._id === property.attributeId)
-                    .values.map((value) => (
+                {property.values.map((value, valIndex) => (
+                  <div key={valIndex}>
+                    <span style={{ marginRight: "10px" }}>
+                      {value}
                       <button
-                        key={value}
-                        onClick={() => addValueToProperty(index, value)}
-                        style={{ marginRight: "10px" }}
+                        onClick={() => removeValueFromProperty(index, value)}
+                        style={{ marginLeft: "10px" }}
                         type="button"
                       >
-                        {value}
+                        Usuń
                       </button>
-                    ))
-                ) : (
-                  <div>Brak wartości dla atrybutu</div>
-                )}
+                    </span>
+                    <Input
+                      labelText={<span>Stan magazywnowy</span>}
+                      type="number"
+                      placeholder="Wprowadź stan magazynowy"
+                      value={property.availability[value] || ""}
+                      onChange={(e) =>
+                        updateAvailabilityForValue(index, value, e.target.value)
+                      }
+                    />
+                  </div>
+                ))}
               </div>
-              <Input
-                type="text"
-                className="mt-2"
-                onChange={(e) =>
-                  handlePropertyValuesChange(index, property, e.target.value)
-                }
-                value={property.values}
-                placeholder="wartości, np. żółty, fioletowy, wartości po ,"
-              />
+
+              {/* Kod do dodawania nowych wartości */}
+              {attributes.find((attr) => attr._id === property.attributeId)
+                ?.values?.length > 0 &&
+                attributes
+                  .find((attr) => attr._id === property.attributeId)
+                  .values.map((value) => (
+                    <button
+                      key={value}
+                      onClick={() => addValueToProperty(index, value)}
+                      style={{ marginRight: "10px" }}
+                      type="button"
+                    >
+                      {value}
+                    </button>
+                  ))}
               <ButtonDanger
                 onClick={() => removeProperty(index)}
                 className="mt-2"
@@ -268,11 +308,6 @@ export default function ProductForm({
               </ButtonDanger>
             </div>
           ))}
-        {validationErrors["propertiesValues"] && (
-          <div className="error-message">
-            {validationErrors["propertiesValues"]}
-          </div>
-        )}
       </div>
       <Label htmlFor="upload">
         <span>Zdjęcia</span>
@@ -352,6 +387,31 @@ export default function ProductForm({
       {validationErrors["price"] && (
         <div className="error-message">{validationErrors["price"]}</div>
       )}
+      {/* Wyświetl pole availability tylko wtedy, gdy nie ma żadnych zdefiniowanych właściwości */}
+      {!hasProperties && (
+        <div>
+          <Label>
+            <span> Stan magazynowy</span>
+          </Label>
+          <Input
+            type="number"
+            placeholder="Wprawadź stan magazynowy"
+            value={productAvailability}
+            onChange={(e) => setProductAvailability(e.target.value)}
+          />
+          {validationErrors["availability"] && (
+            <div className="error-message">
+              {validationErrors["availability"]}
+            </div>
+          )}
+          {validationErrors["properties"] && (
+            <div className="error-message">
+              {validationErrors["properties"]}
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
         <ButtonDanger onClick={() => cancel()} type="button">

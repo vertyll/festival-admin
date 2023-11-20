@@ -5,6 +5,8 @@ import {
   validatePropertiesValues,
   validateAttributeValue,
   validateDescription,
+  validateAvailability,
+  validatePropertiesAvailability,
 } from "./validators";
 
 export const validateFormValues = (values, fieldsToValidate = []) => {
@@ -16,6 +18,8 @@ export const validateFormValues = (values, fieldsToValidate = []) => {
     propertiesValues: validatePropertiesValues,
     attributeValue: validateAttributeValue,
     description: validateDescription,
+    availability: validateAvailability,
+    properties: validatePropertiesAvailability,
   };
 
   return fieldsToValidate.reduce((errors, field) => {
