@@ -37,12 +37,12 @@ function ArtistsPage({ swal }) {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          const { _id } = product;
+          const { _id } = artist;
           await axios.delete("/api/artists?_id=" + _id);
           fetchArtists();
           swal.fire(
             "Usunięto!",
-            `Produkt ${artist.name} został usunięty`,
+            `Artysta ${artist.name} został usunięty`,
             "success"
           );
         }
