@@ -44,7 +44,6 @@ export const validateEmail = (email) => {
 };
 
 export const validateProperties = (properties) => {
-
   return null;
 };
 
@@ -59,6 +58,16 @@ export const validateAttributeValue = (attributeValue) => {
   }
   if (ATTRIBUTE_VALUE_PATTERN.test(trimmedAttributeValue)) {
     return "Wartość atrybytu może zawierać tylko litery, cyfry, spacje i myślniki.";
+  }
+
+  return null;
+};
+
+export const validateDescription = (description) => {
+  const trimmedDescription = description.trim();
+
+  if (!trimmedDescription) {
+    return "Proszę wpisać opis.";
   }
 
   return null;
