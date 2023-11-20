@@ -25,7 +25,7 @@ export default function EditArtistPage() {
 
   return (
     <Layout>
-      <h1>Edytuj artystę {artistData?.name}</h1>
+      <h1>Edytuj artystę: {artistData?.name}</h1>
       {isLoading && <Spinner />}
       {artistData && <ArtistForm {...artistData} />}
     </Layout>

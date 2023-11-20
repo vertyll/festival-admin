@@ -25,7 +25,7 @@ export default function EditNewsPage() {
 
   return (
     <Layout>
-      <h1>Edytuj newsa {newsData?.name}</h1>
+      <h1>Edytuj newsa: {newsData?.name}</h1>
       {isLoading && <Spinner />}
       {newsData && <NewsForm {...newsData} />}
     </Layout>

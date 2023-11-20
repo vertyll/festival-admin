@@ -24,7 +24,7 @@ export default function HomeStats() {
         sum += lineSum;
       });
     });
-    console.log({ orders });
+    // console.log({ orders });
     return new Intl.NumberFormat("pl-PL").format(sum);
   }
 

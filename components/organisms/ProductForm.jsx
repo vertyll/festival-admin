@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Spinner from "@/components/atoms/Spinner";
 import { ReactSortable } from "react-sortablejs";
 import ButtonPrimary from "../atoms/ButtonPrimary";
@@ -285,7 +285,7 @@ export default function ProductForm({
           {!!images?.length &&
             images.map((link, index) => (
               <div
-                key={`${link}_${index}`} // zmiana tutaj, aby klucz był unikalny nawet gdy obrazek zostanie dodany ponownie
+                key={`${link}_${index}`} // aby klucz był unikalny nawet gdy obrazek zostanie dodany ponownie
                 className="relative shadow-md rounded-md h-32 bg-neutral-100"
                 onMouseEnter={() => setHoveredImageIndex(index)}
                 onMouseLeave={() => setHoveredImageIndex(null)}

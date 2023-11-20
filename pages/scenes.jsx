@@ -89,7 +89,7 @@ function ScenesPage({ swal }) {
       <h1>Sceny</h1>
       <form onSubmit={saveScene}>
         <Label>
-          {editedScene ? `Edytuj scenę ${editedScene.name}` : "Utwórz scenę"}
+          {editedScene ? `Edytuj scenę: ${editedScene.name}` : "Utwórz scenę"}
         </Label>
         <div>
           <FieldInput
@@ -157,4 +157,4 @@ function ScenesPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }, ref) => <ScenesPage swal={swal} />);
+export default withSwal(({ swal }) => <ScenesPage swal={swal} />);

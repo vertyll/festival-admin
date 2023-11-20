@@ -25,7 +25,7 @@ export default function EditProductPage() {
 
   return (
     <Layout>
-      <h1>Edytuj produkt {productData?.name}</h1>
+      <h1>Edytuj produkt: {productData?.name}</h1>
       {isLoading && <Spinner />}
       {productData && <ProductForm {...productData} />}
     </Layout>

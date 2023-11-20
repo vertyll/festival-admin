@@ -93,7 +93,7 @@ function CategoriesPage({ swal }) {
       <form onSubmit={saveCategory}>
         <Label>
           {editedCategory
-            ? `Edytuj kategorię ${editedCategory.name}`
+            ? `Edytuj kategorię: ${editedCategory.name}`
             : "Utwórz kategorię"}
         </Label>
         <div>
@@ -181,4 +181,4 @@ function CategoriesPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }, ref) => <CategoriesPage swal={swal} />);
+export default withSwal(({ swal }) => <CategoriesPage swal={swal} />);

@@ -128,7 +128,7 @@ function AttributesPage({ swal }) {
       <form onSubmit={saveAttribute}>
         <Label>
           {editedAttribute
-            ? `Edytuj atrybut ${editedAttribute.name}`
+            ? `Edytuj atrybut: ${editedAttribute.name}`
             : "Utwórz atrybut"}
         </Label>
         <FieldInput
@@ -234,4 +234,4 @@ function AttributesPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }, ref) => <AttributesPage swal={swal} />);
+export default withSwal(({ swal }) => <AttributesPage swal={swal} />);
