@@ -1,7 +1,7 @@
 const MAX_NAME_LENGTH = 50;
 const NAME_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_PROPERTIES_LENGTH = 50;
+const MAX_PROPERTIES_LENGTH = 100;
 const PROPERTIES_PATTERN = /[^[a-zA-Z0-9ąćęłńóśżź,]+$]/;
 const MAX_ATTRIBUTE_VALUE_LENGTH = 25;
 const ATTRIBUTE_VALUE_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
@@ -13,7 +13,7 @@ export const validateName = (name) => {
     return "Proszę wpisać nazwę.";
   }
   if (trimmedName.length > MAX_NAME_LENGTH) {
-    return "Nazwa nie może przekraczać 50 znaków.";
+    return `Nazwa nie może przekraczać ${MAX_NAME_LENGTH} znaków.`;
   }
   if (NAME_PATTERN.test(trimmedName)) {
     return "Nazwa może zawierać tylko litery, cyfry, spacje i myślniki.";
@@ -55,11 +55,11 @@ export const validateAttributeValue = (attributeValue) => {
     return "Proszę wpisać wartości atrybutów.";
   }
   if (trimmedAttributeValue.length > MAX_ATTRIBUTE_VALUE_LENGTH) {
-    return "Wartość atrybutu nie może przekraczać 25 znaków.";
+    return `Wartość atrybutu nie może przekraczać ${MAX_ATTRIBUTE_VALUE_LENGTH} znaków.`;
   }
   if (ATTRIBUTE_VALUE_PATTERN.test(trimmedAttributeValue)) {
     return "Wartość atrybytu może zawierać tylko litery, cyfry, spacje i myślniki.";
   }
 
   return null;
-}
+};

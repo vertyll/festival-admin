@@ -34,7 +34,6 @@ export default function ProductForm({
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
   const [attributes, setAttributes] = useState([]);
-  const [attributesIsLoading, setAttributesIsLoading] = useState(false);
 
   const router = useRouter();
   useEffect(() => {
@@ -45,10 +44,8 @@ export default function ProductForm({
     });
   }, []);
   useEffect(() => {
-    setAttributesIsLoading(true);
     axios.get("/api/attributes").then((result) => {
       setAttributes(result.data);
-      setAttributesIsLoading(false);
     });
   }, []);
 
