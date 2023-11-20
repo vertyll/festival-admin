@@ -55,10 +55,11 @@ export default function ProductForm({
     // Wyodrębnianie wartości z properties do oddzielnej tablicy
     const propertiesValues = properties.map((p) => p.values);
 
-    const errors = validateFormValues(
-      { name, price, properties: propertiesValues },
-      ["name", "price", "properties"]
-    );
+    const errors = validateFormValues({ name, price, propertiesValues }, [
+      "name",
+      "price",
+      "propertiesValues",
+    ]);
 
     setValidationErrors(errors);
 
@@ -258,10 +259,8 @@ export default function ProductForm({
                 value={property.values}
                 placeholder="wartości, np. żółty, fioletowy, wartości po ,"
               />
-              {validationErrors["properties"] && (
-                <div className="error-message">
-                  {validationErrors["properties"]}
-                </div>
+              {validationErrors["propertiesValues"] && (
+                <div className="error-message">{validationErrors["propertiesValues"]}</div>
               )}
               <ButtonDanger
                 onClick={() => removeProperty(index)}

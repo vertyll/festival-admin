@@ -1,8 +1,8 @@
 const MAX_NAME_LENGTH = 50;
 const NAME_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_PROPERTIES_LENGTH = 100;
-const PROPERTIES_PATTERN = /[^[a-zA-Z0-9ąćęłńóśżź,]+$]/;
+const MAX_PROPERTY_VALUE_LENGTH = 100;
+const PROPERTY_VALUE_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ ,.-]/;
 const MAX_ATTRIBUTE_VALUE_LENGTH = 25;
 const ATTRIBUTE_VALUE_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
 
@@ -43,8 +43,28 @@ export const validateEmail = (email) => {
   return null;
 };
 
-export const validateProperties = (properties) => {
-  return null;
+export const validatePropertiesValues = (propertiesValues) => {
+  if (!Array.isArray(propertiesValues)) {
+    return "Właściwości powinny być w formacie tablicy.";
+  }
+
+  const errors = propertiesValues.map((values) => {
+    const trimmedValues = values.trim();
+    if (!trimmedValues) {
+      return "Proszę wpisać wartości właściwości.";
+    }
+    if (trimmedValues.length > MAX_PROPERTY_VALUE_LENGTH) {
+      return `Wartości właściwości nie mogą przekraczać ${MAX_PROPERTY_VALUE_LENGTH} znaków.`;
+    }
+    if (PROPERTY_VALUE_PATTERN.test(trimmedValues)) {
+      return "Wartości właściwości mogą zawierać tylko litery, cyfry, spacje, przecinki i myślniki.";
+    }
+    return null;
+  });
+
+  // Filter out any null errors and return a combined error string or null
+  const filteredErrors = errors.filter((error) => error !== null);
+  return filteredErrors.length > 0 ? filteredErrors.join(", ") : null;
 };
 
 export const validateAttributeValue = (attributeValue) => {
