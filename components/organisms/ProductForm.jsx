@@ -35,6 +35,7 @@ export default function ProductForm({
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
   const [attributes, setAttributes] = useState([]);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const [productAvailability, setProductAvailability] = useState(
     currentAvailability || ""
   );
@@ -52,6 +53,11 @@ export default function ProductForm({
       setAttributes(result.data);
     });
   }, []);
+  useEffect(() => {
+    if (properties.length === 0) {
+      setButtonClicked(false);
+    }
+  }, [properties]);
 
   async function saveProduct(e) {
     e.preventDefault();
@@ -248,8 +254,15 @@ export default function ProductForm({
         <Label>
           <span>Właściwości</span>
         </Label>
-        <ButtonPrimary onClick={addProperty} type="button">
-          Dodaj właściowść
+        <ButtonPrimary
+          onClick={() => {
+            addProperty();
+            setButtonClicked(true);
+          }}
+          type="button"
+          disabled={buttonClicked}
+        >
+          {buttonClicked ? "Właściwość została dodana" : "Dodaj właściwość"}
         </ButtonPrimary>
 
         {properties.length > 0 &&
@@ -306,13 +319,15 @@ export default function ProductForm({
                       {value}
                     </button>
                   ))}
-              <ButtonDanger
-                onClick={() => removeProperty(index)}
-                className="mt-2"
-                type="button"
-              >
-                Usuń
-              </ButtonDanger>
+              <div>
+                <ButtonDanger
+                  onClick={() => removeProperty(index)}
+                  className="mt-2"
+                  type="button"
+                >
+                  Usuń właściwość
+                </ButtonDanger>
+              </div>
             </div>
           ))}
         {validationErrors["properties"] && (
