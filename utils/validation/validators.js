@@ -69,24 +69,12 @@ export const validateDescription = (description) => {
 };
 
 export const validateAvailability = (availability, hasProperties) => {
-  const trimmedAvailability = availability.trim();
-
   if (hasProperties) {
     return null;
   }
 
-  if (!trimmedAvailability) {
-    return "Proszę wpisać stan magazynowy.";
-  }
-
-  if (!/^\d+$/.test(trimmedAvailability)) {
-    return "Stan magazynowy musi być liczbą.";
-  }
-
-  const numericAvailability = parseInt(trimmedAvailability, 10);
-
-  if (numericAvailability < MIN_AVAILABILITY_VALUE) {
-    return `Stan magazynowy musi być liczbą większą lub równą ${MIN_AVAILABILITY_VALUE}.`;
+  if (availability == null || isNaN(availability) || availability <= 0) {
+    return "Stan magazynowy musi być liczbą dodatnią";
   }
 
   return null;

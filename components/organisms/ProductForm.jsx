@@ -191,7 +191,7 @@ export default function ProductForm({
       const updatedProperties = [...prev];
       const property = updatedProperties[propertyIndex];
 
-      property.availability[value] = newAvailability;
+      property.availability[value] = Number(newAvailability);
 
       return updatedProperties;
     });
@@ -279,7 +279,7 @@ export default function ProductForm({
                         Usuń
                       </button>
                     </span>
-                    <Input
+                    <FieldInput
                       labelText={<span>Stan magazywnowy</span>}
                       type="number"
                       placeholder="Wprowadź stan magazynowy"
