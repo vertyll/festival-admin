@@ -9,7 +9,11 @@ import {
   validatePropertiesAvailability,
 } from "./validators";
 
-export const validateFormValues = (values, fieldsToValidate = []) => {
+export const validateFormValues = (
+  values,
+  fieldsToValidate = [],
+  hasProperties = false
+) => {
   const validators = {
     name: validateName,
     price: validatePrice,
@@ -21,6 +25,12 @@ export const validateFormValues = (values, fieldsToValidate = []) => {
     availability: validateAvailability,
     properties: validatePropertiesAvailability,
   };
+
+  if (hasProperties) {
+    fieldsToValidate = fieldsToValidate.filter(
+      (field) => field !== "availability"
+    );
+  }
 
   return fieldsToValidate.reduce((errors, field) => {
     const validator = validators[field];
