@@ -20,6 +20,7 @@ export default function ProductForm({
   images: currentImages,
   description: currentDescription,
   price: currentPrice,
+  availability: currentAvailability,
 }) {
   const [name, setName] = useState(currentName || "");
   const [category, setCategory] = useState(currentCategory || "");
@@ -34,7 +35,9 @@ export default function ProductForm({
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
   const [attributes, setAttributes] = useState([]);
-  const [productAvailability, setProductAvailability] = useState("");
+  const [productAvailability, setProductAvailability] = useState(
+    currentAvailability || ""
+  );
 
   const router = useRouter();
   useEffect(() => {
@@ -60,15 +63,17 @@ export default function ProductForm({
         availability: productAvailability,
         properties: properties.map((property) => ({
           ...property,
-          availability: property.availability, // Dodaj availability dla właściwości
+          availability: property.availability,
         })),
       },
-      ["name", "price", "availability", "properties"]
+      ["name", "price", "availability", "properties"],
+      hasProperties
     );
 
     setValidationErrors(errors);
 
     if (Object.keys(errors).length > 0) {
+      console.log(errors);
       return;
     }
 
@@ -286,7 +291,6 @@ export default function ProductForm({
                   </div>
                 ))}
               </div>
-
               {/* Kod do dodawania nowych wartości */}
               {attributes.find((attr) => attr._id === property.attributeId)
                 ?.values?.length > 0 &&
