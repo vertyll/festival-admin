@@ -11,6 +11,7 @@ import FieldInput from "../molecules/FieldInput";
 import FieldTextarea from "../molecules/FieldTextarea";
 import ButtonDanger from "../atoms/ButtonDanger";
 import { validateFormValues } from "@/utils/validation/validation";
+import { formatDate } from "@/utils/date";
 
 export default function ArtistForm({
   _id,
@@ -25,7 +26,9 @@ export default function ArtistForm({
   const [description, setDescription] = useState(currentDescription || "");
   const [stage, setStage] = useState(currentStage || "");
   const [stages, setStages] = useState([]);
-  const [concertDate, setConcertDate] = useState(currentConcertDate || "");
+  const [concertDate, setConcertDate] = useState(
+    formatDate(currentConcertDate)
+  );
   const [goToArtists, setGoToArtists] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [stagesIsLoading, setStagesIsLoading] = useState(false);
@@ -56,7 +59,7 @@ export default function ArtistForm({
       images,
       description,
       stage,
-      concertDate,
+      concertDate: new Date(concertDate).toISOString(),
     };
     if (_id) {
       await axios.put("/api/artists", { ...data, _id });
