@@ -80,21 +80,17 @@ export const validateAvailability = (availability, hasProperties) => {
   return null;
 };
 
-export const validatePropertiesAvailability = (properties) => {
-  for (let i = 0; i < properties.length; i++) {
-    const property = properties[i];
-    if (property.availability) {
-      for (const [value, availabilityValue] of Object.entries(
-        property.availability
-      )) {
-        if (
-          availabilityValue == null ||
-          isNaN(availabilityValue) ||
-          Number(availabilityValue) < MIN_AVAILABILITY_VALUE
-        ) {
-          return `Wartość '${value}': stan magazynowy musi być liczbą większą od ${MIN_AVAILABILITY_VALUE}.`;
-        }
-      }
+export const validateCombinationsAvailability = (combinationsAvailability) => {
+  for (let i = 0; i < combinationsAvailability.length; i++) {
+    const combinationAvailability = combinationsAvailability[i];
+    if (
+      combinationAvailability == null ||
+      isNaN(combinationAvailability) ||
+      combinationAvailability < MIN_AVAILABILITY_VALUE
+    ) {
+      return `Stan magazynowy kombinacji ${
+        i + 1
+      } musi być liczbą większą lub równą ${MIN_AVAILABILITY_VALUE}`;
     }
   }
   return null;

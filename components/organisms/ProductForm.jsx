@@ -68,8 +68,9 @@ export default function ProductForm({
         name,
         price,
         availability: productAvailability,
+        combinationsAvailability: combinations.map((c) => c.availability),
       },
-      ["name", "price", "availability"],
+      ["name", "price", "availability", "combinationsAvailability"],
       hasProperties
     );
 
@@ -443,6 +444,11 @@ export default function ProductForm({
             />
           </div>
         ))}
+        {validationErrors["combinationsAvailability"] && (
+          <div className="error-message">
+            {validationErrors["combinationsAvailability"]}
+          </div>
+        )}
       </div>
 
       <div className="flex gap-1">

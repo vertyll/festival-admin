@@ -6,7 +6,7 @@ import {
   validateAttributeValue,
   validateDescription,
   validateAvailability,
-  validatePropertiesAvailability,
+  validateCombinationsAvailability,
 } from "./validators";
 
 export const validateFormValues = (
@@ -23,7 +23,7 @@ export const validateFormValues = (
     attributeValue: validateAttributeValue,
     description: validateDescription,
     availability: validateAvailability,
-    properties: validatePropertiesAvailability,
+    combinationsAvailability: validateCombinationsAvailability,
   };
 
   if (hasProperties) {
