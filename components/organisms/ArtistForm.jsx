@@ -17,36 +17,34 @@ export default function ArtistForm({
   name: currentName,
   images: currentImages,
   description: currentDescription,
-  scene: currentScene,
+  stage: currentStage,
   concertDate: currentConcertDate,
-  concertTime: currentConcertTime,
 }) {
   const [name, setName] = useState(currentName || "");
   const [images, setImages] = useState(currentImages || []);
   const [description, setDescription] = useState(currentDescription || "");
-  const [scene, setScene] = useState(currentScene || "");
-  const [scenes, setScenes] = useState([]);
+  const [stage, setStage] = useState(currentStage || "");
+  const [stages, setStages] = useState([]);
   const [concertDate, setConcertDate] = useState(currentConcertDate || "");
-  const [concertTime, setConcertTime] = useState(currentConcertTime || "");
   const [goToArtists, setGoToArtists] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [scenesIsLoading, setScenesIsLoading] = useState(false);
+  const [stagesIsLoading, setStagesIsLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
 
   const router = useRouter();
   useEffect(() => {
-    setScenesIsLoading(true);
-    axios.get("/api/scenes").then((result) => {
-      setScenes(result.data);
-      setScenesIsLoading(false);
+    setStagesIsLoading(true);
+    axios.get("/api/stages").then((result) => {
+      setStages(result.data);
+      setStagesIsLoading(false);
     });
   }, []);
 
   async function saveArtist(e) {
     e.preventDefault();
 
-    const errors = validateFormValues({ name, concertTime }, ["name", "concertTime"]);
+    const errors = validateFormValues({ name }, ["name"]);
     setValidationErrors(errors);
 
     if (Object.keys(errors).length > 0) {
@@ -57,9 +55,8 @@ export default function ArtistForm({
       name,
       images,
       description,
-      scene,
+      stage,
       concertDate,
-      concertTime,
     };
     if (_id) {
       await axios.put("/api/artists", { ...data, _id });
@@ -187,15 +184,15 @@ export default function ArtistForm({
       <Label>
         <span>Scena</span>
       </Label>
-      {scenesIsLoading ? (
+      {stagesIsLoading ? (
         <Spinner />
       ) : (
-        <select value={scene} onChange={(e) => setScene(e.target.value)}>
+        <select value={stage} onChange={(e) => setStage(e.target.value)}>
           <option value="">Bez sceny</option>
-          {scenes.length > 0 &&
-            scenes.map((scene) => (
-              <option key={scene._id} value={scene._id}>
-                {scene.name}
+          {stages.length > 0 &&
+            stages.map((stage) => (
+              <option key={stage._id} value={stage._id}>
+                {stage.name}
               </option>
             ))}
         </select>
@@ -207,16 +204,6 @@ export default function ArtistForm({
         value={concertDate}
         onChange={(e) => setConcertDate(e.target.value)}
       />
-      <FieldInput
-        labelText={<span>Godzina</span>}
-        type="text"
-        placeholder="godzina koncertu"
-        value={concertTime}
-        onChange={(e) => setConcertTime(e.target.value)}
-      />
-      {validationErrors["concertTime"] && (
-        <div className="error-message">{validationErrors["concertTime"]}</div>
-      )}
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
         <ButtonDanger onClick={() => cancel()} type="button">

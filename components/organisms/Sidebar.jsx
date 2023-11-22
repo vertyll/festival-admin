@@ -158,8 +158,8 @@ export default function Sidebar({ show }) {
             Atrybuty
           </Link>
           <Link
-            href={"/scenes"}
-            className={pathname.includes("/scenes") ? activeLink : inactiveLink}
+            href={"/stages"}
+            className={pathname.includes("/stages") ? activeLink : inactiveLink}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -9,26 +9,26 @@ import FieldInput from "@/components/molecules/FieldInput";
 import Spinner from "@/components/atoms/Spinner";
 import { validateFormValues } from "@/utils/validation/validation";
 
-function ScenesPage({ swal }) {
+function StagesPage({ swal }) {
   const [name, setName] = useState("");
-  const [scenes, setScenes] = useState([]);
-  const [editedScene, setEditedScene] = useState(null);
+  const [stages, setStages] = useState([]);
+  const [editedStage, setEditedStage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
-    fetchScenes();
+    fetchStages();
   }, []);
 
-  function fetchScenes() {
+  function fetchStages() {
     setIsLoading(true);
-    axios.get("/api/scenes").then((response) => {
-      setScenes(response.data);
+    axios.get("/api/stages").then((response) => {
+      setStages(response.data);
       setIsLoading(false);
     });
   }
 
-  async function saveScene(e) {
+  async function saveStage(e) {
     e.preventDefault();
 
     const errors = validateFormValues({ name }, ["name"]);
@@ -41,28 +41,28 @@ function ScenesPage({ swal }) {
     }
 
     const data = { name };
-    if (editedScene) {
-      data._id = editedScene._id;
-      await axios.put("/api/scenes", data);
-      setEditedScene(null);
-      fetchScenes();
+    if (editedStage) {
+      data._id = editedStage._id;
+      await axios.put("/api/stages", data);
+      setEditedStage(null);
+      fetchStages();
     } else {
-      await axios.post("/api/scenes", data);
+      await axios.post("/api/stages", data);
     }
     setName("");
-    fetchScenes();
+    fetchStages();
   }
 
-  function editScene(scene) {
-    setEditedScene(scene);
-    setName(scene.name);
+  function editStage(stage) {
+    setEditedStage(stage);
+    setName(stage.name);
   }
 
-  function deleteScene(scene) {
+  function deleteStage(stage) {
     swal
       .fire({
         title: "Uwaga",
-        text: `Czy na pewno chcesz usunąć ${scene.name}?`,
+        text: `Czy na pewno chcesz usunąć ${stage.name}?`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -72,12 +72,12 @@ function ScenesPage({ swal }) {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          const { _id } = scene;
-          await axios.delete("/api/scenes?_id=" + _id);
-          fetchScenes();
+          const { _id } = stage;
+          await axios.delete("/api/stages?_id=" + _id);
+          fetchStages();
           swal.fire(
             "Usunięto!",
-            `Scena ${scene.name} została usunięta`,
+            `Scena ${stage.name} została usunięta`,
             "success"
           );
         }
@@ -87,9 +87,9 @@ function ScenesPage({ swal }) {
   return (
     <Layout>
       <h1>Sceny</h1>
-      <form onSubmit={saveScene}>
+      <form onSubmit={saveStage}>
         <Label>
-          {editedScene ? `Edytuj scenę: ${editedScene.name}` : "Utwórz scenę"}
+          {editedStage ? `Edytuj scenę: ${editedStage.name}` : "Utwórz scenę"}
         </Label>
         <div>
           <FieldInput
@@ -104,10 +104,10 @@ function ScenesPage({ swal }) {
           )}
         </div>
         <div className="flex gap-1">
-          {editedScene && (
+          {editedStage && (
             <ButtonDanger
               onClick={() => {
-                setEditedScene(null);
+                setEditedStage(null);
                 setName("");
               }}
             >
@@ -117,7 +117,7 @@ function ScenesPage({ swal }) {
           <ButtonPrimary>Zapisz</ButtonPrimary>
         </div>
       </form>
-      {!editedScene && (
+      {!editedStage && (
         <table className="primary-table mt-5">
           <thead>
             <tr>
@@ -133,18 +133,18 @@ function ScenesPage({ swal }) {
                 </td>
               </tr>
             )}
-            {scenes.length > 0 &&
-              scenes.map((scene) => (
-                <tr key={scene._id}>
-                  <td>{scene.name}</td>
+            {stages.length > 0 &&
+              stages.map((stage) => (
+                <tr key={stage._id}>
+                  <td>{stage.name}</td>
                   <td>
                     <ButtonPrimary
-                      onClick={() => editScene(scene)}
+                      onClick={() => editStage(stage)}
                       className="mr-2"
                     >
                       Edytuj
                     </ButtonPrimary>
-                    <ButtonDanger onClick={() => deleteScene(scene)}>
+                    <ButtonDanger onClick={() => deleteStage(stage)}>
                       Usuń
                     </ButtonDanger>
                   </td>
@@ -157,4 +157,4 @@ function ScenesPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }) => <ScenesPage swal={swal} />);
+export default withSwal(({ swal }) => <StagesPage swal={swal} />);

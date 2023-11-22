@@ -1,4 +1,4 @@
-import { Scene } from "@/models/Scene";
+import { Stage } from "@/models/Stage";
 import { mongooseConnect } from "@/lib/mongoose";
 import { isAdminRequest } from "./auth/[...nextauth]";
 
@@ -8,26 +8,26 @@ export default async function handle(req, res) {
   await isAdminRequest(req, res);
 
   if (method === "GET") {
-    res.json(await Scene.find());
+    res.json(await Stage.find());
   }
 
   if (method === "POST") {
     const { name } = req.body;
-    const newScene = await Scene.create({
+    const newStage = await Stage.create({
       name,
     });
-    res.json(newScene);
+    res.json(newStage);
   }
 
   if (method === "PUT") {
     const { name, _id } = req.body;
-    const newScene = await Scene.updateOne({ _id }, { name });
-    res.json(newScene);
+    const newStage = await Stage.updateOne({ _id }, { name });
+    res.json(newStage);
   }
 
   if (method === "DELETE") {
     const { _id } = req.query;
-    await Scene.deleteOne({ _id });
+    await Stage.deleteOne({ _id });
     res.json(true);
   }
 }

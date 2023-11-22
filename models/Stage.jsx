@@ -1,6 +1,6 @@
 import { model, Schema, models } from "mongoose";
 
-const SceneSchema = new Schema(
+const StageSchema = new Schema(
   {
     name: { type: String, required: true },
   },
@@ -9,4 +9,4 @@ const SceneSchema = new Schema(
   }
 );
 
-export const Scene = models?.Scene || model("Scene", SceneSchema);
+export const Stage = models?.Stage || model("Stage", StageSchema);
