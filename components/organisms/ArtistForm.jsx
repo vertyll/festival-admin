@@ -64,7 +64,7 @@ export default function ArtistForm({
       images,
       description,
       stage,
-      concertDate: new Date(concertDate).toISOString(),
+      concertDate: concertDate ? new Date(concertDate).toISOString() : null,
       concertTime,
     };
     if (_id) {
