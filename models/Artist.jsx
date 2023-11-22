@@ -7,6 +7,7 @@ const ArtistSchema = new Schema(
     description: { type: String },
     scene: { type: mongoose.Types.ObjectId, ref: "Scene", required: true },
     concertDate: { type: Date, required: true },
+    concertTime: { type: String },
   },
   {
     timestamps: true,

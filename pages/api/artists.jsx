@@ -16,7 +16,7 @@ export default async function handle(req, res) {
   }
 
   if (method === "POST") {
-    const { name, images, description, scene, concertDate } = req.body;
+    const { name, images, description, scene, concertDate, concertTime } = req.body;
     const isValidScene = scene && scene.trim() !== "";
     const newArtist = await Artist.create({
       name,
@@ -24,12 +24,13 @@ export default async function handle(req, res) {
       description,
       scene: isValidScene ? scene : null,
       concertDate,
+      concertTime,
     });
     res.json(newArtist);
   }
 
   if (method === "PUT") {
-    const { name, images, description, scene, concertDate, _id } = req.body;
+    const { name, images, description, scene, concertDate, concertTime, _id } = req.body;
     const isValidScene = scene && scene.trim() !== "";
     await Artist.updateOne(
       { _id },
@@ -39,6 +40,7 @@ export default async function handle(req, res) {
         description,
         scene: isValidScene ? scene : null,
         concertDate,
+        concertTime,
       }
     );
     res.json(true);

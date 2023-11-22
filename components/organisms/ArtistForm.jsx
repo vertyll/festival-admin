@@ -19,6 +19,7 @@ export default function ArtistForm({
   description: currentDescription,
   scene: currentScene,
   concertDate: currentConcertDate,
+  concertTime: currentConcertTime,
 }) {
   const [name, setName] = useState(currentName || "");
   const [images, setImages] = useState(currentImages || []);
@@ -26,6 +27,7 @@ export default function ArtistForm({
   const [scene, setScene] = useState(currentScene || "");
   const [scenes, setScenes] = useState([]);
   const [concertDate, setConcertDate] = useState(currentConcertDate || "");
+  const [concertTime, setConcertTime] = useState(currentConcertTime || "");
   const [goToArtists, setGoToArtists] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [scenesIsLoading, setScenesIsLoading] = useState(false);
@@ -57,6 +59,7 @@ export default function ArtistForm({
       description,
       scene,
       concertDate,
+      concertTime,
     };
     if (_id) {
       await axios.put("/api/artists", { ...data, _id });
@@ -203,6 +206,13 @@ export default function ArtistForm({
         type="date"
         value={concertDate}
         onChange={(e) => setConcertDate(e.target.value)}
+      />
+      <FieldInput
+        labelText={<span>Godzina</span>}
+        type="text"
+        placeholder="godzina koncertu"
+        value={concertTime}
+        onChange={(e) => setConcertTime(e.target.value)}
       />
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
