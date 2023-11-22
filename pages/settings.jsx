@@ -9,6 +9,8 @@ import { validateFormValues } from "@/utils/validation/validation";
 function SettingsPage({ swal }) {
   const [isLoading, setIsLoading] = useState(false);
   const [shippingPrice, setShippingPrice] = useState("");
+  const [availabilityVisible, setAvailabilityVisible] = useState(false);
+  const [additionalAvailabilityVisible, setAdditionalAvailabilityVisible] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
@@ -19,9 +21,29 @@ function SettingsPage({ swal }) {
   }, []);
 
   async function fetchAll() {
-    await axios.get("/api/settings?name=shippingPrice").then((response) => {
-      setShippingPrice(response.data?.value);
-    });
+    try {
+      const shippingResponse = await axios.get(
+        "/api/settings?name=shippingPrice"
+      );
+      const availabilityResponse = await axios.get(
+        "/api/settings?name=availabilityVisible"
+      );
+      const additionalAvailabilityResponse = await axios.get(
+        "/api/settings?name=additionalAvailabilityVisible"
+      );
+
+      if (shippingResponse.data) {
+        setShippingPrice(shippingResponse.data.value);
+      }
+      if (availabilityResponse.data) {
+        setAvailabilityVisible(availabilityResponse.data.value); // Assuming value is a boolean
+      }
+      if (additionalAvailabilityResponse.data) {
+        setAdditionalAvailabilityVisible(additionalAvailabilityResponse.data.value); // Assuming value is a boolean
+      }
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+    }
   }
 
   async function saveSettings() {
@@ -33,11 +55,24 @@ function SettingsPage({ swal }) {
     }
 
     setIsLoading(true);
-    await axios.put("/api/settings", {
-      name: "shippingPrice",
-      value: shippingPrice,
-    });
+    try {
+      await axios.put("/api/settings", {
+        name: "shippingPrice",
+        value: shippingPrice,
+      });
+      await axios.put("/api/settings", {
+        name: "availabilityVisible",
+        value: availabilityVisible,
+      });
+      await axios.put("/api/settings", {
+        name: "additionalAvailabilityVisible",
+        value: additionalAvailabilityVisible,
+      });
+    } catch (error) {
+      console.error("Error saving settings:", error);
+    }
     setIsLoading(false);
+
     await swal.fire({
       title: "Ustawienia zapisane",
       icon: "success",
@@ -62,6 +97,20 @@ function SettingsPage({ swal }) {
               {validationErrors["shippingPrice"]}
             </div>
           )}
+          <FieldInput
+            labelText={<span>Widoczność ogólnych stanów magazynowych:</span>}
+            type="checkbox"
+            checked={availabilityVisible}
+            value={availabilityVisible}
+            onChange={(e) => setAvailabilityVisible(e.target.checked)}
+          />
+          <FieldInput
+            labelText={<span>Widoczność stanów magazynowych kombinacji:</span>}
+            type="checkbox"
+            checked={additionalAvailabilityVisible}
+            value={additionalAvailabilityVisible}
+            onChange={(e) => setAdditionalAvailabilityVisible(e.target.checked)}
+          />
           <div>
             <button onClick={saveSettings} className="btn-primary">
               Zapisz
