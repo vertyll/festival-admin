@@ -58,10 +58,15 @@ export default function ProductForm({
     if (properties.length > 0) {
       generateCombinations();
     } else {
-      // Resetowanie stanu kombinacji, jeśli nie ma właściwości
+      // Jeśli właściwości są puste, resetuj kombinacje
       setCombinations([]);
     }
   }, [properties]);
+  useEffect(() => {
+    if (currentCombinations?.length > 0) {
+      setCombinations(currentCombinations);
+    }
+  }, [currentCombinations]);
 
   async function saveProduct(e) {
     e.preventDefault();
