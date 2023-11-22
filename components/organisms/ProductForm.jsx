@@ -57,6 +57,9 @@ export default function ProductForm({
   useEffect(() => {
     if (properties.length > 0) {
       generateCombinations();
+    } else {
+      // Resetowanie stanu kombinacji, jeśli nie ma właściwości
+      setCombinations([]);
     }
   }, [properties]);
 
