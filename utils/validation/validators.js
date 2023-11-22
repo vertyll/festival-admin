@@ -1,5 +1,4 @@
 const MAX_NAME_LENGTH = 50;
-const NAME_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_ATTRIBUTE_VALUE_LENGTH = 25;
 const ATTRIBUTE_VALUE_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
@@ -13,9 +12,6 @@ export const validateName = (name) => {
   }
   if (trimmedName.length > MAX_NAME_LENGTH) {
     return `Nazwa nie może przekraczać ${MAX_NAME_LENGTH} znaków.`;
-  }
-  if (NAME_PATTERN.test(trimmedName)) {
-    return "Nazwa może zawierać tylko litery, cyfry, spacje i myślniki.";
   }
 
   return null;
