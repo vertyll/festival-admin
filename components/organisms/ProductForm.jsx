@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -17,6 +18,7 @@ export default function ProductForm({
   name: currentName,
   category: currentCategory,
   properties: currentProperties,
+  combinations: currentCombinations,
   images: currentImages,
   description: currentDescription,
   price: currentPrice,
@@ -35,11 +37,10 @@ export default function ProductForm({
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
   const [attributes, setAttributes] = useState([]);
-  const [buttonClicked, setButtonClicked] = useState(false);
   const [productAvailability, setProductAvailability] = useState(
     currentAvailability || ""
   );
-
+  const [combinations, setCombinations] = useState([]);
   const router = useRouter();
   useEffect(() => {
     setCategoriesIsLoading(true);
@@ -54,8 +55,8 @@ export default function ProductForm({
     });
   }, []);
   useEffect(() => {
-    if (properties.length === 0) {
-      setButtonClicked(false);
+    if (properties.length > 0) {
+      generateCombinations();
     }
   }, [properties]);
 
@@ -67,12 +68,8 @@ export default function ProductForm({
         name,
         price,
         availability: productAvailability,
-        properties: properties.map((property) => ({
-          ...property,
-          availability: property.availability,
-        })),
       },
-      ["name", "price", "availability", "properties"],
+      ["name", "price", "availability"],
       hasProperties
     );
 
@@ -87,6 +84,7 @@ export default function ProductForm({
       name,
       category,
       properties,
+      combinations,
       images,
       description,
       price,
@@ -142,7 +140,6 @@ export default function ProductForm({
         attributeId: defaultAttribute._id,
         name: defaultAttribute.name,
         values: [],
-        availability: {},
       },
     ]);
   }
@@ -184,20 +181,7 @@ export default function ProductForm({
 
       if (!property.values.includes(valueToAdd)) {
         property.values.push(valueToAdd);
-        // Dodanie miejsca na availability dla nowej wartości
-        property.availability[valueToAdd] = "";
       }
-
-      return updatedProperties;
-    });
-  }
-
-  function updateAvailabilityForValue(propertyIndex, value, newAvailability) {
-    setProperties((prev) => {
-      const updatedProperties = [...prev];
-      const property = updatedProperties[propertyIndex];
-
-      property.availability[value] = Number(newAvailability);
 
       return updatedProperties;
     });
@@ -211,12 +195,38 @@ export default function ProductForm({
       // Usunięcie wartości z tablicy
       property.values = property.values.filter((v) => v !== value);
 
-      // Usunięcie powiązanego availability
-      delete property.availability[value];
-
       return updatedProperties;
     });
   }
+
+  function cartesian(...arrays) {
+    return arrays.reduce((a, b) =>
+      a.flatMap((d) => b.map((e) => (Array.isArray(d) ? [...d, e] : [d, e])))
+    );
+  }
+
+  const generateCombinations = () => {
+    const propertyValues = properties.map((property) =>
+      Array.isArray(property.values) ? property.values : [property.values]
+    );
+
+    // Generowanie kombinacji
+    const allCombinations = cartesian(...propertyValues);
+
+    // Przygotowanie danych kombinacji do zapisu
+    const combinationsData = allCombinations.map((comb) => ({
+      combination: comb,
+      availability: 0, // Domyślna wartość
+    }));
+
+    setCombinations(combinationsData);
+  };
+
+  const updateAvailability = (index, value) => {
+    const updatedCombinations = [...combinations];
+    updatedCombinations[index].availability = Number(value);
+    setCombinations(updatedCombinations);
+  };
 
   const hasProperties = properties.some(
     (property) => property.values.length > 0
@@ -257,12 +267,10 @@ export default function ProductForm({
         <ButtonPrimary
           onClick={() => {
             addProperty();
-            setButtonClicked(true);
           }}
           type="button"
-          disabled={buttonClicked}
         >
-          {buttonClicked ? "Właściwość została dodana" : "Dodaj właściwość"}
+          Dodaj właściwość
         </ButtonPrimary>
 
         {properties.length > 0 &&
@@ -292,15 +300,6 @@ export default function ProductForm({
                         Usuń
                       </button>
                     </span>
-                    <FieldInput
-                      labelText={<span>Stan magazywnowy</span>}
-                      type="number"
-                      placeholder="Wprowadź stan magazynowy"
-                      value={property.availability[value] || ""}
-                      onChange={(e) =>
-                        updateAvailabilityForValue(index, value, e.target.value)
-                      }
-                    />
                   </div>
                 ))}
               </div>
@@ -330,9 +329,6 @@ export default function ProductForm({
               </div>
             </div>
           ))}
-        {validationErrors["properties"] && (
-          <div className="error-message">{validationErrors["properties"]}</div>
-        )}
       </div>
       <Label htmlFor="upload">
         <span>Zdjęcia</span>
@@ -431,6 +427,23 @@ export default function ProductForm({
           )}
         </div>
       )}
+      <div>
+        {combinations.map((item, index) => (
+          <div key={index}>
+            <span>
+              {Array.isArray(item.combination)
+                ? item.combination.join(" - ")
+                : item.combination}
+            </span>
+            <input
+              type="number"
+              placeholder="Wprowadź stan magazynowy"
+              value={item.availability || ""}
+              onChange={(e) => updateAvailability(index, e.target.value)}
+            />
+          </div>
+        ))}
+      </div>
 
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
