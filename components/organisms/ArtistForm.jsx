@@ -20,6 +20,7 @@ export default function ArtistForm({
   description: currentDescription,
   stage: currentStage,
   concertDate: currentConcertDate,
+  concertTime: currentConcertTime,
 }) {
   const [name, setName] = useState(currentName || "");
   const [images, setImages] = useState(currentImages || []);
@@ -29,6 +30,7 @@ export default function ArtistForm({
   const [concertDate, setConcertDate] = useState(
     formatDate(currentConcertDate)
   );
+  const [concertTime, setConcertTime] = useState(currentConcertTime || "");
   const [goToArtists, setGoToArtists] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [stagesIsLoading, setStagesIsLoading] = useState(false);
@@ -47,7 +49,10 @@ export default function ArtistForm({
   async function saveArtist(e) {
     e.preventDefault();
 
-    const errors = validateFormValues({ name }, ["name"]);
+    const errors = validateFormValues({ name, concertTime }, [
+      "name",
+      "concertTime",
+    ]);
     setValidationErrors(errors);
 
     if (Object.keys(errors).length > 0) {
@@ -60,6 +65,7 @@ export default function ArtistForm({
       description,
       stage,
       concertDate: new Date(concertDate).toISOString(),
+      concertTime,
     };
     if (_id) {
       await axios.put("/api/artists", { ...data, _id });
@@ -207,6 +213,16 @@ export default function ArtistForm({
         value={concertDate}
         onChange={(e) => setConcertDate(e.target.value)}
       />
+      <FieldInput
+        labelText={<span>Godzina koncertu</span>}
+        placeholder="godzina koncertu"
+        type="time"
+        value={concertTime}
+        onChange={(e) => setConcertTime(e.target.value)}
+      />
+      {validationErrors["concertTime"] && (
+        <div className="error-message">{validationErrors["concertTime"]}</div>
+      )}
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
         <ButtonDanger onClick={() => cancel()} type="button">
