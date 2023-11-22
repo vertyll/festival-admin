@@ -3,6 +3,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_ATTRIBUTE_VALUE_LENGTH = 25;
 const ATTRIBUTE_VALUE_PATTERN = /[^a-zA-Z0-9 łżńąśźęóćŁŻŃĄŚŹĘÓĆ -]/;
 const MIN_AVAILABILITY_VALUE = 1;
+const CONCERT_TIME_PATTERN = /^[0-9]{2}:[0-9]{2}$/;
 
 export const validateName = (name) => {
   const trimmedName = name.trim();
@@ -88,6 +89,18 @@ export const validateCombinationsAvailability = (combinationsAvailability) => {
         i + 1
       } musi być liczbą większą lub równą ${MIN_AVAILABILITY_VALUE}`;
     }
+  }
+  return null;
+};
+
+export const validateConcertTime = (concertTime) => {
+  //możę być puste, jeśli nie jest puste to musi być w formacie 20:00 czyli 2 cyfry dwukropek 2 cyfry
+  if (concertTime == null || concertTime == "") {
+    return null;
+  }
+  const trimmedConcertTime = concertTime.trim();
+  if (!CONCERT_TIME_PATTERN.test(trimmedConcertTime)) {
+    return "Nieprawidłowy format godziny koncertu. Wprowadź w formacie XX:XX";
   }
   return null;
 };

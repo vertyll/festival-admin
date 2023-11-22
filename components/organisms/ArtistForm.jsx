@@ -46,7 +46,7 @@ export default function ArtistForm({
   async function saveArtist(e) {
     e.preventDefault();
 
-    const errors = validateFormValues({ name }, ["name"]);
+    const errors = validateFormValues({ name, concertTime }, ["name", "concertTime"]);
     setValidationErrors(errors);
 
     if (Object.keys(errors).length > 0) {
@@ -214,6 +214,9 @@ export default function ArtistForm({
         value={concertTime}
         onChange={(e) => setConcertTime(e.target.value)}
       />
+      {validationErrors["concertTime"] && (
+        <div className="error-message">{validationErrors["concertTime"]}</div>
+      )}
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
         <ButtonDanger onClick={() => cancel()} type="button">
