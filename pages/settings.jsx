@@ -10,7 +10,8 @@ function SettingsPage({ swal }) {
   const [isLoading, setIsLoading] = useState(false);
   const [shippingPrice, setShippingPrice] = useState("");
   const [availabilityVisible, setAvailabilityVisible] = useState(false);
-  const [additionalAvailabilityVisible, setAdditionalAvailabilityVisible] = useState(false);
+  const [additionalAvailabilityVisible, setAdditionalAvailabilityVisible] =
+    useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
@@ -39,7 +40,9 @@ function SettingsPage({ swal }) {
         setAvailabilityVisible(availabilityResponse.data.value); // Assuming value is a boolean
       }
       if (additionalAvailabilityResponse.data) {
-        setAdditionalAvailabilityVisible(additionalAvailabilityResponse.data.value); // Assuming value is a boolean
+        setAdditionalAvailabilityVisible(
+          additionalAvailabilityResponse.data.value
+        ); // Assuming value is a boolean
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
@@ -97,20 +100,26 @@ function SettingsPage({ swal }) {
               {validationErrors["shippingPrice"]}
             </div>
           )}
-          <FieldInput
-            labelText={<span>Widoczność ogólnych stanów magazynowych:</span>}
-            type="checkbox"
-            checked={availabilityVisible}
-            value={availabilityVisible}
-            onChange={(e) => setAvailabilityVisible(e.target.checked)}
-          />
-          <FieldInput
-            labelText={<span>Widoczność stanów magazynowych kombinacji:</span>}
-            type="checkbox"
-            checked={additionalAvailabilityVisible}
-            value={additionalAvailabilityVisible}
-            onChange={(e) => setAdditionalAvailabilityVisible(e.target.checked)}
-          />
+          <div className="w-max">
+            <FieldInput
+              labelText={<span>Widoczność ogólnych stanów magazynowych:</span>}
+              type="checkbox"
+              checked={availabilityVisible}
+              value={availabilityVisible}
+              onChange={(e) => setAvailabilityVisible(e.target.checked)}
+            />
+            <FieldInput
+              labelText={
+                <span>Widoczność stanów magazynowych kombinacji:</span>
+              }
+              type="checkbox"
+              checked={additionalAvailabilityVisible}
+              value={additionalAvailabilityVisible}
+              onChange={(e) =>
+                setAdditionalAvailabilityVisible(e.target.checked)
+              }
+            />
+          </div>
           <div>
             <button onClick={saveSettings} className="btn-primary">
               Zapisz
