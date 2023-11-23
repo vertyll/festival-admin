@@ -1229,6 +1229,11 @@
   dependencies:
     undici-types "~5.25.1"
 
+"@types/sortablejs@1":
+  version "1.15.7"
+  resolved "https://registry.yarnpkg.com/@types/sortablejs/-/sortablejs-1.15.7.tgz#11f85e98fce2854708e5c6d6011f7a236d79ae9f"
+  integrity sha512-PvgWCx1Lbgm88FdQ6S7OGvLIjWS66mudKPlfdrWil0TjsO5zmoZmzoKiiwRShs1dwPgrlkr0N4ewuy0/+QUXYQ==
+
 "@types/webidl-conversions@*":
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/@types/webidl-conversions/-/webidl-conversions-7.0.2.tgz#d703e2bf61d8b77a7669adcd8fdf98108155d594"
@@ -3725,6 +3730,11 @@ typed-array-length@^1.0.4:
     call-bind "^1.0.2"
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
+
+typescript@^5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.2.tgz#00d1c7c1c46928c5845c1ee8d0cc2791031d4c43"
+  integrity sha512-6l+RyNy7oAHDfxC4FzSJcz9vnjTKxrLpDG5M2Vu4SHRVNg6xzqZp6LYSR9zjqQTu8DU/f5xwxUdADOkbrIX2gQ==
 
 uid-safe@2.1.5:
   version "2.1.5"
