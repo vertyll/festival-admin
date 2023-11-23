@@ -104,3 +104,10 @@ export const validateConcertTime = (concertTime) => {
   }
   return null;
 };
+
+export const validateLink = (link) => {
+  const trimmedLink = link.trim();
+  if (!trimmedLink) {
+    return "Proszę wpisać link.";
+  }
+};

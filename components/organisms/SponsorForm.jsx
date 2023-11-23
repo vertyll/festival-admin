@@ -31,7 +31,7 @@ export default function SponsorForm({
   async function saveSponsor(e) {
     e.preventDefault();
 
-    const errors = validateFormValues({ name }, ["name"]);
+    const errors = validateFormValues({ name, link }, ["name", "link"]);
     setValidationErrors(errors);
 
     if (Object.keys(errors).length > 0) {
@@ -166,6 +166,9 @@ export default function SponsorForm({
         value={link}
         onChange={(e) => setLink(e.target.value)}
       />
+      {validationErrors["link"] && (
+        <div className="error-message">{validationErrors["link"]}</div>
+      )}
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
         <ButtonDanger onClick={() => cancel()} type="button">

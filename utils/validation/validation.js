@@ -8,6 +8,7 @@ import {
   validateAvailability,
   validateCombinationsAvailability,
   validateConcertTime,
+  validateLink,
 } from "./validators";
 
 export const validateFormValues = (
@@ -26,6 +27,7 @@ export const validateFormValues = (
     availability: validateAvailability,
     combinationsAvailability: validateCombinationsAvailability,
     concertTime: validateConcertTime,
+    link: validateLink,
   };
 
   if (hasProperties) {
