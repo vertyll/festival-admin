@@ -41,6 +41,8 @@ export default function ProductForm({
     currentAvailability || ""
   );
   const [combinations, setCombinations] = useState([]);
+  const [originalCombinations, setOriginalCombinations] = useState([]);
+
   const router = useRouter();
   useEffect(() => {
     setCategoriesIsLoading(true);
@@ -66,6 +68,10 @@ export default function ProductForm({
     if (currentCombinations?.length > 0) {
       setCombinations(currentCombinations);
     }
+  }, [currentCombinations]);
+  useEffect(() => {
+    // Ustawienie oryginalnych kombinacji po załadowaniu formularza
+    setOriginalCombinations(currentCombinations || []);
   }, [currentCombinations]);
 
   async function saveProduct(e) {
@@ -169,13 +175,12 @@ export default function ProductForm({
     );
   }
 
-  function removeProperty(indexToRemove) {
-    setProperties((prev) => {
-      return [...prev].filter((p, pIndex) => {
-        return pIndex !== indexToRemove;
-      });
-    });
-  }
+  const removeProperty = (indexToRemove) => {
+    setProperties((prev) =>
+      prev.filter((_, pIndex) => pIndex !== indexToRemove)
+    );
+    generateCombinations();
+  };
 
   function handleRemoveImage(imageIndex) {
     setImages((prevImages) =>
@@ -219,14 +224,19 @@ export default function ProductForm({
       Array.isArray(property.values) ? property.values : [property.values]
     );
 
-    // Generowanie kombinacji
     const allCombinations = cartesian(...propertyValues);
-
-    // Przygotowanie danych kombinacji do zapisu
-    const combinationsData = allCombinations.map((comb) => ({
-      combination: comb,
-      availability: 0, // Domyślna wartość
-    }));
+    const combinationsData = allCombinations.map(comb => {
+      // Upewnij się, że comb jest zawsze tablicą
+      const combArray = Array.isArray(comb) ? comb : [comb];
+      const combString = combArray.join("-");
+      const found = originalCombinations.find(
+        oc => oc.combination.join("-") === combString
+      );
+      return {
+        combination: combArray,
+        availability: found ? found.availability : 0,
+      };    
+    });
 
     setCombinations(combinationsData);
   };
@@ -235,6 +245,7 @@ export default function ProductForm({
     const updatedCombinations = [...combinations];
     updatedCombinations[index].availability = Number(value);
     setCombinations(updatedCombinations);
+    setOriginalCombinations(updatedCombinations);
   };
 
   const hasProperties = properties.some(
