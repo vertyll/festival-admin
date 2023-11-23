@@ -3,7 +3,7 @@ import mongoose, { model, Schema, models } from "mongoose";
 const CategorySchema = new Schema(
   {
     name: { type: String, required: true },
-    parent: { type: mongoose.Types.ObjectId, ref: "Category" },
+    parent: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
   },
   {
     timestamps: true,

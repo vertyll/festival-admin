@@ -5,7 +5,7 @@ const ArtistSchema = new Schema(
     name: { type: String, required: true },
     images: { type: [String] },
     description: { type: String },
-    stage: { type: mongoose.Types.ObjectId, ref: "Stage" },
+    stage: { type: mongoose.Schema.Types.ObjectId, ref: "Stage" },
     concertDate: { type: Date },
     concertTime: { type: String },
   },
