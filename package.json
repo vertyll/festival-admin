@@ -1,6 +1,8 @@
 {
   "name": "festival-admin",
   "version": "0.1.0",
+  "description": "Praca inżynierska - strona administracyjna festiwalu muzycznego z sklepem internetowym",
+  "author": "Mikołaj Gawron gawrmiko@gmail.com",
   "private": true,
   "scripts": {
     "dev": "next dev",
