@@ -94,7 +94,7 @@ export const validateCombinationsAvailability = (combinationsAvailability) => {
 };
 
 export const validateConcertTime = (concertTime) => {
-  //możę być puste, jeśli nie jest puste to musi być w formacie 20:00 czyli 2 cyfry dwukropek 2 cyfry
+  //może być puste, jeśli nie jest puste to musi być w formacie 20:00 czyli 2 cyfry dwukropek 2 cyfry
   if (concertTime == null || concertTime == "") {
     return null;
   }
