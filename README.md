@@ -31,11 +31,11 @@ Aplikacja internetowa wymyślonego festiwalu muzycznego - Sunset Festival. Jest 
 
 ### Amazon AWS S3 Service:
 
-Do przechowywania zdjęć wrzucanych za pomocą panelu administracyjnego został użyty Amazon AWS S3 Service. Jest to chmurowa usługa firmy Amazon służąca do przechowywania danych i zarządzania nimi. Usługa została wybrana w projekcie, ponieważ jest niezawodna. AWS oferuje wysoką dostępność centrów danych rozmieszczonych po całym świecie. Usługa jest również bardzo elastyczna, umożliwiając wybór różnych systemów i języków, a także oferuje dużą skalowalność. Dane są zaszyfrowane i można kontrolować dostęp do danych. AWS S3 Service jest bardzo pojemny, może przechowywać nielimitowaną ilość danych. S3 oferuje bogate API i zestawy SDK w wielu językach programowania, umożliwiając łatwą integrację z aplikacjami.
+Do przechowywania zdjęć wrzucanych za pomocą panelu administracyjnego został użyty Amazon AWS S3 Service.
 
 ### Google Cloud Platform:
 
-Kolejną usługą chmurową wykorzystaną w projekcie jest Google Cloud Platform. W kontekście autoryzacji została użyta usługa Google Cloud Console, umożliwiająca zarządzanie tożsamościami i uprawnieniami. Usługa jest bardzo bezpieczna, zapewniając zaawansowane funkcje bezpieczeństwa. Google Cloud Console umożliwia monitorowanie i logowanie, dzięki czemu możemy śledzić kto i kiedy uzyskał dostęp do zasobów. Umożliwia generowanie kluczy API, które możemy wykorzystywać w projektach, dlatego usługa ta idealnie wpasowała się w ramy projektowe. Tutaj logowanie zostało rozdzielone na dwa projekty, panel administracyjny i stronę festiwalu ze sklepem wykorzystując identyfikatory klienta OAuth 2.0.
+Kolejną usługą chmurową wykorzystaną w projekcie jest Google Cloud Platform. W kontekście autoryzacji została użyta usługa Google Cloud Console, umożliwiająca zarządzanie tożsamościami i uprawnieniami. Logowanie zostało rozdzielone na dwa projekty, panel administracyjny i stronę festiwalu ze sklepem wykorzystując identyfikatory klienta OAuth 2.0.
 
 Dzięki wykorzystaniu tych usług chmurowych projekt zyskał skalowalność, niezawodność oraz zaawansowane funkcje bezpieczeństwa, co znacznie zwiększyło jego funkcjonalność i atrakcyjność dla użytkowników.
 
