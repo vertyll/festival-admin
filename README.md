@@ -1,8 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Założenia projektu 
 
-## Getting Started
+Aplikacja internetowa wymyślonego festiwalu muzycznego - Sunset Festival. Jest to dedykowany panel administracyjny dla odpowiadającej mu strony internetowej wymyślonego festiwalu muzycznego. W panelu administracyjnym możemy zarządzać informacjami związanymi z festiwalem, dodawać, edytować i usuwać produkty, kategorie, atrybuty dla produktów, zarządzać stanami magazynowmi i ustawieniami konfiguracyjnymi dla strony i wiele więcej.
 
-First, run the development server:
+## Stos technologiczny
+
+### Frontend:
+- Next.js
+- React
+- Tailwind CSS do szybkiego stylowania komponentów
+- Sweetalert2 do wyświetlania interaktywnych komunikatów
+- date-fns do manipulacji datami
+
+### Backend:
+- MongoDB jako baza danych NoSQL
+- Next-auth do uwierzytelniania użytkowników
+- Axios do wykonywania żądań HTTP do serwera
+- aws-sdk/client-s3 do integracji z usługą Amazon S3
+
+### Inne:
+- ESLint do statycznej analizy kodu i utrzymania jednolitej jakości kodu
+- Sortable.js do obsługi sortowania elementów interfejsu użytkownika
+- Lodash do efektywnego zarządzania danymi i manipulacji nimi
+- Lottie-web do renderowania animacji wektorowych w formacie JSON
+- mime-types do obsługi typów MIME
+
+### Dodatkowe narzędzia:
+- Next-reveal do efektownego wyświetlania treści podczas przewijania strony
+
+## Usługi chmurowe użyte w projekcie
+
+### Amazon AWS S3 Service:
+
+Do przechowywania zdjęć wrzucanych za pomocą panelu administracyjnego został użyty Amazon AWS S3 Service. Jest to chmurowa usługa firmy Amazon służąca do przechowywania danych i zarządzania nimi. Usługa została wybrana w projekcie, ponieważ jest niezawodna. AWS oferuje wysoką dostępność centrów danych rozmieszczonych po całym świecie. Usługa jest również bardzo elastyczna, umożliwiając wybór różnych systemów i języków, a także oferuje dużą skalowalność. Dane są zaszyfrowane i można kontrolować dostęp do danych. AWS S3 Service jest bardzo pojemny, może przechowywać nielimitowaną ilość danych. S3 oferuje bogate API i zestawy SDK w wielu językach programowania, umożliwiając łatwą integrację z aplikacjami.
+
+### Google Cloud Platform:
+
+Kolejną usługą chmurową wykorzystaną w projekcie jest Google Cloud Platform. W kontekście autoryzacji została użyta usługa Google Cloud Console, umożliwiająca zarządzanie tożsamościami i uprawnieniami. Usługa jest bardzo bezpieczna, zapewniając zaawansowane funkcje bezpieczeństwa. Google Cloud Console umożliwia monitorowanie i logowanie, dzięki czemu możemy śledzić kto i kiedy uzyskał dostęp do zasobów. Umożliwia generowanie kluczy API, które możemy wykorzystywać w projektach, dlatego usługa ta idealnie wpasowała się w ramy projektowe. Tutaj logowanie zostało rozdzielone na dwa projekty, panel administracyjny i stronę festiwalu ze sklepem wykorzystując identyfikatory klienta OAuth 2.0.
+
+Dzięki wykorzystaniu tych usług chmurowych projekt zyskał skalowalność, niezawodność oraz zaawansowane funkcje bezpieczeństwa, co znacznie zwiększyło jego funkcjonalność i atrakcyjność dla użytkowników.
+
+## Zdjęcia poglądowe
+
+![Widok projektu w Amazon S3 Service](https://nextjs-festival.s3.eu-north-1.amazonaws.com/Zrzut+ekranu+2024-02-1+o+19.56.44.png)
+![Widok projektu w Amazon S3 Service](https://nextjs-festival.s3.eu-north-1.amazonaws.com/Zrzut+ekranu+2024-02-1+o+19.57.01.png)
+![Widok projektu w Amazon S3 Service](https://nextjs-festival.s3.eu-north-1.amazonaws.com/Zrzut+ekranu+2024-02-1+o+19.57.10.png)
+![Widok projektu w Amazon S3 Service](https://nextjs-festival.s3.eu-north-1.amazonaws.com/Zrzut+ekranu+2024-02-1+o+19.57.34.png)
+![Widok projektu w Amazon S3 Service](https://nextjs-festival.s3.eu-north-1.amazonaws.com/Zrzut+ekranu+2024-02-1+o+19.57.45.png)
+
+## Informacje dodatkowe
+
+Aplikacja łączy się z stroną internetową festiwalu, która również jest dostępna w repozytrium GitHub.
+
+
+## Instrukcja instalacji projektu
+
+Pobieramy projekt na lokalne środowisko
+Tworzymy plik .env i kopiujemy do niego zawartość .env.example, po czym definiujemy swoje własne klucze API i dane konfiguracyjne
+
+Instalujemy npm za pomocą komendy:
+
+```bash
+npm install
+```
+
+Uruchamiamy aplikacje na lokalnym środowisku:
 
 ```bash
 npm run dev
@@ -14,27 +75,4 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Domyśnie, jeżeli użyjemy jednej z powyższej komendy, aplikacja powinna być dostępna na adresie [http://localhost:3000](http://localhost:3000). Adres wklejamy do przeglądarki internetowej.
