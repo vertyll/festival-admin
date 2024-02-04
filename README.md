@@ -1,3 +1,5 @@
+## Link: https://festival-admin.vercel.app/
+
 ## Założenia projektu 
 
 Aplikacja internetowa wymyślonego festiwalu muzycznego - Sunset Festival. Jest to dedykowany panel administracyjny dla odpowiadającej mu strony internetowej wymyślonego festiwalu muzycznego. W panelu administracyjnym możemy zarządzać informacjami związanymi z festiwalem, dodawać, edytować i usuwać produkty, kategorie, atrybuty dla produktów, zarządzać stanami magazynowmi i ustawieniami konfiguracyjnymi dla strony i wiele więcej.
