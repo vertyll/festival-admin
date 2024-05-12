@@ -14,6 +14,7 @@ Aplikacja internetowa wymyślonego festiwalu muzycznego - Sunset Festival. Jest 
 - date-fns do manipulacji datami
 
 ### Backend:
+- Node.js
 - MongoDB jako baza danych NoSQL
 - Next-auth do uwierzytelniania użytkowników
 - Axios do wykonywania żądań HTTP do serwera
