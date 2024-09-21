@@ -1,10 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import Sidebar from "@/components/organisms/Sidebar";
 import ButtonLogin from "../atoms/ButtonLogin";
 import Topbar from "../organisms/Topbar";
 import { useState } from "react";
 import Logo from "../atoms/Logo";
+import CookieBanner from "../organisms/CookieBanner";
 
 export default function Layout({ children }) {
   const [showNav, setShowNav] = useState(false);
@@ -18,6 +18,7 @@ export default function Layout({ children }) {
             Logowanie <b>Google</b>
           </ButtonLogin>
         </div>
+        <CookieBanner />
       </div>
     );
   }
