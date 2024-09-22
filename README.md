@@ -21,6 +21,9 @@ Aplikacja internetowa wymyślonego festiwalu muzycznego - Sunset Festival. Jest 
 - Axios do wykonywania żądań HTTP do serwera
 - aws-sdk/client-s3 do integracji z usługą Amazon S3
 
+### Uwierzytelnianie:
+- uwierzytelnianie za pomocą OAuth 2.0
+
 ### Inne:
 - ESLint do statycznej analizy kodu i utrzymania jednolitej jakości kodu
 - Sortable.js do obsługi sortowania elementów interfejsu użytkownika
