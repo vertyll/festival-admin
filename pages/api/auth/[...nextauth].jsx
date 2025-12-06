@@ -5,6 +5,7 @@ import NextAuth, { getServerSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 async function isAdminEmail(email) {
+  // ! THIS IS SPECIAL FOR PREVIEW DEPLOYMENTS ONLY
   // return !!(await Admin.findOne({ email }));
   return true;
 }
@@ -18,6 +19,9 @@ export const authOptions = {
     }),
   ],
   adapter: MongoDBAdapter(clientPromise),
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
     session: async ({ session, token, user }) => {
       if (await isAdminEmail(session?.user?.email)) {
@@ -25,6 +29,13 @@ export const authOptions = {
       } else {
         return false;
       }
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.sub = user.id;
+      }
+
+      return token;
     },
   },
 };

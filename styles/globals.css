@@ -141,18 +141,21 @@
   }
 
   .primary-table td {
-    padding-left: 50%;
+    position: relative;
+    padding: 10px;
     white-space: normal;
-    text-align: left;
+    text-align: center;
   }
 
   .primary-table td:before {
     position: absolute;
-    top: 6px;
-    left: 6px;
+    top: 10px;
+    left: 10px;
     width: 45%;
     padding-right: 10px;
     white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
     content: attr(data-label);
   }
 }
