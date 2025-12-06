@@ -18,7 +18,7 @@ export default function Sidebar({ show }) {
     <aside
       className={
         (show ? "left-0" : "-left-full") +
-        " transition-all md:w-auto md:static top-0 text-white p-4 fixed w-full bg-indigo-600 h-full"
+        " transition-all md:w-auto md:static top-0 text-white p-4 fixed w-full bg-indigo-600 h-full z-50"
       }
     >
       <div>
