@@ -4,30 +4,29 @@ import Layout from "@/components/templates/Layout";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
-import { withSwal } from "react-sweetalert2";
+import Swal from "sweetalert2";
 import Label from "@/components/atoms/Label";
 import Spinner from "@/components/atoms/Spinner";
 import { validateFormValues } from "@/utils/validation/validation";
 import { normalDate } from "@/utils/date";
 
-function AdminsPage({ swal }) {
+function AdminsPage() {
   const [email, setEmail] = useState("");
   const [admins, setAdmins] = useState([]);
   const [editedAdmin, setEditedAdmin] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
 
-  useEffect(() => {
-    fetchAdmins();
-  }, []);
-
   function fetchAdmins() {
-    setIsLoading(true);
     axios.get("/api/admins").then((response) => {
       setAdmins(response.data);
       setIsLoading(false);
     });
   }
+
+  useEffect(() => {
+    fetchAdmins();
+  }, []);
 
   async function saveAdmin(e) {
     e.preventDefault();
@@ -49,7 +48,7 @@ function AdminsPage({ swal }) {
         await axios.post("/api/admins", data);
       } catch (error) {
         console.log(error);
-        swal.fire({
+        Swal.fire({
           icon: "error",
           title: "Error!",
           text: error.response.data.message,
@@ -66,40 +65,30 @@ function AdminsPage({ swal }) {
   }
 
   function deleteAdmin(admin) {
-    swal
-      .fire({
-        title: "Uwaga",
-        text: `Czy na pewno chcesz usunąć ${admin.email}?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "Nie",
-        confirmButtonText: "Tak",
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          const { _id } = admin;
-          await axios.delete("/api/admins?_id=" + _id);
-          fetchAdmins();
-          swal.fire(
-            "Usunięto!",
-            `Administrator ${admin.email} został usunięty`,
-            "success"
-          );
-        }
-      });
+    Swal.fire({
+      title: "Uwaga",
+      text: `Czy na pewno chcesz usunąć ${admin.email}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Nie",
+      confirmButtonText: "Tak",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { _id } = admin;
+        await axios.delete("/api/admins?_id=" + _id);
+        fetchAdmins();
+        Swal.fire("Usunięto!", `Administrator ${admin.email} został usunięty`, "success");
+      }
+    });
   }
 
   return (
     <Layout>
       <h1>Administratorzy</h1>
       <form onSubmit={saveAdmin}>
-        <Label>
-          {editedAdmin
-            ? `Edytuj administratora ${editedAdmin.email}`
-            : "Dodaj administratora"}
-        </Label>
+        <Label>{editedAdmin ? `Edytuj administratora ${editedAdmin.email}` : "Dodaj administratora"}</Label>
         <FieldInput
           labelText={<span>Adres email</span>}
           type="text"
@@ -107,9 +96,7 @@ function AdminsPage({ swal }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {validationErrors["email"] && (
-          <div className="error-message">{validationErrors["email"]}</div>
-        )}
+        {validationErrors["email"] && <div className="error-message">{validationErrors["email"]}</div>}
         <div className="flex gap-1">
           {editedAdmin && (
             <ButtonDanger
@@ -147,15 +134,10 @@ function AdminsPage({ swal }) {
                   <td>{admin.email}</td>
                   <td>{admin.createdAt && normalDate(admin.createdAt)}</td>
                   <td>
-                    <ButtonPrimary
-                      onClick={() => editAdmin(admin)}
-                      className="mr-2"
-                    >
+                    <ButtonPrimary onClick={() => editAdmin(admin)} className="mr-2">
                       Edytuj
                     </ButtonPrimary>
-                    <ButtonDanger onClick={() => deleteAdmin(admin)}>
-                      Usuń
-                    </ButtonDanger>
+                    <ButtonDanger onClick={() => deleteAdmin(admin)}>Usuń</ButtonDanger>
                   </td>
                 </tr>
               ))}
@@ -166,4 +148,4 @@ function AdminsPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }) => <AdminsPage swal={swal} />);
+export default AdminsPage;

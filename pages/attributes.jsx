@@ -3,34 +3,32 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ButtonPrimary from "@/components/atoms/ButtonPrimary";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
-import { withSwal } from "react-sweetalert2";
+import Swal from "sweetalert2";
 import Label from "@/components/atoms/Label";
 import FieldInput from "@/components/molecules/FieldInput";
 import Spinner from "@/components/atoms/Spinner";
 import { validateFormValues } from "@/utils/validation/validation";
 
-function AttributesPage({ swal }) {
+function AttributesPage() {
   const [name, setName] = useState("");
   const [attributeValue, setAttributeValue] = useState("");
   const [attributeValues, setAttributeValues] = useState([]);
   const [attributes, setAttributes] = useState([]);
   const [editedAttribute, setEditedAttribute] = useState(null);
-  const [editingAttributeValueIndex, setEditingAttributeValueIndex] =
-    useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [editingAttributeValueIndex, setEditingAttributeValueIndex] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
 
-  useEffect(() => {
-    fetchAttributes();
-  }, []);
-
   function fetchAttributes() {
-    setIsLoading(true);
     axios.get("/api/attributes").then((response) => {
       setAttributes(response.data);
       setIsLoading(false);
     });
   }
+
+  useEffect(() => {
+    fetchAttributes();
+  }, []);
 
   async function saveAttribute(e) {
     e.preventDefault();
@@ -70,28 +68,22 @@ function AttributesPage({ swal }) {
   }
 
   function deleteAttribute(attribute) {
-    swal
-      .fire({
-        title: "Uwaga",
-        text: `Czy na pewno chcesz usunąć ${attribute.name}?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "Nie",
-        confirmButtonText: "Tak",
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          await axios.delete(`/api/attributes?_id=${attribute._id}`);
-          fetchAttributes();
-          swal.fire(
-            "Usunięto!",
-            `Atrybut ${attribute.name} został usunięty.`,
-            "success"
-          );
-        }
-      });
+    Swal.fire({
+      title: "Uwaga",
+      text: `Czy na pewno chcesz usunąć ${attribute.name}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Nie",
+      confirmButtonText: "Tak",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await axios.delete(`/api/attributes?_id=${attribute._id}`);
+        fetchAttributes();
+        swal.fire("Usunięto!", `Atrybut ${attribute.name} został usunięty.`, "success");
+      }
+    });
   }
 
   function addOrUpdateAttributeValue() {
@@ -126,11 +118,7 @@ function AttributesPage({ swal }) {
     <Layout>
       <h1>Atrybuty</h1>
       <form onSubmit={saveAttribute}>
-        <Label>
-          {editedAttribute
-            ? `Edytuj atrybut: ${editedAttribute.name}`
-            : "Utwórz atrybut"}
-        </Label>
+        <Label>{editedAttribute ? `Edytuj atrybut: ${editedAttribute.name}` : "Utwórz atrybut"}</Label>
         <FieldInput
           labelText={<span>Nazwa</span>}
           type="text"
@@ -138,9 +126,7 @@ function AttributesPage({ swal }) {
           onChange={(e) => setName(e.target.value)}
           value={name}
         />
-        {validationErrors["name"] && (
-          <div className="error-message">{validationErrors["name"]}</div>
-        )}
+        {validationErrors["name"] && <div className="error-message">{validationErrors["name"]}</div>}
         <FieldInput
           labelText={<span>Wartość atrybutu</span>}
           type="text"
@@ -149,14 +135,10 @@ function AttributesPage({ swal }) {
           value={attributeValue}
         />
         {validationErrors["attributeValue"] && (
-          <div className="error-message">
-            {validationErrors["attributeValue"]}
-          </div>
+          <div className="error-message">{validationErrors["attributeValue"]}</div>
         )}
         <ButtonPrimary onClick={addOrUpdateAttributeValue} type="button">
-          {editingAttributeValueIndex !== null
-            ? "Aktualizuj wartość"
-            : "Dodaj wartość"}
+          {editingAttributeValueIndex !== null ? "Aktualizuj wartość" : "Dodaj wartość"}
         </ButtonPrimary>
 
         {attributeValues.length > 0 && (
@@ -172,17 +154,10 @@ function AttributesPage({ swal }) {
                 <tr key={index}>
                   <td>{value}</td>
                   <td>
-                    <ButtonPrimary
-                      onClick={() => editAttributeValue(index)}
-                      className="mr-2"
-                      type="button"
-                    >
+                    <ButtonPrimary onClick={() => editAttributeValue(index)} className="mr-2" type="button">
                       Edytuj
                     </ButtonPrimary>
-                    <ButtonDanger
-                      onClick={() => deleteAttributeValue(index)}
-                      type="button"
-                    >
+                    <ButtonDanger onClick={() => deleteAttributeValue(index)} type="button">
                       Usuń
                     </ButtonDanger>
                   </td>
@@ -215,15 +190,10 @@ function AttributesPage({ swal }) {
               <tr key={attribute._id}>
                 <td>{attribute.name}</td>
                 <td>
-                  <ButtonPrimary
-                    onClick={() => editAttribute(attribute)}
-                    className="mr-2"
-                  >
+                  <ButtonPrimary onClick={() => editAttribute(attribute)} className="mr-2">
                     Edytuj
                   </ButtonPrimary>
-                  <ButtonDanger onClick={() => deleteAttribute(attribute)}>
-                    Usuń
-                  </ButtonDanger>
+                  <ButtonDanger onClick={() => deleteAttribute(attribute)}>Usuń</ButtonDanger>
                 </td>
               </tr>
             ))}
@@ -234,4 +204,4 @@ function AttributesPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }) => <AttributesPage swal={swal} />);
+export default AttributesPage;

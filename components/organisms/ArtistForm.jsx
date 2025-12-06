@@ -27,19 +27,16 @@ export default function ArtistForm({
   const [description, setDescription] = useState(currentDescription || "");
   const [stage, setStage] = useState(currentStage || "");
   const [stages, setStages] = useState([]);
-  const [concertDate, setConcertDate] = useState(
-    formatDate(currentConcertDate)
-  );
+  const [concertDate, setConcertDate] = useState(formatDate(currentConcertDate));
   const [concertTime, setConcertTime] = useState(currentConcertTime || "");
   const [goToArtists, setGoToArtists] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [stagesIsLoading, setStagesIsLoading] = useState(false);
+  const [stagesIsLoading, setStagesIsLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
 
   const router = useRouter();
   useEffect(() => {
-    setStagesIsLoading(true);
     axios.get("/api/stages").then((result) => {
       setStages(result.data);
       setStagesIsLoading(false);
@@ -49,10 +46,7 @@ export default function ArtistForm({
   async function saveArtist(e) {
     e.preventDefault();
 
-    const errors = validateFormValues({ name, concertTime }, [
-      "name",
-      "concertTime",
-    ]);
+    const errors = validateFormValues({ name, concertTime }, ["name", "concertTime"]);
     setValidationErrors(errors);
 
     if (Object.keys(errors).length > 0) {
@@ -104,9 +98,7 @@ export default function ArtistForm({
   }
 
   function handleRemoveImage(imageIndex) {
-    setImages((prevImages) =>
-      prevImages.filter((img, index) => index !== imageIndex)
-    );
+    setImages((prevImages) => prevImages.filter((img, index) => index !== imageIndex));
   }
 
   return (
@@ -118,18 +110,12 @@ export default function ArtistForm({
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      {validationErrors["name"] && (
-        <div className="error-message">{validationErrors["name"]}</div>
-      )}
+      {validationErrors["name"] && <div className="error-message">{validationErrors["name"]}</div>}
       <Label htmlFor="upload">
         <span>Zdjęcia</span>
       </Label>
       <div className="mb-2 flex flex-wrap gap-2">
-        <ReactSortable
-          list={images}
-          setList={updateImagesSequence}
-          className="flex flex-wrap gap-2"
-        >
+        <ReactSortable list={images} setList={updateImagesSequence} className="flex flex-wrap gap-2">
           {!!images?.length &&
             images.map((link, index) => (
               <div
@@ -138,11 +124,7 @@ export default function ArtistForm({
                 onMouseEnter={() => setHoveredImageIndex(index)}
                 onMouseLeave={() => setHoveredImageIndex(null)}
               >
-                <img
-                  src={link}
-                  alt="zdjęcie artysty"
-                  className="rounded-md object-cover h-full w-full"
-                ></img>
+                <img src={link} alt="zdjęcie artysty" className="rounded-md object-cover h-full w-full"></img>
                 {hoveredImageIndex === index && (
                   <button
                     onClick={() => handleRemoveImage(index)}
@@ -176,12 +158,7 @@ export default function ArtistForm({
             />
           </svg>
           <div>Prześlij</div>
-          <Input
-            type="file"
-            onChange={uploadImages}
-            className="hidden"
-            id="upload"
-          />
+          <Input type="file" onChange={uploadImages} className="hidden" id="upload" />
         </Label>
       </div>
       <FieldTextarea
@@ -220,9 +197,7 @@ export default function ArtistForm({
         value={concertTime}
         onChange={(e) => setConcertTime(e.target.value)}
       />
-      {validationErrors["concertTime"] && (
-        <div className="error-message">{validationErrors["concertTime"]}</div>
-      )}
+      {validationErrors["concertTime"] && <div className="error-message">{validationErrors["concertTime"]}</div>}
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
         <ButtonDanger onClick={() => cancel()} type="button">

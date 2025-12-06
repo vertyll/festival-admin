@@ -6,10 +6,9 @@ import { normalDate } from "@/utils/date";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
     axios.get("/api/orders").then((response) => {
       setOrders(response.data);
       setIsLoading(false);
@@ -40,11 +39,7 @@ export default function OrdersPage() {
               orders.map((order) => (
                 <tr key={order._id}>
                   <td className="px-4 py-2">{normalDate(order.createdAt)}</td>
-                  <td
-                    className={`px-4 py-2 ${
-                      order.paid ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
+                  <td className={`px-4 py-2 ${order.paid ? "text-green-600" : "text-red-600"}`}>
                     {order.paid ? "Tak" : "Nie"}
                   </td>
                   <td className="px-4 py-2">
@@ -56,12 +51,10 @@ export default function OrdersPage() {
                     <b>Kraj:</b> {order.country}
                   </td>
                   <td className="px-4 py-2">
-                    {order.line_items.map((l) => (
-                      <div key={l.id}>
-                        <b>Produkt:</b> {l.price_data?.product_data.name} x{" "}
-                        {l.quantity} <br />
-                        <b>Opis produktu:</b>{" "}
-                        {l.price_data?.product_data.description} <br />
+                    {order.line_items.map((l, index) => (
+                      <div key={l.id || `${order._id}-${index}`}>
+                        <b>Produkt:</b> {l.price_data?.product_data.name} x {l.quantity} <br />
+                        <b>Opis produktu:</b> {l.price_data?.product_data.description} <br />
                       </div>
                     ))}
                   </td>

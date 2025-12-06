@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -8,15 +7,14 @@ import ArtistForm from "@/components/organisms/ArtistForm";
 
 export default function EditArtistPage() {
   const [artistData, setArtistData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
+  const [isLoading, setIsLoading] = useState(!!id);
 
   useEffect(() => {
     if (!id) {
       return;
     }
-    setIsLoading(true);
     axios.get("/api/artists?id=" + id).then((response) => {
       setArtistData(response.data);
       setIsLoading(false);

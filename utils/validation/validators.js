@@ -85,9 +85,7 @@ export const validateCombinationsAvailability = (combinationsAvailability) => {
       isNaN(combinationAvailability) ||
       combinationAvailability < MIN_AVAILABILITY_VALUE
     ) {
-      return `Stan magazynowy kombinacji ${
-        i + 1
-      } musi być liczbą większą lub równą ${MIN_AVAILABILITY_VALUE}`;
+      return `Stan magazynowy kombinacji ${i + 1} musi być liczbą większą lub równą ${MIN_AVAILABILITY_VALUE}`;
     }
   }
   return null;

@@ -1,52 +1,44 @@
-/* eslint-disable react/jsx-key */
 import Layout from "@/components/templates/Layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { withSwal } from "react-sweetalert2";
+import Swal from "sweetalert2";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
 import Spinner from "@/components/atoms/Spinner";
 
-function ArtistsPage({ swal }) {
+function ArtistsPage() {
   const [artists, setArtists] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    fetchArtists();
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
 
   function fetchArtists() {
-    setIsLoading(true);
     axios.get("/api/artists").then((response) => {
       setArtists(response.data);
       setIsLoading(false);
     });
   }
 
+  useEffect(() => {
+    fetchArtists();
+  }, []);
+
   function deleteArtist(artist) {
-    swal
-      .fire({
-        title: "Uwaga",
-        text: `Czy na pewno chcesz usunąć ${artist.name}?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "Nie",
-        confirmButtonText: "Tak",
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          const { _id } = artist;
-          await axios.delete("/api/artists?_id=" + _id);
-          fetchArtists();
-          swal.fire(
-            "Usunięto!",
-            `Artysta ${artist.name} został usunięty`,
-            "success"
-          );
-        }
-      });
+    Swal.fire({
+      title: "Uwaga",
+      text: `Czy na pewno chcesz usunąć ${artist.name}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Nie",
+      confirmButtonText: "Tak",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { _id } = artist;
+        await axios.delete("/api/artists?_id=" + _id);
+        fetchArtists();
+        Swal.fire("Usunięto!", `Artysta ${artist.name} został usunięty`, "success");
+      }
+    });
   }
 
   return (
@@ -77,9 +69,7 @@ function ArtistsPage({ swal }) {
               <td>{artist.name}</td>
               <td>
                 <Link href={"/artists/edit/" + artist._id}>Edytuj</Link>
-                <ButtonDanger onClick={() => deleteArtist(artist)}>
-                  Usuń
-                </ButtonDanger>
+                <ButtonDanger onClick={() => deleteArtist(artist)}>Usuń</ButtonDanger>
               </td>
             </tr>
           ))}
@@ -89,4 +79,4 @@ function ArtistsPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }) => <ArtistsPage swal={swal} />);
+export default ArtistsPage;

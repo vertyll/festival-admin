@@ -3,30 +3,29 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ButtonPrimary from "@/components/atoms/ButtonPrimary";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
-import { withSwal } from "react-sweetalert2";
+import Swal from "sweetalert2";
 import Label from "@/components/atoms/Label";
 import FieldInput from "@/components/molecules/FieldInput";
 import Spinner from "@/components/atoms/Spinner";
 import { validateFormValues } from "@/utils/validation/validation";
 
-function StagesPage({ swal }) {
+function StagesPage() {
   const [name, setName] = useState("");
   const [stages, setStages] = useState([]);
   const [editedStage, setEditedStage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
 
-  useEffect(() => {
-    fetchStages();
-  }, []);
-
   function fetchStages() {
-    setIsLoading(true);
     axios.get("/api/stages").then((response) => {
       setStages(response.data);
       setIsLoading(false);
     });
   }
+
+  useEffect(() => {
+    fetchStages();
+  }, []);
 
   async function saveStage(e) {
     e.preventDefault();
@@ -59,38 +58,30 @@ function StagesPage({ swal }) {
   }
 
   function deleteStage(stage) {
-    swal
-      .fire({
-        title: "Uwaga",
-        text: `Czy na pewno chcesz usunąć ${stage.name}?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "Nie",
-        confirmButtonText: "Tak",
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          const { _id } = stage;
-          await axios.delete("/api/stages?_id=" + _id);
-          fetchStages();
-          swal.fire(
-            "Usunięto!",
-            `Scena ${stage.name} została usunięta`,
-            "success"
-          );
-        }
-      });
+    Swal.fire({
+      title: "Uwaga",
+      text: `Czy na pewno chcesz usunąć ${stage.name}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Nie",
+      confirmButtonText: "Tak",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { _id } = stage;
+        await axios.delete("/api/stages?_id=" + _id);
+        fetchStages();
+        Swal.fire("Usunięto!", `Scena ${stage.name} została usunięta`, "success");
+      }
+    });
   }
 
   return (
     <Layout>
       <h1>Sceny</h1>
       <form onSubmit={saveStage}>
-        <Label>
-          {editedStage ? `Edytuj scenę: ${editedStage.name}` : "Utwórz scenę"}
-        </Label>
+        <Label>{editedStage ? `Edytuj scenę: ${editedStage.name}` : "Utwórz scenę"}</Label>
         <div>
           <FieldInput
             labelText={<span>Nazwa</span>}
@@ -99,9 +90,7 @@ function StagesPage({ swal }) {
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
-          {validationErrors["name"] && (
-            <div className="error-message">{validationErrors["name"]}</div>
-          )}
+          {validationErrors["name"] && <div className="error-message">{validationErrors["name"]}</div>}
         </div>
         <div className="flex gap-1">
           {editedStage && (
@@ -138,15 +127,10 @@ function StagesPage({ swal }) {
                 <tr key={stage._id}>
                   <td>{stage.name}</td>
                   <td>
-                    <ButtonPrimary
-                      onClick={() => editStage(stage)}
-                      className="mr-2"
-                    >
+                    <ButtonPrimary onClick={() => editStage(stage)} className="mr-2">
                       Edytuj
                     </ButtonPrimary>
-                    <ButtonDanger onClick={() => deleteStage(stage)}>
-                      Usuń
-                    </ButtonDanger>
+                    <ButtonDanger onClick={() => deleteStage(stage)}>Usuń</ButtonDanger>
                   </td>
                 </tr>
               ))}
@@ -157,4 +141,4 @@ function StagesPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }) => <StagesPage swal={swal} />);
+export default StagesPage;

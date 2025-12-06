@@ -1,4 +1,5 @@
 export const setCookie = (name, value, days) => {
+  if (typeof window === "undefined") return;
   const date = new Date();
   date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
   const expires = "expires=" + date.toUTCString();
@@ -6,6 +7,7 @@ export const setCookie = (name, value, days) => {
 };
 
 export const getCookie = (name) => {
+  if (typeof window === "undefined") return null;
   const nameEQ = name + "=";
   const ca = document.cookie.split(";");
   for (let i = 0; i < ca.length; i++) {

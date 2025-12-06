@@ -12,12 +12,7 @@ import FieldTextarea from "../molecules/FieldTextarea";
 import ButtonDanger from "../atoms/ButtonDanger";
 import { validateFormValues } from "@/utils/validation/validation";
 
-export default function SponsorForm({
-  _id,
-  name: currentName,
-  images: currentImages,
-  link: currentLink,
-}) {
+export default function SponsorForm({ _id, name: currentName, images: currentImages, link: currentLink }) {
   const [name, setName] = useState(currentName || "");
   const [images, setImages] = useState(currentImages || []);
   const [link, setLink] = useState(currentLink || "");
@@ -80,9 +75,7 @@ export default function SponsorForm({
   }
 
   function handleRemoveImage(imageIndex) {
-    setImages((prevImages) =>
-      prevImages.filter((img, index) => index !== imageIndex)
-    );
+    setImages((prevImages) => prevImages.filter((img, index) => index !== imageIndex));
   }
 
   return (
@@ -94,18 +87,12 @@ export default function SponsorForm({
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      {validationErrors["name"] && (
-        <div className="error-message">{validationErrors["name"]}</div>
-      )}
+      {validationErrors["name"] && <div className="error-message">{validationErrors["name"]}</div>}
       <Label htmlFor="upload">
         <span>Zdjęcia</span>
       </Label>
       <div className="mb-2 flex flex-wrap gap-2">
-        <ReactSortable
-          list={images}
-          setList={updateImagesSequence}
-          className="flex flex-wrap gap-2"
-        >
+        <ReactSortable list={images} setList={updateImagesSequence} className="flex flex-wrap gap-2">
           {!!images?.length &&
             images.map((link, index) => (
               <div
@@ -114,11 +101,7 @@ export default function SponsorForm({
                 onMouseEnter={() => setHoveredImageIndex(index)}
                 onMouseLeave={() => setHoveredImageIndex(null)}
               >
-                <img
-                  src={link}
-                  alt="zdjęcie artysty"
-                  className="rounded-md object-cover h-full w-full"
-                ></img>
+                <img src={link} alt="zdjęcie artysty" className="rounded-md object-cover h-full w-full"></img>
                 {hoveredImageIndex === index && (
                   <button
                     onClick={() => handleRemoveImage(index)}
@@ -152,12 +135,7 @@ export default function SponsorForm({
             />
           </svg>
           <div>Prześlij</div>
-          <Input
-            type="file"
-            onChange={uploadImages}
-            className="hidden"
-            id="upload"
-          />
+          <Input type="file" onChange={uploadImages} className="hidden" id="upload" />
         </Label>
       </div>
       <FieldTextarea
@@ -166,9 +144,7 @@ export default function SponsorForm({
         value={link}
         onChange={(e) => setLink(e.target.value)}
       />
-      {validationErrors["link"] && (
-        <div className="error-message">{validationErrors["link"]}</div>
-      )}
+      {validationErrors["link"] && <div className="error-message">{validationErrors["link"]}</div>}
       <div className="flex gap-1">
         <ButtonPrimary>Zapisz</ButtonPrimary>
         <ButtonDanger onClick={() => cancel()} type="button">

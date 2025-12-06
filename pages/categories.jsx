@@ -3,31 +3,30 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ButtonPrimary from "@/components/atoms/ButtonPrimary";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
-import { withSwal } from "react-sweetalert2";
+import Swal from "sweetalert2";
 import Label from "@/components/atoms/Label";
 import FieldInput from "@/components/molecules/FieldInput";
 import Spinner from "@/components/atoms/Spinner";
 import { validateFormValues } from "@/utils/validation/validation";
 
-function CategoriesPage({ swal }) {
+function CategoriesPage() {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [parentCategory, setParentCategory] = useState("");
   const [editedCategory, setEditedCategory] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
   function fetchCategories() {
-    setIsLoading(true);
     axios.get("/api/categories").then((response) => {
       setCategories(response.data);
       setIsLoading(false);
     });
   }
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   async function saveCategory(e) {
     e.preventDefault();
@@ -62,40 +61,30 @@ function CategoriesPage({ swal }) {
   }
 
   function deleteCategory(category) {
-    swal
-      .fire({
-        title: "Uwaga",
-        text: `Czy na pewno chcesz usunąć ${category.name}?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "Nie",
-        confirmButtonText: "Tak",
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          const { _id } = category;
-          await axios.delete("/api/categories?_id=" + _id);
-          fetchCategories();
-          swal.fire(
-            "Usunięto!",
-            `Kategoria ${category.name} została usunięta`,
-            "success"
-          );
-        }
-      });
+    Swal.fire({
+      title: "Uwaga",
+      text: `Czy na pewno chcesz usunąć ${category.name}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Nie",
+      confirmButtonText: "Tak",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { _id } = category;
+        await axios.delete("/api/categories?_id=" + _id);
+        fetchCategories();
+        Swal.fire("Usunięto!", `Kategoria ${category.name} została usunięta`, "success");
+      }
+    });
   }
 
   return (
     <Layout>
       <h1>Kategorie</h1>
       <form onSubmit={saveCategory}>
-        <Label>
-          {editedCategory
-            ? `Edytuj kategorię: ${editedCategory.name}`
-            : "Utwórz kategorię"}
-        </Label>
+        <Label>{editedCategory ? `Edytuj kategorię: ${editedCategory.name}` : "Utwórz kategorię"}</Label>
         <div>
           <FieldInput
             labelText={<span>Nazwa</span>}
@@ -104,17 +93,11 @@ function CategoriesPage({ swal }) {
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
-          {validationErrors["name"] && (
-            <div className="error-message">{validationErrors["name"]}</div>
-          )}
+          {validationErrors["name"] && <div className="error-message">{validationErrors["name"]}</div>}
           <Label htmlFor="parentCategory">
             <span>Kategoria nadrzędna</span>
           </Label>
-          <select
-            onChange={(e) => setParentCategory(e.target.value)}
-            value={parentCategory}
-            id="parentCategory"
-          >
+          <select onChange={(e) => setParentCategory(e.target.value)} value={parentCategory} id="parentCategory">
             <option value="">Brak nadrzędnej kategori</option>
             {categories.length > 0 &&
               categories.map((category) => (
@@ -162,15 +145,10 @@ function CategoriesPage({ swal }) {
                   <td>{category.name}</td>
                   <td>{category?.parent?.name}</td>
                   <td>
-                    <ButtonPrimary
-                      onClick={() => editCategory(category)}
-                      className="mr-2"
-                    >
+                    <ButtonPrimary onClick={() => editCategory(category)} className="mr-2">
                       Edytuj
                     </ButtonPrimary>
-                    <ButtonDanger onClick={() => deleteCategory(category)}>
-                      Usuń
-                    </ButtonDanger>
+                    <ButtonDanger onClick={() => deleteCategory(category)}>Usuń</ButtonDanger>
                   </td>
                 </tr>
               ))}
@@ -181,4 +159,4 @@ function CategoriesPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }) => <CategoriesPage swal={swal} />);
+export default CategoriesPage;

@@ -1,30 +1,22 @@
 import { getCookie, setCookie } from "@/utils/cookies";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const CookieBanner = () => {
-  const [showBanner, setShowBanner] = useState(false);
-
-  useEffect(() => {
-    const cookiesAccepted = getCookie("cookies_accepted");
-    if (!cookiesAccepted) {
-      setShowBanner(true);
-    }
-  }, []);
+  const [accepted, setAccepted] = useState(false);
 
   const acceptCookies = () => {
     setCookie("cookies_accepted", "true", 365);
-    setShowBanner(false);
+    setAccepted(true);
   };
 
-  if (!showBanner) return null;
+  if (accepted || getCookie("cookies_accepted")) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-md z-50">
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
         <p className="text-sm text-gray-700 mb-2 sm:mb-0">
-          Ta strona używa plików cookie, aby poprawić Twoje doświadczenie.
-          Korzystając z naszej strony, zgadzasz się na wykorzystanie plików
-          cookie.
+          Ta strona używa plików cookie, aby poprawić Twoje doświadczenie. Korzystając z naszej strony, zgadzasz się na
+          wykorzystanie plików cookie.
         </p>
         <div className="flex items-center">
           <button

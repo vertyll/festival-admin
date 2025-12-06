@@ -37,9 +37,7 @@ export default function ProductForm({
   const [validationErrors, setValidationErrors] = useState({});
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null);
   const [attributes, setAttributes] = useState([]);
-  const [productAvailability, setProductAvailability] = useState(
-    currentAvailability || ""
-  );
+  const [productAvailability, setProductAvailability] = useState(currentAvailability || "");
   const [combinations, setCombinations] = useState([]);
   const [originalCombinations, setOriginalCombinations] = useState([]);
 
@@ -160,8 +158,7 @@ export default function ProductForm({
   }
 
   function handlePropertyChange(index, selectedAttributeId) {
-    const selectedAttribute =
-      attributes.find((a) => a._id === selectedAttributeId) || {};
+    const selectedAttribute = attributes.find((a) => a._id === selectedAttributeId) || {};
     setProperties((prev) =>
       prev.map((property, idx) =>
         idx === index
@@ -176,16 +173,12 @@ export default function ProductForm({
   }
 
   const removeProperty = (indexToRemove) => {
-    setProperties((prev) =>
-      prev.filter((_, pIndex) => pIndex !== indexToRemove)
-    );
+    setProperties((prev) => prev.filter((_, pIndex) => pIndex !== indexToRemove));
     generateCombinations();
   };
 
   function handleRemoveImage(imageIndex) {
-    setImages((prevImages) =>
-      prevImages.filter((img, index) => index !== imageIndex)
-    );
+    setImages((prevImages) => prevImages.filter((img, index) => index !== imageIndex));
   }
 
   function addValueToProperty(index, valueToAdd) {
@@ -214,9 +207,7 @@ export default function ProductForm({
   }
 
   function cartesian(...arrays) {
-    return arrays.reduce((a, b) =>
-      a.flatMap((d) => b.map((e) => (Array.isArray(d) ? [...d, e] : [d, e])))
-    );
+    return arrays.reduce((a, b) => a.flatMap((d) => b.map((e) => (Array.isArray(d) ? [...d, e] : [d, e]))));
   }
 
   const generateCombinations = () => {
@@ -225,17 +216,15 @@ export default function ProductForm({
     );
 
     const allCombinations = cartesian(...propertyValues);
-    const combinationsData = allCombinations.map(comb => {
+    const combinationsData = allCombinations.map((comb) => {
       // Upewnij się, że comb jest zawsze tablicą
       const combArray = Array.isArray(comb) ? comb : [comb];
       const combString = combArray.join("-");
-      const found = originalCombinations.find(
-        oc => oc.combination.join("-") === combString
-      );
+      const found = originalCombinations.find((oc) => oc.combination.join("-") === combString);
       return {
         combination: combArray,
         availability: found ? found.availability : 0,
-      };    
+      };
     });
 
     setCombinations(combinationsData);
@@ -248,9 +237,7 @@ export default function ProductForm({
     setOriginalCombinations(updatedCombinations);
   };
 
-  const hasProperties = properties.some(
-    (property) => property.values.length > 0
-  );
+  const hasProperties = properties.some((property) => property.values.length > 0);
 
   return (
     <form onSubmit={saveProduct}>
@@ -261,9 +248,7 @@ export default function ProductForm({
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      {validationErrors["name"] && (
-        <div className="error-message">{validationErrors["name"]}</div>
-      )}
+      {validationErrors["name"] && <div className="error-message">{validationErrors["name"]}</div>}
       <Label>
         <span>Kategoria</span>
       </Label>
@@ -296,10 +281,7 @@ export default function ProductForm({
         {properties.length > 0 &&
           properties.map((property, index) => (
             <div key={index} className="gap-2 mb-2">
-              <select
-                value={property.attributeId}
-                onChange={(e) => handlePropertyChange(index, e.target.value)}
-              >
+              <select value={property.attributeId} onChange={(e) => handlePropertyChange(index, e.target.value)}>
                 {attributes.map((attribute) => (
                   <option key={attribute._id} value={attribute._id}>
                     {attribute.name}
@@ -324,8 +306,7 @@ export default function ProductForm({
                 ))}
               </div>
               {/* Kod do dodawania nowych wartości */}
-              {attributes.find((attr) => attr._id === property.attributeId)
-                ?.values?.length > 0 &&
+              {attributes.find((attr) => attr._id === property.attributeId)?.values?.length > 0 &&
                 attributes
                   .find((attr) => attr._id === property.attributeId)
                   .values.map((value) => (
@@ -339,11 +320,7 @@ export default function ProductForm({
                     </button>
                   ))}
               <div>
-                <ButtonDanger
-                  onClick={() => removeProperty(index)}
-                  className="mt-2"
-                  type="button"
-                >
+                <ButtonDanger onClick={() => removeProperty(index)} className="mt-2" type="button">
                   Usuń właściwość
                 </ButtonDanger>
               </div>
@@ -354,11 +331,7 @@ export default function ProductForm({
         <span>Zdjęcia</span>
       </Label>
       <div className="mb-2 flex flex-wrap gap-2">
-        <ReactSortable
-          list={images}
-          setList={updateImagesSequence}
-          className="flex flex-wrap gap-2"
-        >
+        <ReactSortable list={images} setList={updateImagesSequence} className="flex flex-wrap gap-2">
           {!!images?.length &&
             images.map((link, index) => (
               <div
@@ -367,11 +340,7 @@ export default function ProductForm({
                 onMouseEnter={() => setHoveredImageIndex(index)}
                 onMouseLeave={() => setHoveredImageIndex(null)}
               >
-                <img
-                  src={link}
-                  alt="zdjęcie produktu"
-                  className="rounded-md object-cover h-full w-full"
-                ></img>
+                <img src={link} alt="zdjęcie produktu" className="rounded-md object-cover h-full w-full"></img>
                 {hoveredImageIndex === index && (
                   <button
                     onClick={() => handleRemoveImage(index)}
@@ -405,12 +374,7 @@ export default function ProductForm({
             />
           </svg>
           <div>Prześlij</div>
-          <Input
-            type="file"
-            onChange={uploadImages}
-            className="hidden"
-            id="upload"
-          />
+          <Input type="file" onChange={uploadImages} className="hidden" id="upload" />
         </Label>
       </div>
       <FieldTextarea
@@ -425,9 +389,7 @@ export default function ProductForm({
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       />
-      {validationErrors["price"] && (
-        <div className="error-message">{validationErrors["price"]}</div>
-      )}
+      {validationErrors["price"] && <div className="error-message">{validationErrors["price"]}</div>}
       {/* Wyświetl pole availability tylko wtedy, gdy nie ma żadnych zdefiniowanych właściwości */}
       {!hasProperties && (
         <div>
@@ -440,21 +402,13 @@ export default function ProductForm({
             value={productAvailability}
             onChange={(e) => setProductAvailability(e.target.value)}
           />
-          {validationErrors["availability"] && (
-            <div className="error-message">
-              {validationErrors["availability"]}
-            </div>
-          )}
+          {validationErrors["availability"] && <div className="error-message">{validationErrors["availability"]}</div>}
         </div>
       )}
       <div>
         {combinations.map((item, index) => (
           <div key={index}>
-            <span>
-              {Array.isArray(item.combination)
-                ? item.combination.join(" - ")
-                : item.combination}
-            </span>
+            <span>{Array.isArray(item.combination) ? item.combination.join(" - ") : item.combination}</span>
             <input
               type="number"
               placeholder="Wprowadź stan magazynowy"
@@ -464,9 +418,7 @@ export default function ProductForm({
           </div>
         ))}
         {validationErrors["combinationsAvailability"] && (
-          <div className="error-message">
-            {validationErrors["combinationsAvailability"]}
-          </div>
+          <div className="error-message">{validationErrors["combinationsAvailability"]}</div>
         )}
       </div>
 

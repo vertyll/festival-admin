@@ -4,7 +4,11 @@ import ButtonLogin from "../atoms/ButtonLogin";
 import Topbar from "../organisms/Topbar";
 import { useState } from "react";
 import Logo from "../atoms/Logo";
-import CookieBanner from "../organisms/CookieBanner";
+import dynamic from "next/dynamic";
+
+const CookieBanner = dynamic(() => import("../organisms/CookieBanner"), {
+  ssr: false,
+});
 
 export default function Layout({ children }) {
   const [showNav, setShowNav] = useState(false);
@@ -35,11 +39,7 @@ export default function Layout({ children }) {
             stroke="currentColor"
             className="w-6 h-6 text-white"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
           </svg>
         </button>
         <div className="flex grow justify-center mr-6">
@@ -48,9 +48,9 @@ export default function Layout({ children }) {
       </div>
       <div className="flex">
         <Sidebar show={showNav} />
-        <div className="bg-white flex-grow">
+        <div className="bg-white grow">
           <Topbar />
-          <div className="bg-white p-2 flex-grow min-h-screen">{children}</div>
+          <div className="bg-white p-2 grow min-h-screen">{children}</div>
         </div>
       </div>
     </div>

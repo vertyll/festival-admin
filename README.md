@@ -1,13 +1,15 @@
 ## Link: https://festival-admin.vercel.app/
+
 ## [Architektura, przebieg prac i dokumentacja](https://drive.google.com/file/d/1gM-3S7d_71FZs3sFO97FI3Wvi9d4cauR/view?usp=sharing)
 
-## Założenia projektu 
+## Założenia projektu
 
 Aplikacja internetowa wymyślonego festiwalu muzycznego - Sunset Festival. Jest to dedykowany panel administracyjny dla odpowiadającej mu strony internetowej wymyślonego festiwalu muzycznego. W panelu administracyjnym możemy zarządzać informacjami związanymi z festiwalem, dodawać, edytować i usuwać produkty, kategorie, atrybuty dla produktów, zarządzać stanami magazynowmi i ustawieniami konfiguracyjnymi dla strony i wiele więcej.
 
 ## Stos technologiczny
 
 ### Front-end:
+
 - Next.js
 - React
 - Tailwind CSS do szybkiego stylowania komponentów
@@ -15,6 +17,7 @@ Aplikacja internetowa wymyślonego festiwalu muzycznego - Sunset Festival. Jest 
 - date-fns do manipulacji datami
 
 ### Back-end:
+
 - Node.js
 - MongoDB jako baza danych NoSQL
 - Next-auth do uwierzytelniania użytkowników
@@ -22,9 +25,11 @@ Aplikacja internetowa wymyślonego festiwalu muzycznego - Sunset Festival. Jest 
 - aws-sdk/client-s3 do integracji z usługą Amazon S3
 
 ### Uwierzytelnianie:
+
 - uwierzytelnianie za pomocą OAuth 2.0
 
 ### Inne:
+
 - ESLint do statycznej analizy kodu i utrzymania jednolitej jakości kodu
 - Sortable.js do obsługi sortowania elementów interfejsu użytkownika
 - Lodash do efektywnego zarządzania danymi i manipulacji nimi
@@ -32,6 +37,7 @@ Aplikacja internetowa wymyślonego festiwalu muzycznego - Sunset Festival. Jest 
 - mime-types do obsługi typów MIME
 
 ### Dodatkowe narzędzia:
+
 - Next-reveal do efektownego wyświetlania treści podczas przewijania strony
 
 ## Usługi chmurowe użyte w projekcie

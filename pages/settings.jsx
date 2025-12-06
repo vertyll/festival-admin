@@ -1,37 +1,23 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { withSwal } from "react-sweetalert2";
+import Swal from "sweetalert2";
 import Layout from "@/components/templates/Layout";
 import Spinner from "@/components/atoms/Spinner";
 import FieldInput from "@/components/molecules/FieldInput";
 import { validateFormValues } from "@/utils/validation/validation";
 
-function SettingsPage({ swal }) {
-  const [isLoading, setIsLoading] = useState(false);
+function SettingsPage() {
+  const [isLoading, setIsLoading] = useState(true);
   const [shippingPrice, setShippingPrice] = useState("");
   const [availabilityVisible, setAvailabilityVisible] = useState(false);
-  const [additionalAvailabilityVisible, setAdditionalAvailabilityVisible] =
-    useState(false);
+  const [additionalAvailabilityVisible, setAdditionalAvailabilityVisible] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetchAll().then(() => {
-      setIsLoading(false);
-    });
-  }, []);
 
   async function fetchAll() {
     try {
-      const shippingResponse = await axios.get(
-        "/api/settings?name=shippingPrice"
-      );
-      const availabilityResponse = await axios.get(
-        "/api/settings?name=availabilityVisible"
-      );
-      const additionalAvailabilityResponse = await axios.get(
-        "/api/settings?name=additionalAvailabilityVisible"
-      );
+      const shippingResponse = await axios.get("/api/settings?name=shippingPrice");
+      const availabilityResponse = await axios.get("/api/settings?name=availabilityVisible");
+      const additionalAvailabilityResponse = await axios.get("/api/settings?name=additionalAvailabilityVisible");
 
       if (shippingResponse.data) {
         setShippingPrice(shippingResponse.data.value);
@@ -40,14 +26,18 @@ function SettingsPage({ swal }) {
         setAvailabilityVisible(availabilityResponse.data.value); // Assuming value is a boolean
       }
       if (additionalAvailabilityResponse.data) {
-        setAdditionalAvailabilityVisible(
-          additionalAvailabilityResponse.data.value
-        ); // Assuming value is a boolean
+        setAdditionalAvailabilityVisible(additionalAvailabilityResponse.data.value); // Assuming value is a boolean
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
+    } finally {
+      setIsLoading(false);
     }
   }
+
+  useEffect(() => {
+    fetchAll();
+  }, []);
 
   async function saveSettings() {
     const errors = validateFormValues({ shippingPrice }, ["shippingPrice"]);
@@ -76,7 +66,7 @@ function SettingsPage({ swal }) {
     }
     setIsLoading(false);
 
-    await swal.fire({
+    await Swal.fire({
       title: "Ustawienia zapisane",
       icon: "success",
     });
@@ -96,9 +86,7 @@ function SettingsPage({ swal }) {
             onChange={(e) => setShippingPrice(e.target.value)}
           />
           {validationErrors["shippingPrice"] && (
-            <div className="error-message">
-              {validationErrors["shippingPrice"]}
-            </div>
+            <div className="error-message">{validationErrors["shippingPrice"]}</div>
           )}
           <div className="w-max">
             <FieldInput
@@ -109,15 +97,11 @@ function SettingsPage({ swal }) {
               onChange={(e) => setAvailabilityVisible(e.target.checked)}
             />
             <FieldInput
-              labelText={
-                <span>Widoczność stanów magazynowych kombinacji:</span>
-              }
+              labelText={<span>Widoczność stanów magazynowych kombinacji:</span>}
               type="checkbox"
               checked={additionalAvailabilityVisible}
               value={additionalAvailabilityVisible}
-              onChange={(e) =>
-                setAdditionalAvailabilityVisible(e.target.checked)
-              }
+              onChange={(e) => setAdditionalAvailabilityVisible(e.target.checked)}
             />
           </div>
           <div>
@@ -131,4 +115,4 @@ function SettingsPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }) => <SettingsPage swal={swal} />);
+export default SettingsPage;

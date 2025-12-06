@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -8,15 +7,14 @@ import SponsorForm from "@/components/organisms/SponsorForm";
 
 export default function EditSponsorPage() {
   const [sponsorData, setSponsorData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
+  const [isLoading, setIsLoading] = useState(!!id);
 
   useEffect(() => {
     if (!id) {
       return;
     }
-    setIsLoading(true);
     axios.get("/api/sponsors?id=" + id).then((response) => {
       setSponsorData(response.data);
       setIsLoading(false);

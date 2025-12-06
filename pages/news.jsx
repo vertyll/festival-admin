@@ -1,52 +1,44 @@
-/* eslint-disable react/jsx-key */
 import Layout from "@/components/templates/Layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { withSwal } from "react-sweetalert2";
+import Swal from "sweetalert2";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
 import Spinner from "@/components/atoms/Spinner";
 
-function NewsPage({ swal }) {
+function NewsPage() {
   const [news, setNews] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    fetchNews();
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
 
   function fetchNews() {
-    setIsLoading(true);
     axios.get("/api/news").then((response) => {
       setNews(response.data);
       setIsLoading(false);
     });
   }
 
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
   function deleteNews(news) {
-    swal
-      .fire({
-        title: "Uwaga",
-        text: `Czy na pewno chcesz usunąć ${news.name}?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "Nie",
-        confirmButtonText: "Tak",
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          const { _id } = news;
-          await axios.delete("/api/news?_id=" + _id);
-          fetchNews();
-          swal.fire(
-            "Usunięto!",
-            `News ${news.name} został usunięty`,
-            "success"
-          );
-        }
-      });
+    Swal.fire({
+      title: "Uwaga",
+      text: `Czy na pewno chcesz usunąć ${news.name}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Nie",
+      confirmButtonText: "Tak",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { _id } = news;
+        await axios.delete("/api/news?_id=" + _id);
+        fetchNews();
+        Swal.fire("Usunięto!", `News ${news.name} został usunięty`, "success");
+      }
+    });
   }
 
   return (
@@ -77,9 +69,7 @@ function NewsPage({ swal }) {
               <td>{news.name}</td>
               <td>
                 <Link href={"/news/edit/" + news._id}>Edytuj</Link>
-                <ButtonDanger onClick={() => deleteNews(news)}>
-                  Usuń
-                </ButtonDanger>
+                <ButtonDanger onClick={() => deleteNews(news)}>Usuń</ButtonDanger>
               </td>
             </tr>
           ))}
@@ -89,4 +79,4 @@ function NewsPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }) => <NewsPage swal={swal} />);
+export default NewsPage;

@@ -26,7 +26,7 @@ export default async function handle(req, res) {
   }
 
   if (method === "PUT") {
-    const { name, images, link, _id} = req.body;
+    const { name, images, link, _id } = req.body;
     await Sponsor.updateOne(
       { _id },
       {

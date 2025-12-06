@@ -10,11 +10,7 @@ import {
   validateLink,
 } from "./validators";
 
-export const validateFormValues = (
-  values,
-  fieldsToValidate = [],
-  hasProperties = false
-) => {
+export const validateFormValues = (values, fieldsToValidate = [], hasProperties = false) => {
   const validators = {
     name: validateName,
     price: validatePrice,
@@ -29,9 +25,7 @@ export const validateFormValues = (
   };
 
   if (hasProperties) {
-    fieldsToValidate = fieldsToValidate.filter(
-      (field) => field !== "availability"
-    );
+    fieldsToValidate = fieldsToValidate.filter((field) => field !== "availability");
   }
 
   return fieldsToValidate.reduce((errors, field) => {

@@ -6,13 +6,24 @@ import Layout from "@/components/templates/Layout";
 
 export default function HomeStats() {
   const [orders, setOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    setIsLoading(true);
-    axios.get("/api/orders").then((res) => {
-      setOrders(res.data);
-      setIsLoading(false);
-    });
+    const controller = new AbortController();
+
+    axios
+      .get("/api/orders", { signal: controller.signal })
+      .then((res) => {
+        setOrders(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        if (error.name !== "CanceledError") {
+          console.error("Error fetching orders:", error);
+          setIsLoading(false);
+        }
+      });
+
+    return () => controller.abort();
   }, []);
 
   function ordersTotal(orders) {
@@ -36,15 +47,9 @@ export default function HomeStats() {
     );
   }
 
-  const ordersToday = orders.filter(
-    (o) => new Date(o.createdAt) > subHours(new Date(), 24)
-  );
-  const ordersWeek = orders.filter(
-    (o) => new Date(o.createdAt) > subHours(new Date(), 24 * 7)
-  );
-  const ordersMonth = orders.filter(
-    (o) => new Date(o.createdAt) > subHours(new Date(), 24 * 30)
-  );
+  const ordersToday = orders.filter((o) => new Date(o.createdAt) > subHours(new Date(), 24));
+  const ordersWeek = orders.filter((o) => new Date(o.createdAt) > subHours(new Date(), 24 * 7));
+  const ordersMonth = orders.filter((o) => new Date(o.createdAt) > subHours(new Date(), 24 * 30));
 
   return (
     <Layout>
@@ -55,9 +60,7 @@ export default function HomeStats() {
           <div className="tile">
             <h3 className="tile-header">Dzisiaj</h3>
             <div className="tile-number">{ordersToday.length}</div>
-            <div className="tile-desc">
-              {ordersToday.length} zamówień dzisiaj
-            </div>
+            <div className="tile-desc">{ordersToday.length} zamówień dzisiaj</div>
           </div>
           <div className="tile">
             <h3 className="tile-header">Ten tydzień</h3>
@@ -75,23 +78,17 @@ export default function HomeStats() {
           <div className="tile">
             <h3 className="tile-header">Dzisiaj</h3>
             <div className="tile-number">zł {ordersTotal(ordersToday)}</div>
-            <div className="tile-desc">
-              {ordersToday.length} zamówień dzisiaj
-            </div>
+            <div className="tile-desc">{ordersToday.length} zamówień dzisiaj</div>
           </div>
           <div className="tile">
             <h3 className="tile-header">Ten tydzień</h3>
             <div className="tile-number">zł {ordersTotal(ordersWeek)}</div>
-            <div className="tile-desc">
-              {ordersWeek.length} zamówień w tym tygodniu
-            </div>
+            <div className="tile-desc">{ordersWeek.length} zamówień w tym tygodniu</div>
           </div>
           <div className="tile">
             <h3 className="tile-header">Ten miesiąc</h3>
             <div className="tile-number">zł {ordersTotal(ordersMonth)}</div>
-            <div className="tile-desc">
-              {ordersMonth.length} zamówień w tym miesiącu
-            </div>
+            <div className="tile-desc">{ordersMonth.length} zamówień w tym miesiącu</div>
           </div>
         </div>
       </div>

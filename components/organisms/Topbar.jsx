@@ -15,23 +15,10 @@ export default function Topbar({ show }) {
 
   if (!session) return;
   return (
-    <div
-      className={
-        (show ? "left-0" : "-left-full") +
-        " text-black md:flex justify-end p-2 bg-indigo-300 hidden"
-      }
-    >
-      <div
-        className="relative"
-        onMouseEnter={() => setShowMenu(true)}
-        onMouseLeave={() => setShowMenu(false)}
-      >
+    <div className={(show ? "left-0" : "-left-full") + " text-black md:flex justify-end p-2 bg-indigo-300 hidden"}>
+      <div className="relative" onMouseEnter={() => setShowMenu(true)} onMouseLeave={() => setShowMenu(false)}>
         <div className="flex items-center text-white cursor-pointer gap-2 p-2 rounded-md uppercase text-sm">
-          <img
-            src={session?.user?.image}
-            alt=""
-            className="w-10 h-10 rounded-full border-2 "
-          />
+          <img src={session?.user?.image} alt="" className="w-10 h-10 rounded-full border-2 " />
           <span className="py-1 px-2">
             <b>{session?.user?.name}</b>
           </span>
@@ -43,11 +30,7 @@ export default function Topbar({ show }) {
             stroke="currentColor"
             className="w-4 h-4"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
           </svg>
         </div>
         {showMenu && (

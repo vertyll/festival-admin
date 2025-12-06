@@ -1,52 +1,44 @@
-/* eslint-disable react/jsx-key */
 import Layout from "@/components/templates/Layout";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { withSwal } from "react-sweetalert2";
+import Swal from "sweetalert2";
 import ButtonDanger from "@/components/atoms/ButtonDanger";
 import Spinner from "@/components/atoms/Spinner";
 
-function SponsorsPage({ swal }) {
+function SponsorsPage() {
   const [sponsors, setSponsors] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    fetchSponsors();
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
 
   function fetchSponsors() {
-    setIsLoading(true);
     axios.get("/api/sponsors").then((response) => {
       setSponsors(response.data);
       setIsLoading(false);
     });
   }
 
+  useEffect(() => {
+    fetchSponsors();
+  }, []);
+
   function deleteSponsor(sponsor) {
-    swal
-      .fire({
-        title: "Uwaga",
-        text: `Czy na pewno chcesz usunąć ${sponsor.name}?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "Nie",
-        confirmButtonText: "Tak",
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          const { _id } = sponsor;
-          await axios.delete("/api/sponsors?_id=" + _id);
-          fetchSponsors();
-          swal.fire(
-            "Usunięto!",
-            `Sponsor ${sponsor.name} został usunięty`,
-            "success"
-          );
-        }
-      });
+    Swal.fire({
+      title: "Uwaga",
+      text: `Czy na pewno chcesz usunąć ${sponsor.name}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Nie",
+      confirmButtonText: "Tak",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { _id } = sponsor;
+        await axios.delete("/api/sponsors?_id=" + _id);
+        fetchSponsors();
+        Swal.fire("Usunięto!", `Sponsor ${sponsor.name} został usunięty`, "success");
+      }
+    });
   }
 
   return (
@@ -77,9 +69,7 @@ function SponsorsPage({ swal }) {
               <td>{sponsor.name}</td>
               <td>
                 <Link href={"/sponsors/edit/" + sponsor._id}>Edytuj</Link>
-                <ButtonDanger onClick={() => deleteSponsor(sponsor)}>
-                  Usuń
-                </ButtonDanger>
+                <ButtonDanger onClick={() => deleteSponsor(sponsor)}>Usuń</ButtonDanger>
               </td>
             </tr>
           ))}
@@ -89,4 +79,4 @@ function SponsorsPage({ swal }) {
   );
 }
 
-export default withSwal(({ swal }) => <SponsorsPage swal={swal} />);
+export default SponsorsPage;
