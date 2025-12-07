@@ -23,19 +23,11 @@ export const authOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    session: async ({ session, token, user }) => {
+    async session({ session }) {
       if (await isAdminEmail(session?.user?.email)) {
         return session;
-      } else {
-        return false;
       }
-    },
-    async jwt({ token, user }) {
-      if (user) {
-        token.sub = user.id;
-      }
-
-      return token;
+      return null;
     },
   },
 };
