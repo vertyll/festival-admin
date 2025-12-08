@@ -1,5 +1,3 @@
-import clientPromise from "@/lib/mongodb";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import NextAuth, { getServerSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -17,12 +15,21 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  adapter: MongoDBAdapter(clientPromise),
   session: {
     strategy: "jwt",
   },
   callbacks: {
-    async session({ session }) {
+    async jwt({ token, account, profile }) {
+      if (account && profile) {
+        token.id = profile.sub;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session?.user) {
+        session.user.id = token.id || token.sub;
+      }
+
       // if (await isAdminEmail(session?.user?.email)) {
       //   return session;
       // }
