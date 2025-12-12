@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.1",
-    "@aws-sdk/client-s3": "^3.946.0",
-    "@tailwindcss/postcss": "^4.1.17",
+    "@aws-sdk/client-s3": "^3.948.0",
+    "@tailwindcss/postcss": "^4.1.18",
     "@types/sortablejs": "1.15.9",
     "axios": "^1.13.2",
     "date-fns": "^4.1.0",
@@ -24,10 +24,10 @@
     "mongodb": "^6.10.0",
     "mongoose": "^9.0.1",
     "multiparty": "^4.2.3",
-    "next": "16.0.7",
+    "next": "16.0.10",
     "next-auth": "^4.24.13",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-sortablejs": "^6.1.4",
     "sortablejs": "^1.15.6",
     "sweetalert2": "^11.26.4",
@@ -36,11 +36,11 @@
   "devDependencies": {
     "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",
-    "eslint-config-next": "16.0.7",
+    "eslint-config-next": "16.0.10",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "postcss": "^8.5.6",
     "prettier": "^3.7.4",
-    "tailwindcss": "^4.1.17"
+    "tailwindcss": "^4.1.18"
   }
 }
