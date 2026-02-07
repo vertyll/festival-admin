@@ -2,9 +2,9 @@ name: Build and Deploy Festival Admin
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 env:
@@ -57,7 +57,7 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    
+
     steps:
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.2.0
@@ -67,22 +67,22 @@ jobs:
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           script: |
             cd ~/podman/compose
-            
+
             echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
-            
+
             podman pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            
+
             podman-compose -f festival-admin.yml up -d --force-recreate festival-admin
-            
+
             sleep 5
-            
+
             echo "=== Container status ==="
             podman ps | grep festival-admin || echo "Container is not running!"
-            
+
             # Check logs (last 30 lines)
             echo "=== Last logs ==="
             podman logs --tail 30 festival-admin
-            
+
             # Check if the application responds
             echo "=== Test healthcheck ==="
             podman exec festival-admin node -e "require('http').get('http://localhost:3000/api/health', (r) => {console.log('Status:', r.statusCode); process.exit(r.statusCode === 200 ? 0 : 1)})" && echo "✓ Application is running!" || echo "✗ Application error"
