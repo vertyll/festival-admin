@@ -79,10 +79,6 @@ jobs:
             echo "=== Container status ==="
             podman ps | grep festival-admin || echo "Container is not running!"
 
-            # Check logs (last 30 lines)
-            echo "=== Last logs ==="
-            podman logs --tail 30 festival-admin
-
             # Check if the application responds
             echo "=== Test healthcheck ==="
             podman exec festival-admin node -e "require('http').get('http://localhost:3000/api/health', (r) => {console.log('Status:', r.statusCode); process.exit(r.statusCode === 200 ? 0 : 1)})" && echo "✓ Application is running!" || echo "✗ Application error"
