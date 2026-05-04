@@ -93,6 +93,7 @@ function SettingsPage() {
             <FieldInput
               labelText={<span>Widoczność ogólnych stanów magazynowych:</span>}
               type="checkbox"
+              className="cursor-pointer"
               checked={availabilityVisible}
               value={availabilityVisible}
               onChange={(e) => setAvailabilityVisible(e.target.checked)}
@@ -100,6 +101,7 @@ function SettingsPage() {
             <FieldInput
               labelText={<span>Widoczność stanów magazynowych kombinacji:</span>}
               type="checkbox"
+              className="cursor-pointer"
               checked={additionalAvailabilityVisible}
               value={additionalAvailabilityVisible}
               onChange={(e) => setAdditionalAvailabilityVisible(e.target.checked)}
