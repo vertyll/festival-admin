@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import Layout from "@/components/templates/Layout";
 import Spinner from "@/components/atoms/Spinner";
 import FieldInput from "@/components/molecules/FieldInput";
+import ButtonPrimary from "@/components/atoms/ButtonPrimary";
 import { validateFormValues } from "@/utils/validation/validation";
 
 function SettingsPage() {
@@ -105,9 +106,7 @@ function SettingsPage() {
             />
           </div>
           <div>
-            <button onClick={saveSettings} className="btn-primary">
-              Zapisz
-            </button>
+            <ButtonPrimary onClick={saveSettings}>Zapisz</ButtonPrimary>
           </div>
         </>
       )}

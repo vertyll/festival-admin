@@ -12,6 +12,10 @@
 }
 
 @layer components {
+  button {
+    @apply cursor-pointer;
+  }
+
   input,
   textarea,
   select {
