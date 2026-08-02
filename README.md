@@ -69,7 +69,7 @@ Aplikacja łączy się ze stroną internetową festiwalu, która również jest 
 ## Instrukcja instalacji projektu
 
 1. Pobieramy projekt na lokalne środowisko.
-2. Tworzymy plik .env i kopiujemy do niego zawartość .env.example, po czym definiujemy swoje własne klucze API i dane konfiguracyjne.
+2. Tworzymy plik `.env` i kopiujemy do niego zawartość `.env.example`, po czym definiujemy swoje własne klucze API i dane konfiguracyjne.
 3. Instalujemy npm za pomocą komendy:
     ```bash
     npm install
