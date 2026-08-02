@@ -64,29 +64,25 @@ Dzięki wykorzystaniu tych usług chmurowych projekt zyskał skalowalność, nie
 
 ## Informacje dodatkowe
 
-Aplikacja łączy się z stroną internetową festiwalu, która również jest dostępna w repozytrium na GitHub.
+Aplikacja łączy się ze stroną internetową festiwalu, która również jest dostępna w repozytorium na GitHub.
 
 ## Instrukcja instalacji projektu
 
-Pobieramy projekt na lokalne środowisko
-Tworzymy plik .env i kopiujemy do niego zawartość .env.example, po czym definiujemy swoje własne klucze API i dane konfiguracyjne
+1. Pobieramy projekt na lokalne środowisko.
+2. Tworzymy plik .env i kopiujemy do niego zawartość .env.example, po czym definiujemy swoje własne klucze API i dane konfiguracyjne.
+3. Instalujemy npm za pomocą komendy:
+    ```bash
+    npm install
+    ```
+4. Uruchamiamy aplikacje na lokalnym środowisku:
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    # or
+    pnpm dev
+    # or
+    bun dev
+    ```
 
-Instalujemy npm za pomocą komendy:
-
-```bash
-npm install
-```
-
-Uruchamiamy aplikacje na lokalnym środowisku:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Domyśnie, jeżeli użyjemy jednej z powyższej komendy, aplikacja powinna być dostępna na adresie [http://localhost:3000](http://localhost:3000). Adres wklejamy do przeglądarki internetowej.
+Domyślnie, jeżeli użyjemy jednej z powyższej komendy, aplikacja powinna być dostępna na adresie [http://localhost:3000](http://localhost:3000). Adres wklejamy do przeglądarki internetowej.
