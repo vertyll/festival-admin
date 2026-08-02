@@ -19,7 +19,7 @@ export const validateName = (name) => {
 };
 
 export const validatePrice = (price) => {
-  if (price == null || isNaN(price) || price <= 0) {
+  if (price == null || Number.isNaN(price) || price <= 0) {
     return "Cena musi być liczbą dodatnią";
   }
 
@@ -70,7 +70,7 @@ export const validateAvailability = (availability, hasProperties) => {
     return null;
   }
 
-  if (availability == null || isNaN(availability) || availability <= 0) {
+  if (availability == null || Number.isNaN(availability) || availability <= 0) {
     return "Stan magazynowy musi być liczbą dodatnią";
   }
 
@@ -82,7 +82,7 @@ export const validateCombinationsAvailability = (combinationsAvailability) => {
     const combinationAvailability = combinationsAvailability[i];
     if (
       combinationAvailability == null ||
-      isNaN(combinationAvailability) ||
+      Number.isNaN(combinationAvailability) ||
       combinationAvailability < MIN_AVAILABILITY_VALUE
     ) {
       return `Stan magazynowy kombinacji ${i + 1} musi być liczbą większą lub równą ${MIN_AVAILABILITY_VALUE}`;
@@ -92,8 +92,7 @@ export const validateCombinationsAvailability = (combinationsAvailability) => {
 };
 
 export const validateConcertTime = (concertTime) => {
-  //może być puste, jeśli nie jest puste to musi być w formacie 20:00 czyli 2 cyfry dwukropek 2 cyfry
-  if (concertTime == null || concertTime == "") {
+  if (concertTime == null || concertTime === "") {
     return null;
   }
   const trimmedConcertTime = concertTime.trim();

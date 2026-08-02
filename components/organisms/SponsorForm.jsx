@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Spinner from "@/components/atoms/Spinner";
 import { ReactSortable } from "react-sortablejs";
 import ButtonPrimary from "../atoms/ButtonPrimary";
