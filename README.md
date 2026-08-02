@@ -1,6 +1,9 @@
 ## Założenia projektu
 
-Aplikacja internetowa wymyślonego festiwalu muzycznego – Sunset Festival. Jest to dedykowany panel administracyjny dla odpowiadającej mu strony internetowej wymyślonego festiwalu muzycznego. W panelu administracyjnym możemy zarządzać informacjami związanymi z festiwalem, dodawać, edytować i usuwać produkty, kategorie, atrybuty dla produktów, zarządzać stanami magazynowmi i ustawieniami konfiguracyjnymi dla strony i wiele więcej.
+Aplikacja internetowa wymyślonego festiwalu muzycznego – Sunset Festival. Jest to dedykowany panel administracyjny dla
+odpowiadającej mu strony internetowej wymyślonego festiwalu muzycznego. W panelu administracyjnym możemy zarządzać
+informacjami związanymi z festiwalem, dodawać, edytować i usuwać produkty, kategorie, atrybuty dla produktów,
+zarządzać stanami magazynowymi, ustawieniami konfiguracyjnymi dla strony i wiele więcej.
 
 ## Link: https://festival-admin.vertyll.dev
 
@@ -8,35 +11,35 @@ Aplikacja internetowa wymyślonego festiwalu muzycznego – Sunset Festival. Jes
 
 ### Front-end:
 
-- Next.js
-- React
-- Tailwind CSS do szybkiego stylowania komponentów
-- Sweetalert2 do wyświetlania interaktywnych komunikatów
-- date-fns do manipulacji datami
+- Next.js.
+- React.
+- Tailwind CSS do szybkiego stylowania komponentów.
+- Sweetalert2 do wyświetlania interaktywnych komunikatów.
+- date-fns do manipulacji datami.
 
 ### Back-end:
 
-- Node.js
-- MongoDB jako baza danych NoSQL
-- Next-auth do uwierzytelniania użytkowników
-- Axios do wykonywania żądań HTTP do serwera
-- aws-sdk/client-s3 do integracji z usługą Amazon S3
+- Node.js.
+- MongoDB jako baza danych NoSQL.
+- Next-auth do uwierzytelniania użytkowników.
+- Axios do wykonywania żądań HTTP do serwera.
+- aws-sdk/client-s3 do integracji z usługą Amazon S3.
 
 ### Uwierzytelnianie:
 
-- uwierzytelnianie za pomocą OAuth 2.0
+- Uwierzytelnianie za pomocą OAuth 2.0.
 
 ### Inne:
 
-- ESLint do statycznej analizy kodu i utrzymania jednolitej jakości kodu
-- Sortable.js do obsługi sortowania elementów interfejsu użytkownika
-- Lodash do efektywnego zarządzania danymi i manipulacji nimi
-- Lottie-web do renderowania animacji wektorowych w formacie JSON
-- mime-types do obsługi typów MIME
+- ESLint do statycznej analizy kodu i utrzymania jednolitej jakości kodu.
+- Sortable.js do obsługi sortowania elementów interfejsu użytkownika.
+- Lodash do efektywnego zarządzania danymi i manipulacji nimi.
+- Lottie-web do renderowania animacji wektorowych w formacie JSON.
+- mime-types do obsługi typów MIME.
 
 ### Dodatkowe narzędzia:
 
-- Next-reveal do efektownego wyświetlania treści podczas przewijania strony
+- Next-reveal do efektownego wyświetlania treści podczas przewijania strony.
 
 ## Usługi chmurowe użyte w projekcie
 
@@ -50,9 +53,12 @@ Do przechowywania zdjęć wrzucanych za pomocą panelu administracyjnego został
 
 ### Google Cloud Platform:
 
-Kolejną usługą chmurową wykorzystaną w projekcie jest Google Cloud Platform. W kontekście autoryzacji została użyta usługa Google Cloud Console, umożliwiająca zarządzanie tożsamościami i uprawnieniami. Logowanie zostało rozdzielone na dwa projekty, panel administracyjny i stronę festiwalu ze sklepem wykorzystując identyfikatory klienta OAuth 2.0.
+Kolejną usługą chmurową wykorzystaną w projekcie jest Google Cloud Platform. W kontekście autoryzacji została użyta
+usługa Google Cloud Console, umożliwiająca zarządzanie tożsamościami i uprawnieniami. Logowanie zostało rozdzielone na
+dwa projekty, panel administracyjny i stronę festiwalu ze sklepem wykorzystując identyfikatory klienta OAuth 2.0.
 
-Dzięki wykorzystaniu tych usług chmurowych projekt zyskał skalowalność, niezawodność oraz zaawansowane funkcje bezpieczeństwa, co znacznie zwiększyło jego funkcjonalność i atrakcyjność dla użytkowników.
+Dzięki wykorzystaniu tych usług chmurowych projekt zyskał skalowalność, niezawodność oraz zaawansowane funkcje
+bezpieczeństwa, co znacznie zwiększyło jego funkcjonalność i atrakcyjność dla użytkowników.
 
 ## Zdjęcia poglądowe
 
@@ -69,7 +75,8 @@ Aplikacja łączy się ze stroną internetową festiwalu, która również jest 
 ## Instrukcja instalacji projektu
 
 1. Pobieramy projekt na lokalne środowisko.
-2. Tworzymy plik `.env` i kopiujemy do niego zawartość `.env.example`, po czym definiujemy swoje własne klucze API i dane konfiguracyjne.
+2. Tworzymy plik `.env` i kopiujemy do niego zawartość `.env.example`, po czym definiujemy swoje własne klucze API i
+   dane konfiguracyjne.
 3. Instalujemy npm za pomocą komendy:
    ```bash
    npm install
@@ -85,4 +92,5 @@ Aplikacja łączy się ze stroną internetową festiwalu, która również jest 
    bun dev
    ```
 
-Domyślnie, jeżeli użyjemy jednej z powyższej komendy, aplikacja powinna być dostępna na adresie [http://localhost:3000](http://localhost:3000). Adres wklejamy do przeglądarki internetowej.
+Domyślnie, jeżeli użyjemy jednej z powyższej komendy, aplikacja powinna być dostępna pod adresem:
+[http://localhost:3000](http://localhost:3000).
